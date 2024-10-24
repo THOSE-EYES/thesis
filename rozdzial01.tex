@@ -1,0 +1,90 @@
+\chapter{Wstęp}
+\section{Opis projektu}
+
+Projekt nazywa się BBS - to jest skrót od ang. \textbf{B}etter \textbf{B}uild \textbf{S}ystem. Dalej w tym dokumencie będę wykorzystywać skrót w celu odwołania do swojego projektu.
+
+BBS to narzędzie, które automatyzuje proces budowania projektów napisanych w języku C++. W tradycyjnym, ręcznym podejściu do budowania dużych projektów C++, konieczność ręcznej konfiguracji i kompilacji wielu plików źródłowych często prowadzi do błędów i jest bardzo czasochłonna. To nie tylko wydłuża czas potrzebny na testowanie, ale może również wprowadzać nieprzewidywalne i trudne do wykrycia błędy. Celem BBS jest uproszczenie oraz usprawnienie procesu kompilacji, linkowania i zarządzania zależnościami między plikami źródłowymi, co jest szczególnie istotne w przypadku skomplikowanych projektów o dużej ilości kodu.
+
+\subsection{Cechy}
+Projekt, żeby być naprawdę użytecznym, musi posiadać następujące cechy, które będą wyróźniały go spośród innych podobnych narzędzi:
+
+\begin{itemize}
+    \item konfigurowalność z pliku: zarządzanie procesem budowania musi być wykonane za pomocą pliku konfiguracyjnego, żeby uniezależnić system od wybranego środowiska programowania lub systemu ciągłej integracji (CI),
+    \item prosta składnia języka: język, który będzie wymyślony specjalnie do wykorzystania w plikach konfiguracyjnych projektu, musi posiadać jak najmniej operacji i symboli, a także mieć minimum symboli, wykorzystanych do separacji kolejnych elementów pliku (przykładem jest ,,;'' w języku C++),
+    \item minimum słów kluczowych: język musi posiadać tylko i wyłącznie słowa niezbędne do opisu projektu, który należy zbudować, ponadto każde słowo musi pełnić tylko i wyłącznie jedną rolę,
+    \item przejrzystość i jednoznaczność: program, który będzie napisany w celu interpretacji wymyślonego języka plików konfiguracyjnych, musi nie mieć żadnych ukrytych parametrów czy zmiennych.
+\end{itemize}
+
+\subsection{Główne funkcje}
+Dla kompletnego opisu projektu także muszą być podane jego główne funkcje. Oto lista wszystkich funkcji BBS:
+
+\begin{itemize}
+    \item eliminacja zbędnych operacji: system automatycznie śledzi zmiany w plikach źródłowych i unika zbędnych operacji kompilacji plików obiektowych czy linkowania przy kolejnym odpaleniu, co znacznie skraca czas budowania projektu,
+    \item wieloplatformowość: Obsługuje główne systemy operacyjne, takie jak Linux i Windows,
+    \item elastyczne Konfiguracje: Możliwość dostosowywania ustawień kompilacji za pomocą prostych skryptów konfiguracyjnych i wsparcie dla niestandardowych flag kompilatora.
+\end{itemize}
+
+\section{Inne rozwiązania}
+Język C++ standardowo nie ma swojego systemu do budowania, jak to jest np. w języku Rust. Skoro projekty w tym języku stawały się i nadal stają coraz większe i bardziej skomplikowane, musiały powstać takie narzędzia. Najpopularniejszymi teraz są Make, CMake, Visual Studio(VS) i Meson. Każdy z nich będzie opisany poniżej.
+
+\subsection{Make}
+Make jest jednym z najstarszych i najbardziej podstawowych narzędzi do budowania projektów, które polega na ręcznym tworzeniu plików Makefile. To narzędzie jest stosunkowo niskopoziomowe i wymaga, aby użytkownik samodzielnie zdefiniował wszystkie reguły budowania oraz zależności. 
+
+\subsubsection{Zalety}
+Make to bardzo elastyczne narzędzie, które umożliwia pełną kontrolę nad procesem budowania. Ono jest dobrze znane i jest prawie zawsze wykorzystane do budowania projektów w systemach pochodnych od UNIX (bezpośrednio lub pośrednio przez CMake).
+
+\subsubsection{Wady}
+Ale także Make ma swoje wady: ręczne zarządzanie zależnościami jest podatne na błędy, może być czasochłonne i trudne w utrzymaniu w dużych projektach. Także to rozwiązanie nie jest wieloplatformowym, ponieważ nie ma bezpośredniego wsparcia tego systemu w Windows, gdzie najczęściej są wykorzystane inne narzędzia.
+
+\subsection{CMake}
+CMake to najpopularniejsze narzędzie do budowania dla C++, które generuje skrypty budowania (np. Makefile, projekty Visual Studio) na podstawie prostych plików konfiguracyjnych. CMake skupia się na wieloplatformowości i szerokiej kompatybilności z różnymi narzędziami budowania.
+
+\subsubsection{Zalety}
+Zalety systemu budowania projektów CMake są naprawdę znaczące, co pozwoliło temu narzędziu stać się jednym z najpopularniejszych systemów. Oto one są:
+
+\begin{itemize}
+    \item szerokie wsparcie dla różnych platform i kompilatorów,
+    \item duża elastyczność w zarządzaniu projektami,
+    \item automatyczne generowanie skryptów budowania dla różnych środowisk,
+    \item CMake jest projektem z otwartym kodem źródłowym.
+\end{itemize}
+
+\subsubsection{Wady}
+Niestety, CMake nie jest idealnym rozwiązaniem dla wszystkich użytkowników, więc ma ono swoje wady:
+
+\begin{itemize}
+    \item Pliki CMakeLists.txt mogą być skomplikowane w dużych projektach.
+    \item Nowi użytkownicy tracą dużo czasu na nauczenie się korzystania z tego narzędzia.
+    \item Konfiguracja może być czasochłonna w przypadku bardziej zaawansowanych scenariuszy.
+    \item Kod źródłowy CMake jest bardzo trudny do przejrzenia i ma skomplikowaną strukturę.
+\end{itemize}
+
+\subsection{Visual Studio}
+Visual Studio (VS) to rozbudowane środowisko IDE z wbudowanym systemem budowania, które jest często używane w projektach C++ na platformach Windows. Narzędzie korzysta z plików projektowych .vcxproj i dostarcza zintegrowane funkcje do debugowania, analizy i zarządzania kodem.
+
+\subsubsection{Zalety}
+Visual Studio jest kompleksowym IDE z integracją z narzędziami do debugowania, analizy i testowania kodu. To znaczy, iż użytkownicy mają rozwiązanie ,,wszystko w jednym'' dla programowania w C++ z bardzo przyjaznym interfejsem i dużą ilością rozszerzeń do napisania wydajnego kodu.
+
+\subsubsection{Wady}
+Niestety, skoro to rozwiązanie jest napisane przez Microsoft, nie stosuje się go na innych systemach operacyjnych, niż Windows. Także strategia wykorzystania VS automatycznie eliminuje możliwość użycia własnych edytorów tekstu czy narzędzi CI.
+
+\subsection{Meson}
+Meson to nowoczesny system budowania, który kładzie nacisk na szybkość i łatwość konfiguracji. Meson używa prostych plików konfiguracyjnych meson.build i współpracuje z narzędziem Ninja, które przyspiesza proces kompilacji.
+
+\subsubsection{Zalety}
+Meson ma bardzo szybki czas budowania dzięki integracji z Ninja, z czego także wynika wieloplatformowość i wsparcie dla szerokiego zakresu kompilatorów. Także warto dodać, iż  pliki konfiguracyjne \texttt{meson.build} mają prostą strukturę i nie wymagają dużo czasu do zrozumienia.
+
+\subsubsection{Wady}
+Meson nie pracuje z kompilatorami języków programowania (np. GNU GCC), czyli nie jest osobnym narzędziem dla budowania, raczej kompilatorem z własnego (i bardzo wygodnego) języka do języka, zrozumianego przez Ninja.
+
+\section{Cel i zakres projektu}
+Celem mojej pracy inżynierskiej jest stworzenie narzędzia automatyzującego proces budowania projektów w C++, które uprości zarządzanie złożonymi zależnościami. Narzędzie będzie korzystać z prostej gramatyki i ograniczonej liczby zmiennych, aby ułatwić użytkowanie, a także wykorzysta nowoczesne standardy języka C++ dla zapewnienia przejrzystości i modułowości kodu. Dzięki temu narzędzie zwiększy efektywność i niezawodność budowania projektów na różnych platformach.
+
+Zakres pracy wynika bezpośrednio z celów mojej pracy, opisanych powyżej, i obejmuje:
+\begin{itemize}
+    \item Analizę istniejących narzędzi do automatyzacji budowania projektów w C++, takich jak CMake, Make, autoconf, meson oraz Visual Studio, z uwzględnieniem ich zalet i ograniczeń
+    \item Opracowanie wymagań dla nowego narzędzia, które zapewni uproszczony proces budowania z prostą gramatyką.
+    \item Implementację narzędzia z użyciem nowoczesnych standardów C++, z naciskiem na przejrzystość kodu i modularność.
+    \item Testowanie narzędzia w projektach o różnej złożoności i napisanie testów jednostkowych (unit tests).
+    \item Opracowanie dokumentacji użytkownika (za pomocą Doxygen) oraz przykładów użycia narzędzia.
+\end{itemize}
