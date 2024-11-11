@@ -1,0 +1,78 @@
+\chapter{Założenia projektowe}
+\section{Wykorzystane narzędzia}
+W tej części pracy będą opisane narzędzia, które zostały wykorzystane podczas tworzenia projektu. Część z nich była wykorzystana bezpośrednio do tworzenia kodu projektu (np. wybrany język programowania, system budowania czy framework do testowania), niektóre pełniły pomocniczą rolę (np. narzędzie do generowania dokumentacji).
+
+\subsection{Język programowania}
+Projekt BBS został zrealizowany w języku C++ standardu C++17.
+
+C++ to uniwersalny język programowania, który łączy wydajność niskopoziomowego C z zaletami programowania obiektowego. Umożliwia tworzenie zarówno prostych, jak i bardzo złożonych systemów, co czyni go popularnym wyborem w takich dziedzinach jak gry, systemy operacyjne, oprogramowanie osadzone i aplikacje wymagające wysokiej wydajności. Dzięki wsparciu dla obiektowości, C++ pozwala na lepszą organizację kodu i zarządzanie złożonymi strukturami. Jednocześnie, umożliwia precyzyjną kontrolę nad pamięcią i zasobami, co jest kluczowe w aplikacjach, gdzie wydajność ma największe znaczenie. Standardowa biblioteka STL dodatkowo ułatwia pracę, oferując gotowe struktury danych i algorytmy.
+
+C++17 (czyli standard, wykorzystany podczas napisania BBS) to wersja języka C++, która wprowadza liczne usprawnienia zwiększające wygodę kodowania i wydajność programów. W standardzie C++17 pojawiły się nowe narzędzia, które ułatwiają programowanie, jak np. \texttt{std::optional}, pomagający w obsłudze wartości opcjonalnych, oraz \texttt{std::variant}, umożliwiający przechowywanie wielu typów w jednej zmiennej. Standard ten wprowadza też udoskonalenia w zakresie optymalizacji kodu, dzięki czemu aplikacje mogą działać szybciej i sprawniej. Zawiera także nowe algorytmy w STL, które skracają czas potrzebny na pisanie i testowanie kodu. 
+
+\subsubsection{Biblioteka języka}
+W ramach pracy intensywnie korzystałem z biblioteki standardowej języka C++. Oto są najczęściej używane biblioteki, na bazie których powstał projekt BBS:
+
+\begin{itemize}
+    \item \texttt{string} - operacje na ciągach tekstowych; najczęściej wykorzystane podczas przetwarzania danych z plików wejściowych do postaci tokenów, 
+    \item \texttt{vector} - do dynamicznego przechowywania danych; kontener jest częścią kodu służącego do przetwarzania danych wejściowych do postaci tokenów, a także wykorzystany do przechowywania danych o plikach i katalogach projektu, 
+    \item \texttt{map} - do dynamicznego przechowywania danych; jest bazą funkcji, które odpowiadają za mechanizm zmiennych,
+    \item \texttt{optional} - do przechowywania wartości opcjonalnych; służy najczęściej do przetwarzania danych wejściowych, 
+    \item \texttt{algorithms} - do sprawnego przetwarzania danych; biblioteka wykorzystana jest jedynie do przetwarzania tokenów do postaci tekstowej w celu wyświetlenia ich wartości gdy program napotka na błędy,
+    \item \texttt{filesystem} - do obsługi operacji na plikach i ścieżkach systemowych; na tej bibliotece opera się mechanizm przyspieszenia budowania projektu przez ignorowanie już istniejących plików, 
+    \item \texttt{fstream} - do odczytu i zapisu plików,
+    \item \texttt{memory} - inteligentne wskaźniki, za pomocą których udało się ograniczyć ryzyko wycieków pamięci i lepiej określić relacje pomiędzy klasami.
+\end{itemize}
+
+\subsubsection{Biblioteki zewnętrzne}
+Projekt, który powstał podczas pisania tej pracy dyplomowej, nie korzysta z żadnych zewnętrznych bibliotek, oprócz framework'u do testowania (który jest opisany poniżej), głównie dlatego, że został wykorzystany standard C++17. 
+
+W przypadku, gdyby wymagania projektowe ograniczały możliwości wykorzystania nowszych standardów języka C++, do napisania tego samego kodu niezbędnym by było podłączenie biblioteki Boost (zawiera w sobie m.in. funkcje, które obecnie są w nagłówku \texttt{filesystem} albo \texttt{optional}).
+
+\subsection{System budowania}
+Do zarządzania procesem budowania projektu wybrałem CMake, który umożliwia łatwą konfigurację kompilacji oraz automatyczne zarządzanie zależnościami. Skoro jest on wielosystemowym, CMake pozwala na płynne dostosowanie budowania do różnych platform oraz integrację z zewnętrznymi bibliotekami przez korzystanie z dobrze opisanych funkcji i zmiennych.
+
+W moim projekcie istnieje jeden główny plik \texttt{CMakeLists.txt}, który zawiera definicję plików źródłowych oraz katalogu plików nagłówkowych, oraz niezbędne klucze kompilatora. Osobno także dodałem możliwość kompilacji testów, która zależy od trybu budowania projektu (\texttt{DEBUG} czy \texttt{RELEASE}).
+
+Testy mają inną strukturę : są one podzielone na osobne, izolowane podprojekty, każdy z których zawiera swój \texttt{CMakeLists.txt}, na które wskazują inne pliki wyższego rzędu.
+
+\subsection{Kompilator}
+Do kompilacji projektu użyłem kompilatora GCC 14, który w pełni wspiera standard C++17 i dostarcza narzędzi optymalizujących generowany kod.
+
+GCC \eng{\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection} -- to open-source kompilator wspierający wiele języków programowania. Jest jednym z najpopularniejszych kompilatorów na świecie, głównie ze względu na swoją niezawodność, wydajność i szeroką kompatybilność z różnymi systemami operacyjnymi, takimi jak Linux, Windows, i macOS. 
+
+GCC cechuje się modularną budową, co oznacza, że każdy jego komponent odpowiada za kompilację innego języka programowania lub realizację konkretnego etapu procesu kompilacji. Dzięki tej modularności, GCC obsługuje wiele języków, takich jak C, C++, Fortran czy Ada, z osobnymi frontendami (czyli modułami wstępnie przetwarzającymi kod), które przekształcają kod źródłowy na wspólną reprezentację pośrednią. Następnie, backend kompilatora dokonuje optymalizacji tej reprezentacji i generuje kod maszynowy dostosowany do architektury docelowego procesora.
+
+\subsection{Testowanie}
+W celu zapewnienia jakości i poprawności kodu wykorzystałem framework Google Test do tworzenia testów jednostkowych. Testy pozwalają na automatyczne sprawdzanie poprawności funkcji oraz łatwiejsze wykrywanie i naprawę błędów.
+
+Google Test (GTest) to framework do testowania jednostkowego napisany w języku C++. Jego struktura opiera się na kilku głównych komponentach:
+
+\begin{enumerate}
+    \item Moduł testowy - Najważniejszy element, który zarządza definiowaniem i organizacją testów. W każdym pliku testowym tworzysz przypadki testowe i grupy testów, co pozwala na logiczne segregowanie testów w obrębie kodu.
+    \item Assertions - GTest oferuje szeroką gamę asercji (np. \texttt{ASSERT\_EQ}, \texttt{EXPECT\_TRUE}), które sprawdzają zgodność wyników testów z oczekiwanymi wartościami. Asercje są centralnym modułem GTest i są realizowane jako makra, co ułatwia wywoływanie ich bez skomplikowanej składni. Moduł ten obsługuje różne poziomy asercji, od ostrzeżeń po przerywanie testu w przypadku błędu.
+    \item Runner testów - Uruchamianie testów odbywa się przez specjalny runner, który iteruje przez wszystkie przypadki testowe i rejestruje wyniki, pozwala na ponowne odpalenie nieudanych testów. Runner ten jest niezależny od definicji testów, co umożliwia równoczesne lub selektywne uruchamianie wybranych zestawów testów. 
+    \item Wyniki - Moduł odpowiedzialny za raportowanie wyników oferuje różne formaty, w tym XML, co ułatwia integrację z innymi narzędziami do analizy wyników testów. Pozwala na szczegółowe monitorowanie i analizę wyników w środowiskach CI/CD.
+\end{enumerate}
+
+Ten framework został wybrany do testowania BBS, ponieważ to jest jeden z najbardziej rozpowszechnionych framework'ów, który korzysta z C++, a także jest bardzo prosty, wygodny i potężny.
+
+\subsection{Dokumentacja}
+Dokumentacja projektu została wygenerowana przy użyciu narzędzia Doxygen, co pozwoliło na uzyskanie przejrzystej dokumentacji API wraz z automatycznie generowanymi diagramami klas, co ułatwia analizę struktury projektu.
+
+Doxygen to narzędzie do automatycznego generowania dokumentacji z komentarzy w kodzie źródłowym, które wspiera różne języki programowania, w tym C++. Umożliwia ono tworzenie szczegółowych raportów, które opisują strukturę kodu, funkcje, klasy oraz ich wzajemne zależności. Dzięki specjalnym komentarzom w kodzie, Doxygen zbiera informacje o elementach programu, które następnie przekształca w zorganizowaną dokumentację.
+
+Narzędzie generuje dokumentację w różnych formatach, takich jak HTML, LaTeX, PDF czy XML, a także oferuje możliwość tworzenia diagramów klas i zależności między modułami. Używając Doxygen, można w łatwy sposób wygenerować interaktywną dokumentację, która zawiera opisy funkcji, metod oraz struktur danych, a także umożliwia przeglądanie zależności pomiędzy poszczególnymi elementami kodu.
+
+Konfiguracja jednak nie jest aż tak prosta, ponieważ aby wymusić poprawne zachowanie narzędzia jest potrzebna zmiana pliku konfiguracyjnego, zawierająca tysięcy linii. Z kolei każdy parameter jest dobre opisany, więc potrzebno tylko poświęcić jakiś czas zapoznaniu się z narzędziem.
+
+\subsection{Tekst pracy}
+Cała część tekstowa pracy dyplomowej została napisana w LaTeX-u. Użycie tego systemu składania tekstu pozwoliło na uzyskanie profesjonalnego i spójnego formatu dokumentu, szczególnie przydatnego przy generowaniu równań, tabel oraz bibliografii.
+
+LaTeX to system, który umożliwia tworzenie zgodnych z pewnym szblonem dokumentów. W LaTeX-ie, zamiast zwyklego tekstu, opisuje się strukturę dokumentu i jego formatowanie za pomocą specjalnych poleceń. 
+
+Jedną z najważniejszych cech LaTeX jest tworzenie równań, tabel, wykresów i zarządzanie bibliografią. Także LaTeX automatycznie zajmuje się numerowaniem stron, tworzeniem spisów treści i cytowaniami (jeśli są podłączone specjalne biblioteki, których jest mnóstwo), co czyni go idealnym narzędziem do pisania dokumentów technicznych i naukowych, takich jak prace dyplomowe.
+
+\section{Wymagania projektowe}
+\subsection{Wymagania funkcjonalne}
+\subsection{Wymagania niefunkcjonalne}
+\subsection{Przypadki użycia}
