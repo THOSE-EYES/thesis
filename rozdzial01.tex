@@ -31,7 +31,9 @@ Język C++ standardowo nie ma swojego systemu do budowania, jak to jest np. w j�
 Make jest jednym z najstarszych i najbardziej podstawowych narzędzi do budowania projektów, które polega na ręcznym tworzeniu plików Makefile. To narzędzie jest stosunkowo niskopoziomowe i wymaga, aby użytkownik samodzielnie zdefiniował wszystkie reguły budowania oraz zależności. 
 
 \subsubsection{Zalety}
-Make to bardzo elastyczne narzędzie, które umożliwia pełną kontrolę nad procesem budowania. Ono jest dobrze znane i jest prawie zawsze wykorzystane do budowania projektów w systemach pochodnych od UNIX (bezpośrednio lub pośrednio przez CMake).
+Make to bardzo elastyczne narzędzie, które umożliwia pełną kontrolę nad procesem budowania. Ono jest dobrze znane i jest prawie zawsze wykorzystane do budowania projektów w systemach pochodnych od UNIX (bezpośrednio lub pośrednio przez CMake). 
+
+Także istnieje podobne narzędzie od Microsoft, które nazywa się \textbf{NMake}, które również działa na podstawie plików makefile, ale jest ściśle związane z kompilatorami z Visual Studio i oferuje ograniczoną funkcjonalność w porównaniu do Make, a także ma zupelnie inną składnie.
 
 \subsubsection{Wady}
 Ale także Make ma swoje wady: ręczne zarządzanie zależnościami jest podatne na błędy, może być czasochłonne i trudne w utrzymaniu w dużych projektach. Także to rozwiązanie nie jest wieloplatformowym, ponieważ nie ma bezpośredniego wsparcia tego systemu w Windows, gdzie najczęściej są wykorzystane inne narzędzia.
