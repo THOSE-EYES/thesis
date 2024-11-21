@@ -6,7 +6,7 @@ Projekt nazywa się BBS - to jest skrót od ang. \textbf{B}etter \textbf{B}uild 
 BBS to narzędzie, które automatyzuje proces budowania projektów napisanych w języku C++. W tradycyjnym, ręcznym podejściu do budowania dużych projektów C++, konieczność ręcznej konfiguracji i kompilacji wielu plików źródłowych często prowadzi do błędów i jest bardzo czasochłonna. To nie tylko wydłuża czas potrzebny na testowanie, ale może również wprowadzać nieprzewidywalne i trudne do wykrycia błędy. Celem BBS jest uproszczenie oraz usprawnienie procesu kompilacji, linkowania i zarządzania zależnościami między plikami źródłowymi, co jest szczególnie istotne w przypadku skomplikowanych projektów o dużej ilości kodu.
 
 \subsection{Cechy}
-Projekt, żeby być naprawdę użytecznym, musi posiadać następujące cechy, które będą wyróźniały go spośród innych podobnych narzędzi:
+Projekt, żeby być naprawdę użytecznym, musi posiadać następujące cechy, które będą wyróżniały go spośród innych podobnych narzędzi:
 
 \begin{itemize}
     \item konfigurowalność z pliku: zarządzanie procesem budowania musi być wykonane za pomocą pliku konfiguracyjnego, żeby uniezależnić system od wybranego środowiska programowania lub systemu ciągłej integracji (CI),
@@ -33,7 +33,7 @@ Make jest jednym z najstarszych i najbardziej podstawowych narzędzi do budowani
 \subsubsection{Zalety}
 Make to bardzo elastyczne narzędzie, które umożliwia pełną kontrolę nad procesem budowania. Ono jest dobrze znane i jest prawie zawsze wykorzystane do budowania projektów w systemach pochodnych od UNIX (bezpośrednio lub pośrednio przez CMake). 
 
-Także istnieje podobne narzędzie od Microsoft, które nazywa się \textbf{NMake}, które również działa na podstawie plików makefile, ale jest ściśle związane z kompilatorami z Visual Studio i oferuje ograniczoną funkcjonalność w porównaniu do Make, a także ma zupelnie inną składnie.
+Także istnieje podobne narzędzie od Microsoft, które nazywa się \textbf{NMake}, które również działa na podstawie plików makefile, ale jest ściśle związane z kompilatorami z Visual Studio i oferuje ograniczoną funkcjonalność w porównaniu do Make, a także ma zupełnie inną składnię.
 
 \subsubsection{Wady}
 Ale także Make ma swoje wady: ręczne zarządzanie zależnościami jest podatne na błędy, może być czasochłonne i trudne w utrzymaniu w dużych projektach. Także to rozwiązanie nie jest wieloplatformowym, ponieważ nie ma bezpośredniego wsparcia tego systemu w Windows, gdzie najczęściej są wykorzystane inne narzędzia.
@@ -42,7 +42,7 @@ Ale także Make ma swoje wady: ręczne zarządzanie zależnościami jest podatne
 CMake to najpopularniejsze narzędzie do budowania dla C++, które generuje skrypty budowania (np. Makefile, projekty Visual Studio) na podstawie prostych plików konfiguracyjnych. CMake skupia się na wieloplatformowości i szerokiej kompatybilności z różnymi narzędziami budowania.
 
 \subsubsection{Zalety}
-Zalety systemu budowania projektów CMake są naprawdę znaczące, co pozwoliło temu narzędziu stać się jednym z najpopularniejszych systemów. Oto one są:
+Zalety systemu budowania projektów CMake są naprawdę znaczące, co pozwoliło temu narzędziu stać się jednym z najpopularniejszych systemów. Oto one:
 
 \begin{itemize}
     \item szerokie wsparcie dla różnych platform i kompilatorów,
@@ -82,9 +82,9 @@ Meson nie pracuje z kompilatorami języków programowania (np. GNU GCC), czyli n
 \section{Cel i zakres projektu}
 Celem mojej pracy inżynierskiej jest stworzenie narzędzia automatyzującego proces budowania projektów w C++, które uprości zarządzanie złożonymi zależnościami. Narzędzie będzie korzystać z prostej gramatyki i ograniczonej liczby zmiennych, aby ułatwić użytkowanie, a także wykorzysta nowoczesne standardy języka C++ dla zapewnienia przejrzystości i modułowości kodu. Dzięki temu narzędzie zwiększy efektywność i niezawodność budowania projektów na różnych platformach.
 
-Zakres pracy wynika bezpośrednio z celów mojej pracy, opisanych powyżej, i obejmuje:
+Zakres pracy wynika bezpośrednio z celów mojej pracy, opisanych powyżej, i obejmuje niżej wymienione elementy.
 \begin{itemize}
-    \item Analizę istniejących narzędzi do automatyzacji budowania projektów w C++, takich jak CMake, Make, autoconf, meson oraz Visual Studio, z uwzględnieniem ich zalet i ograniczeń
+    \item Analizę istniejących narzędzi do automatyzacji budowania projektów w C++, takich jak CMake, Make, autoconf, meson oraz Visual Studio, z uwzględnieniem ich zalet i ograniczeń.
     \item Opracowanie wymagań dla nowego narzędzia, które zapewni uproszczony proces budowania z prostą gramatyką.
     \item Implementację narzędzia z użyciem nowoczesnych standardów C++, z naciskiem na przejrzystość kodu i modularność.
     \item Testowanie narzędzia w projektach o różnej złożoności i napisanie testów jednostkowych (unit tests).
