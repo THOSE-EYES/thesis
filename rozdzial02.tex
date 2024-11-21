@@ -13,14 +13,14 @@ C++17 (czyli standard, wykorzystany podczas napisania BBS) to wersja języka C++
 W ramach pracy intensywnie korzystałem z biblioteki standardowej języka C++. Oto są najczęściej używane biblioteki, na bazie których powstał projekt BBS:
 
 \begin{itemize}
-    \item \texttt{string} - operacje na ciągach tekstowych; najczęściej wykorzystane podczas przetwarzania danych z plików wejściowych do postaci tokenów, 
-    \item \texttt{vector} - do dynamicznego przechowywania danych; kontener jest częścią kodu służącego do przetwarzania danych wejściowych do postaci tokenów, a także wykorzystany do przechowywania danych o plikach i katalogach projektu, 
-    \item \texttt{map} - do dynamicznego przechowywania danych; jest bazą funkcji, które odpowiadają za mechanizm zmiennych,
-    \item \texttt{optional} - do przechowywania wartości opcjonalnych; służy najczęściej do przetwarzania danych wejściowych, 
-    \item \texttt{algorithms} - do sprawnego przetwarzania danych; biblioteka wykorzystana jest jedynie do przetwarzania tokenów do postaci tekstowej w celu wyświetlenia ich wartości gdy program napotka na błędy,
-    \item \texttt{filesystem} - do obsługi operacji na plikach i ścieżkach systemowych; na tej bibliotece opera się mechanizm przyspieszenia budowania projektu przez ignorowanie już istniejących plików, 
-    \item \texttt{fstream} - do odczytu i zapisu plików,
-    \item \texttt{memory} - inteligentne wskaźniki, za pomocą których udało się ograniczyć ryzyko wycieków pamięci i lepiej określić relacje pomiędzy klasami.
+    \item \texttt{string} -- operacje na ciągach tekstowych; najczęściej wykorzystane podczas przetwarzania danych z plików wejściowych do postaci tokenów, 
+    \item \texttt{vector} -- do dynamicznego przechowywania danych; kontener jest częścią kodu służącego do przetwarzania danych wejściowych do postaci tokenów, a także wykorzystany do przechowywania danych o plikach i katalogach projektu, 
+    \item \texttt{map} -- do dynamicznego przechowywania danych; jest bazą funkcji, które odpowiadają za mechanizm zmiennych,
+    \item \texttt{optional} -- do przechowywania wartości opcjonalnych; służy najczęściej do przetwarzania danych wejściowych, 
+    \item \texttt{algorithms} -- do sprawnego przetwarzania danych; biblioteka wykorzystana jest jedynie do przetwarzania tokenów do postaci tekstowej w celu wyświetlenia ich wartości gdy program napotka na błędy,
+    \item \texttt{filesystem} -- do obsługi operacji na plikach i ścieżkach systemowych; na tej bibliotece opera się mechanizm przyspieszenia budowania projektu przez ignorowanie już istniejących plików, 
+    \item \texttt{fstream} -- do odczytu i zapisu plików,
+    \item \texttt{memory} -- inteligentne wskaźniki, za pomocą których udało się ograniczyć ryzyko wycieków pamięci i lepiej określić relacje pomiędzy klasami.
 \end{itemize}
 
 \subsubsection{Biblioteki zewnętrzne}
@@ -48,10 +48,10 @@ W celu zapewnienia jakości i poprawności kodu wykorzystałem framework Google 
 Google Test (GTest) to framework do testowania jednostkowego napisany w języku C++. Jego struktura opiera się na kilku głównych komponentach:
 
 \begin{enumerate}
-    \item Moduł testowy - Najważniejszy element, który zarządza definiowaniem i organizacją testów. W każdym pliku testowym tworzysz przypadki testowe i grupy testów, co pozwala na logiczne segregowanie testów w obrębie kodu.
-    \item Assertions - GTest oferuje szeroką gamę asercji (np. \texttt{ASSERT\_EQ}, \texttt{EXPECT\_TRUE}), które sprawdzają zgodność wyników testów z oczekiwanymi wartościami. Asercje są centralnym modułem GTest i są realizowane jako makra, co ułatwia wywoływanie ich bez skomplikowanej składni. Moduł ten obsługuje różne poziomy asercji, od ostrzeżeń po przerywanie testu w przypadku błędu.
-    \item Runner testów - Uruchamianie testów odbywa się przez specjalny runner, który iteruje przez wszystkie przypadki testowe i rejestruje wyniki, pozwala na ponowne odpalenie nieudanych testów. Runner ten jest niezależny od definicji testów, co umożliwia równoczesne lub selektywne uruchamianie wybranych zestawów testów. 
-    \item Wyniki - Moduł odpowiedzialny za raportowanie wyników oferuje różne formaty, w tym XML, co ułatwia integrację z innymi narzędziami do analizy wyników testów. Pozwala na szczegółowe monitorowanie i analizę wyników w środowiskach CI/CD.
+    \item Moduł testowy -- Najważniejszy element, który zarządza definiowaniem i organizacją testów. W każdym pliku testowym tworzysz przypadki testowe i grupy testów, co pozwala na logiczne segregowanie testów w obrębie kodu.
+    \item Assertions -- GTest oferuje szeroką gamę asercji (np. \texttt{ASSERT\_EQ}, \texttt{EXPECT\_TRUE}), które sprawdzają zgodność wyników testów z oczekiwanymi wartościami. Asercje są centralnym modułem GTest i są realizowane jako makra, co ułatwia wywoływanie ich bez skomplikowanej składni. Moduł ten obsługuje różne poziomy asercji, od ostrzeżeń po przerywanie testu w przypadku błędu.
+    \item Runner testów -- Uruchamianie testów odbywa się przez specjalny runner, który iteruje przez wszystkie przypadki testowe i rejestruje wyniki, pozwala na ponowne odpalenie nieudanych testów. Runner ten jest niezależny od definicji testów, co umożliwia równoczesne lub selektywne uruchamianie wybranych zestawów testów. 
+    \item Wyniki -- Moduł odpowiedzialny za raportowanie wyników oferuje różne formaty, w tym XML, co ułatwia integrację z innymi narzędziami do analizy wyników testów. Pozwala na szczegółowe monitorowanie i analizę wyników w środowiskach CI/CD.
 \end{enumerate}
 
 Ten framework został wybrany do testowania BBS, ponieważ to jest jeden z najbardziej rozpowszechnionych framework'ów, który korzysta z C++, a także jest bardzo prosty, wygodny i potężny.
@@ -126,15 +126,14 @@ Takie podejście nie tylko pozwala usunąć zbędne funkcje, skracając czas rea
     \item Cel: Umożliwić użytkownikowi pełne zbudowanie projektu, które obejmuje kompilację wszystkich plików źródłowych oraz ich późniejsze połączenie w jeden wynikowy plik wykonywalny lub bibliotekę.
     \item Warunki początkowe: Projekt zawiera poprawnie skonfigurowane pliki źródłowe oraz ustawienia kompilacji.
     \item Warunki końcowe: Projekt został zbudowany.
-\end{itemize}
-
-\subsubsection{Scenariusz}
-\begin{itemize}
-    \item Użytkownik uruchamia program z podaniem pliku konfiguracyjnego.
-    \item System rozpoczyna kompilację plików źródłowych, uruchamiając przypadek użycia „Skompilować plik źródłowy”.
-    \item System przeprowadza proces linkowania, uruchamiając przypadek „Zlinkować projekt”.
-    \item W przypadku braku błędów budowania system zwraca wynikowy plik wykonywalny lub bibliotekę.
-    \item System informuje użytkownika o pomyślnym zakończeniu budowy lub zgłasza ewentualne błędy.
+    \item Scenariusz: 
+    \begin{itemize}
+    	\item Użytkownik uruchamia program z podaniem pliku konfiguracyjnego.
+    	\item System rozpoczyna kompilację plików źródłowych, uruchamiając przypadek użycia „Skompilować plik źródłowy”.
+    	\item System przeprowadza proces linkowania, uruchamiając przypadek „Zlinkować projekt”.
+    	\item W przypadku braku błędów budowania system zwraca wynikowy plik wykonywalny lub bibliotekę.
+    	\item System informuje użytkownika o pomyślnym zakończeniu budowy lub zgłasza ewentualne błędy.
+    \end{itemize}
 \end{itemize}
 
 \subsection{Skompilować plik źródłowy (UC2)}
