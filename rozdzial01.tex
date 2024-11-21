@@ -31,7 +31,9 @@ Język C++ standardowo nie ma swojego systemu do budowania, jak to jest np. w j�
 Make jest jednym z najstarszych i najbardziej podstawowych narzędzi do budowania projektów, które polega na ręcznym tworzeniu plików Makefile. To narzędzie jest stosunkowo niskopoziomowe i wymaga, aby użytkownik samodzielnie zdefiniował wszystkie reguły budowania oraz zależności.
 
 \subsubsection{Zalety}
-Make to bardzo elastyczne narzędzie, które umożliwia pełną kontrolę nad procesem budowania. Ono jest dobrze znane i jest prawie zawsze wykorzystane do budowania projektów w systemach pochodnych od UNIX (bezpośrednio lub pośrednio przez CMake).
+Make to bardzo elastyczne narzędzie, które umożliwia pełną kontrolę nad procesem budowania. Ono jest dobrze znane i jest prawie zawsze wykorzystane do budowania projektów w systemach pochodnych od UNIX (bezpośrednio lub pośrednio przez CMake). 
+
+Także istnieje podobne narzędzie od Microsoft, które nazywa się \textbf{NMake}, które również działa na podstawie plików makefile, ale jest ściśle związane z kompilatorami z Visual Studio i oferuje ograniczoną funkcjonalność w porównaniu do Make, a także ma zupelnie inną składnie.
 
 \subsubsection{Wady}
 Ale także Make ma swoje wady: ręczne zarządzanie zależnościami jest podatne na błędy, może być czasochłonne i trudne w utrzymaniu w dużych projektach. Także to rozwiązanie nie jest wieloplatformowym, ponieważ nie ma bezpośredniego wsparcia tego systemu w Windows, gdzie najczęściej są wykorzystane inne narzędzia.
@@ -43,9 +45,9 @@ CMake to najpopularniejsze narzędzie do budowania dla C++, które generuje skry
 Zalety systemu budowania projektów CMake są naprawdę znaczące, co pozwoliło temu narzędziu stać się jednym z najpopularniejszych systemów. Oto one są:
 
 \begin{itemize}
-    \item Szerokie wsparcie dla różnych platform i kompilatorów.
-    \item Duża elastyczność w zarządzaniu projektami.
-    \item Automatyczne generowanie skryptów budowania dla różnych środowisk.
+    \item szerokie wsparcie dla różnych platform i kompilatorów,
+    \item duża elastyczność w zarządzaniu projektami,
+    \item automatyczne generowanie skryptów budowania dla różnych środowisk,
     \item CMake jest projektem z otwartym kodem źródłowym.
 \end{itemize}
 
@@ -63,7 +65,7 @@ Niestety, CMake nie jest idealnym rozwiązaniem dla wszystkich użytkowników, w
 Visual Studio (VS) to rozbudowane środowisko IDE z wbudowanym systemem budowania, które jest często używane w projektach C++ na platformach Windows. Narzędzie korzysta z plików projektowych .vcxproj i dostarcza zintegrowane funkcje do debugowania, analizy i zarządzania kodem.
 
 \subsubsection{Zalety}
-Visual Studio jest kompleksowym IDE z integracją z narzędziami do debugowania, analizy i testowania kodu. To znaczy, iż użytkownicy mają rozwiązanie ,,wszystko w jednym'' dla programowania w C++ z bardzo przyjaznym interfejsem i dużą ilością ?? do napisania wydajnego kodu.
+Visual Studio jest kompleksowym IDE z integracją z narzędziami do debugowania, analizy i testowania kodu. To znaczy, iż użytkownicy mają rozwiązanie ,,wszystko w jednym'' dla programowania w C++ z bardzo przyjaznym interfejsem i dużą ilością rozszerzeń do napisania wydajnego kodu.
 
 \subsubsection{Wady}
 Niestety, skoro to rozwiązanie jest napisane przez Microsoft, nie stosuje się go na innych systemach operacyjnych, niż Windows. Także strategia wykorzystania VS automatycznie eliminuje możliwość użycia własnych edytorów tekstu czy narzędzi CI.
@@ -83,8 +85,8 @@ Celem mojej pracy inżynierskiej jest stworzenie narzędzia automatyzującego pr
 Zakres pracy wynika bezpośrednio z celów mojej pracy, opisanych powyżej, i obejmuje:
 \begin{itemize}
     \item Analizę istniejących narzędzi do automatyzacji budowania projektów w C++, takich jak CMake, Make, autoconf, meson oraz Visual Studio, z uwzględnieniem ich zalet i ograniczeń
-    \item Opracowanie wymagań dla nowego narzędzia, które zapewni uproszczony proces budowania z prostą gramatyką
-    \item Implementację narzędzia z użyciem nowoczesnych standardów C++, z naciskiem na przejrzystość kodu i modularność
-    \item Testowanie narzędzia w projektach o różnej złożoności i napisanie testów jednostkowych (unit tests)
-    \item Opracowanie dokumentacji użytkownika (za pomocą Doxygen) oraz przykładów użycia narzędzia
+    \item Opracowanie wymagań dla nowego narzędzia, które zapewni uproszczony proces budowania z prostą gramatyką.
+    \item Implementację narzędzia z użyciem nowoczesnych standardów C++, z naciskiem na przejrzystość kodu i modularność.
+    \item Testowanie narzędzia w projektach o różnej złożoności i napisanie testów jednostkowych (unit tests).
+    \item Opracowanie dokumentacji użytkownika (za pomocą Doxygen) oraz przykładów użycia narzędzia.
 \end{itemize}
