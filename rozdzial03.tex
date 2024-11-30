@@ -11,6 +11,78 @@ Chciałbym zacząć od tego, czym właściwie jest BBS. Zgodnie z definicją pro
 
 Dodatkowo oprogramowanie to zawiera również preprocesor. Dzieje się tak, aby plik wejściowy mógł zostać podzielony na wiele części, co umożliwi działanie mechanizmu budowania podprojektu.
 
+\section{Gramatyka języka}
+
+W tej sekcji wprowadzimy notację -- ''gramatykę bezkontekstową'' lub dla zwięzłości ''gramatykę'' -- która jest używana do definiowania składni języka. Gramatyka będzie używana w tej książce do organizowania interfejsu kompilatora. Gramatyka w naturalny sposób opisuje hierarchiczną strukturę większości struktur językowych \cite{compilers}. Używając zmiennej \texttt{expr} do oznaczenia wyrażenia i zmiennej \texttt{stmt} do oznaczenia instrukcji, tę regułę strukturyzacji można wyrazić jako :
+
+\begin{lstlisting}[label=list:example_grammar,caption=Przykładowy opis gramatyki,basicstyle=\footnotesize\ttfamily]
+stmt -> if (expr) stmt else stmt
+\end{lstlisting}
+
+w którą strzałkę można odczytać jako „może mieć formę”. Taka zasada nazywa się ''produkcją''. Produkty posiadają takie elementy leksykalne, jak słowo kluczowe \textt{if} i nawias, nazywane są ''terminalami''. Zmienne takie jak \texttt{expr} i \texttt{stmt} reprezentują sekwencje terminali i nazywane są ''nieterminalami''.
+
+Gramatyka bezkontekstowa składa się z czterech elementów:
+\begin{itemize}
+    \item Zestaw znaków końcowych, czasami nazywany „tokenami”. Terminale to podstawowe symbole języka zdefiniowane przez gramatykę.
+    \item Zbiór nieterminali, czasami nazywany „zmiennymi składniowymi”. Każdy nieterminal reprezentuje zestaw ciągów końcowych, tak jak to zrobimy opisać
+    \item Zbiór produkcji, gdzie każda produkcja składa się z nieterminala, zwanego głową lub lewą stroną produkcji, strzałki oraz sekwencji terminali i nieterminali, zwanej treścią lub prawą stroną produkcji.
+    \item Oznaczenie jednego z nieterminali jako symbolu początkowego.
+\end{itemize}
+
+\subsection{Gramatyka języka BBS}
+
+Główne wymagania stawiane językowi stosowanemu w projekcie BBS to prostota gramatyki, minimalna liczba słów kluczowych, typów danych i zmiennych wewnętrznych. W trakcie pracy powstał język o następującej gramatyce:
+
+\begin{lstlisting}[label=list:grammar,caption=Gramatyka języka projektu BBS,basicstyle=\footnotesize\ttfamily]
+script -> declarations statements
+statements -> statements statement | epsilon
+statement -> !prj string | !files array | 
+			 !deps array | !cflags string | 
+			 !pre string | !post string | 
+			 !inc array
+
+declarations -> declarations declaration | epsilon
+declaration -> !let id = string
+
+array -> [ strings variables ]
+strings -> strings, string | epsilon
+variables -> variables, variable | epsilon
+
+string -> "characters separators punctuators"
+variable -> $id
+id -> characters
+
+characters -> characters character | epsilon
+character -> A | B |..| z
+separators -> separators separator | epsilon
+separator -> SPACE
+punctuators -> punctuators punctuator | epsilon
+punctuator -> / | - | _ | . | ,
+\end{lstlisting}
+
+Jak widać z opisu gramatyki, język operuje na dwóch głównych typach danych: sekwencji symboli i tablicy (ciągów znaków). Każdy ciąg znaków może składać się z liter, separatorów i znaków interpunkcyjnych i musi być ujęty w cudzysłów. Z kolei tablica składa się z jednego lub większej liczby ciągów znaków oddzielonych przecinkami i ujętych w nawiasy kwadratowe.
+
+Struktura tego języka składa się z deklaracji i wyrażeń.
+\begin{itemize}
+    \item Deklaracje służą do tworzenia nowych zmiennych.
+    \item Wyrażenia opisują działania lub konfigurację projektu.
+\end{itemize}
+
+Deklaracje tworzące nowe zmienne muszą być napisane zgodnie z gramatyką, przy czym nazwa zmiennej może zawierać wyłącznie litery alfabetu łacińskiego, a jej wartość może być jedynie ciągiem znaków. Użycie zmiennej może znajdować się w środku ciągu znaków (co z kolei oznacza również możliwość użycia zmiennych wewnątrz tablic, ale tylko wtedy, gdy są one również ujęte w cudzysłów), w tym celu wystarczy użyć znak dolara obok nazwy zmiennej.
+
+Wyrażenia z kolei opisują dokładnie, jakie słowa kluczowe są użyte w tej konfiguracji. Obecnie istnieje tylko 7 słów kluczowych, które muszą być obsługiwane przez język BBS:
+\begin{itemize}
+    \item \texttt{!prj} - deklaracja projektu określająca jego nazwę będącą jednocześnie nazwą źródłowego pliku wykonywalnego
+    \item \texttt{!pliki} - udostępnia listę plików należących do projektu, które podczas budowy projektu zostaną skompilowane w jeden plik wykonywalny
+    \item \texttt{!deps} - lista podprojektów, od których zależy ten projekt; zostaną zbudowane przed głównym
+    \item \texttt{!cflags} - deklaracja parametrów kompilatora, które będą używane podczas kompilacji każdego pojedynczego pliku
+    \item \texttt{!pre} - polecenie, które zostanie wykonane przed etapem montażu tego projektu
+    \item \texttt{!post} - polecenie, które zostanie wykonane przed etapem montażu tego projektu
+    \item \texttt{!inc} - deklaracja listy folderów zawierających pliki nagłówkowe
+\end{itemize}
+
+Każde z tych słów kluczowych może zostać użyte tylko raz (tj. drugie użycie tego samego słowa kluczowego nie może łączyć danych). Warto również zauważyć, że w gramatyce języka nie bez powodu deklaracje mają pierwszeństwo przed wyrażeniami w pliku: jeśli deklaracja następuje po wyrażeniu korzystającym z zadeklarowanej zmiennej, to w tym przypadku program musi się zakończyć, wyświetlanie komunikatu o błędzie.
+
 \section{Struktura interpretera}
 Zgodnie ze standardową strukturą kompilatorów i interpreterów, oprogramowanie BBS implementuje część frontend (czyli tę, która przeprowadza analizę) prawie w całości, natomiast backend nie zajmuje się optymalizacją ani generowaniem kodu, ponieważ wykonuje on określone instrukcje na podstawie danych wejściowych (czyli proces syntezy de facto nie zachodzi) \cite{compilers}.
 
