@@ -516,3 +516,10 @@ void State::Match(tokens::Token* token, tokens::Punctuator::Type value)
     }
 }
 \end{lstlisting}
+
+\subsection{Analiza semantyczna}
+
+Analizator semantyczny wykorzystuje drzewo składni i informacje zawarte w tablicy symboli, aby sprawdzić program źródłowy pod kątem zgodności semantycznej z definicją języka. Gromadzi również informacje o typie i przechowuje je w drzewie składni lub tabeli symboli do późniejszego wykorzystania podczas pośredniego generowania kodu.
+Na przykład wiele zdefiniowanych języków programowania wymaga, aby indeks tablicy był liczbą całkowitą; kompilator powinien zgłosić błąd, jeśli do indeksowania tablicy użyto liczby zmiennoprzecinkowej.
+
+Ponieważ program BBS nie musi generować żadnego kodu (tj. nie jest kompilatorem), co oznacza, że nie musi generować drzewa składniowego, nie zaimplementowano etapu analizy semantycznej. Decyzja ta ilustruje także fakt, że początkowy wymóg nałożył duże ograniczenie na liczbę typów danych wewnętrznych sprawdzanych przez usługę BBS, a także typów, które nie wymagają odpowiedniej konwersji czy adresowania tablic. Podsumowując, analiza semantyczna nie stała się częścią programu BBS.
