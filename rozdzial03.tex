@@ -19,7 +19,7 @@ W tej sekcji wprowadzimy notację -- ''gramatykę bezkontekstową'' lub dla zwi�
 stmt -> if (expr) stmt else stmt
 \end{lstlisting}
 
-w którą strzałkę można odczytać jako „może mieć formę”. Taka zasada nazywa się ''produkcją''. Produkty posiadają takie elementy leksykalne, jak słowo kluczowe \textt{if} i nawias, nazywane są ''terminalami''. Zmienne takie jak \texttt{expr} i \texttt{stmt} reprezentują sekwencje terminali i nazywane są ''nieterminalami''.
+w którą strzałkę można odczytać jako „może mieć formę”. Taka zasada nazywa się ''produkcją''. Produkty posiadają takie elementy leksykalne, jak słowo kluczowe \texttt{if} i nawias, nazywane są ''terminalami''. Zmienne takie jak \texttt{expr} i \texttt{stmt} reprezentują sekwencje terminali i nazywane są ''nieterminalami''.
 
 Gramatyka bezkontekstowa składa się z czterech elementów:
 \begin{itemize}
@@ -201,3 +201,318 @@ std::shared_ptr<Lexer::Token> Lexer::Next()
 Klasa \texttt{Lexer} na wejściu otrzymuje nazwę pliku (która jest przekazywana do obiektu klasy Scanner i nie jest zapisywana bezpośrednio), na wyjściu \texttt{Lexer} zwraca aktualny token, a także umożliwia odczytanie nowy. W przypadku znalezienia nieznanych symboli, których nie przewidywała gramatyka języka, analizator tworzy odpowiedni wyjątek ze szczegółowym opisem położenia symbolu i przyczyną błędu.
 
 Lista tokenów, które program może przetworzyć, odpowiada podanemu językowi i została opisana w sekcji ''Gramatyk języka''.
+
+\subsection{Analiza składni}
+
+Po analizie leksykalnej lista tokenów wyodrębniona z plików wejściowych jest wysyłana do parsera. Praca parsera zazwyczaj polega na tworzeniu tzw drzewo składniowe, które jest pośrednią reprezentacją kodu wejściowego, odzwierciedlającą jego strukturę gramatyczną. Takie drzewo wygodnie zachowuje kolejność operacji i może wyglądać tak dla przykładowego wyrażenia $a = b + c$, gdzie $a$, $b$ i $c$ to identyfikatory dodane wcześniej do tablicy symboli:
+
+\begin{lstlisting}[label=list:syntax_tree,caption=Struktura gramatyczna przykładowego wyrażenia,basicstyle=\footnotesize\ttfamily]
+       =
+     /	 \
+<id, 1>   +
+        /   \
+   <id,2>   <id,3>
+\end{lstlisting}
+
+Jak wspomniano w sekcji ``Gramatyka języka'', opracowany język plików konfiguracyjnych projektu BBS jest dość prymitywny, co jest konsekwencją wymagań stawianych projektowi. Z tego powodu język nie obsługuje operacji arytmetycznych, łączenia ciągów znaków i zmiennych oraz nie zawiera żadnych innych typów danych niż typy „sekwencja znaków” i „tablica sekwencji znaków”. Biorąc pod uwagę wszystko, co napisano wcześniej, podjąłem decyzję o rezygnacji z implementacji parsera w taki sposób, aby możliwe było bezpośrednie utworzenie drzewa składniowego. Zamiast tego parser BBS, wykonując te same czynności, co wszystkie konwencjonalne parsery, natychmiast wykonuje funkcje zapisu danych projektu do pośredniej struktury danych.
+
+Warto zaznaczyć, że parser ten stosuje podejście odgórne do analizy danych, czyli analizuje dane rozpoczynając od nieterminala początkowego i sprawdzając każdy symbol pod kątem zgodności z pochodnymi tego nieterminala. W przypadku BBS algorytm ten jest realizowany poprzez proste sprawdzenie danych wejściowych od lewej do prawej. Projektując spośród innych algorytmów (np. oddolnych) wybrano ten algorytm ze względu na prostotę implementacji, a także ze względu na ogólną prostotę zaimplementowanego języka.
+
+Pełna funkcjonalność parsera w projekcie BBS zaimplementowana jest w klasach \texttt{Parser}, \texttt{Mediator}, a także klasach wywodzących się z interfejsu \texttt{State}.
+
+\subsubsection{Tokeny}
+
+Danymi wejściowymi dla parsera są ''tokeny'' -- sklasyfikowane dane, które odbierane są na wyjściu leksera. Program BBS dla ogólnej prostoty, co jest jednym z głównych wymagań, używa języka z tylko dwoma typami danych i praktycznie bez instrukcji. Poniżej znajduje się lista wszystkich tokenów, które mogą zostać przetworzone przez program BBS. Wykonanie każdego z nich jest podobne i bardzo proste, dlatego nie będzie tutaj opisywane.
+
+\begin{itemize}
+	\item \texttt{Operator} - ''='' oraz ''\$''
+	\item \texttt{Punctuator} - kropki, przecinki, nawiasy oraz wykrzykniki
+	\item \texttt{Separator} - spacje
+	\item \texttt{Word} - litery alphabetu lacińskiego
+\end{itemize}
+
+\subsubsection{Klasa Parser}
+
+Najważniejszą klasą jest klasa \texttt{Parser}, która w rzeczywistości jest implementacją wzorca projektowego ''State Machine'' \cite{state}. Ten wzorzec projektowy służy do przeniesienia każdego stanu klasy do osobnej klasy z własną implementacją tych samych metod. Decyzja o zastosowaniu tego szablonu wynikała z faktu, że parser jest maszyną stanową w klasycznym sensie, gdyż rolą parsera jest sprawdzanie tokenu po tokenie, przy czym każdy kolejny token jest całkowicie syntaktycznie zależny od poprzedniego (tj. jest jeden i sam token może być oczekiwany lub nieoczekiwany, w zależności od tokena, który był wcześniej przetwarzany przez parser).
+
+Każdy stan parsera odpowiada oddzielnym nieterminalom zdefiniowanym w gramatyce języka użytego w projekcie. Interesująca jest implementacja każdego indywidualnego stanu, podczas gdy parser ma tylko jedną pełnoprawną metodę, która wywołuje metodę przetwarzania kolejnego znacznika bieżącego stanu i sprawdza istnienie tego stanu.
+
+
+\begin{lstlisting}[label=list:parser,caption=Metoda Parser::Process(),basicstyle=\footnotesize\ttfamily]
+scheduler::pipeline::Job Parser::Process()
+{
+    auto state = mediator_.GetState();
+    while(state)
+    {
+        state->Process(lexer_);
+    
+        // Get the next state
+        state = mediator_.GetState();
+    }
+    
+    return mediator_.GetJob();
+}
+\end{lstlisting}
+
+Każdy indywidualny stan implementuje wspólny dla wszystkich interfejs \texttt{State}, co zapewnia abstrakcję od szczegółów implementacji konkretnego stanu i znacznie upraszcza implementację samego parsera.
+
+Ponadto ważnym elementem parsera jest także klasa \texttt{Mediator}, o czym będzie mowa później.
+
+\subsubsection{Klasa Mediator}
+
+Niezwykle ważną klasą jest klasa \texttt{Mediator}, która de facto jest implementacją znanego wzorca projektowego „Mediator”. Jego istotą jest uproszczenie połączeń pomiędzy klasami poprzez delegowanie metod komunikacji pomiędzy tymi klasami innej klasie zwanej ''Mediatorem'' \cite{mediator}.
+
+W mojej implementacji parsera ta klasa jest potrzebna do uproszczenia zależności pomiędzy klasami \texttt{Parser}, każdą potomką interfejsów \texttt{State} i \texttt{Application}. Mediator ukrywa aktualny stan parsera, wskaźnik do obiektu struktury Job (o czym będzie mowa w następnej sekcji) oraz tablicę symboli. Wszystkie metody są w ten czy inny sposób getterami lub setterami, więc opisywanie ich implementacji nie jest tutaj szczególnie cenne.
+
+\subsubsection{Klasy typów danych}
+
+Jak już wspomniano, oprogramowanie to implementuje tylko dwa typy danych, a mianowicie „sekwencję znaków” i „tablicę sekwencji znaków”. Implementacja tych typów nie jest trudna i pod wieloma względami „tablica” opiera się na już istniejącej implementacji stanu „sekwencji znaków”, nie ma jednak pomiędzy nimi zależności hierarchicznych.
+
+Każdy z tych typów implementuje interfejs \texttt{State}, co oznacza, że główną metodą, która nas interesuje w kontekście parsera jest \texttt{Process()}.
+
+\begin{lstlisting}[label=list:string,caption=Metoda String::Process(),basicstyle=\footnotesize\ttfamily]
+void String::Process(lexer::Lexer& lexer)
+{
+    // Skip separators in between the keyword and the
+    auto token = State::SkipSeparators(lexer);
+
+    // Expect the double quote mark at the start of the string
+    Match(token.get(), ::parser::tokens::Punctuator::Type::kDoubleQuoteMark);
+    
+    // Add tokens one by one to the internal buffer
+    while((token = lexer.Next()))
+    {
+        try
+        {
+            Match(token.get(), tokens::Punctuator::Type::kDoubleQuoteMark);
+            return;
+        }
+        catch(const exceptions::UnexpectedTokenException&)
+        {
+            auto ptr = dynamic_cast<tokens::Operator*>(token.get());
+            if(ptr && ptr->type == tokens::Operator::Type::kDollarSign)
+            {
+                Variable variable{mediator_};
+                variable.Process(lexer);
+    
+                // Add variable's value to the result
+                value_ += variable.GetValue();
+    
+                continue;
+            }
+    
+            // Add the token to the whole value
+            value_ += token->GetValue();
+        }
+    }
+    
+    throw exceptions::UnexpectedTokenException("");
+}
+\end{lstlisting}
+
+Zacznijmy od przeanalizowania bardziej podstawowego typu ''sekwencji znaków''. Jak widać z powyższego kodu, każda sekwencja zaczyna się i kończy podwójnymi cudzysłowami, więc kod najpierw sprawdza, czy bieżący token jest cudzysłowem. Następnie każdy kolejny token (dowolnego typu) jest dodawany do wartości sekwencji, aż program napotka znak cudzysłowu. Jeśli token końcowy nie jest cudzysłowem, program zakończy działanie, zgłaszając wyjątek.
+
+Na szczególną uwagę zasługuje ciąg znaków sprawdzający obecność znaku dolara, który reprezentuje nazwę zmiennej, co zostanie omówione w dalszej części tego rozdziału. Przed dodaniem tokena do pełnej wartości „ciągu znaków” parser sprawdza, czy nazwa zmiennej została odnaleziona. Jeżeli odpowiedź jest pozytywna, podejmowana jest próba zamiany nazwy zmiennej na jej wartość przy pomocy obiektu klasy \texttt{Variable}, który następnie jest dodawany do pełnej wartości ''ciągu znaków''
+
+
+\begin{lstlisting}[label=list:array,caption=Metoda Array::Process(),basicstyle=\footnotesize\ttfamily]
+void Array::Process(lexer::Lexer& lexer)
+{
+    // Skip separators in between the keyword and the
+    auto token = SkipSeparators(lexer);
+
+    // Expect the bracket at the start of the string
+    Match(token.get(), tokens::Punctuator::Type::kLeftSquareBracket);
+
+    // Process the tokens
+    String string_handler{mediator_};
+    do
+    {
+        // Get the next string
+        string_handler.Process(lexer);
+        value_.push_back(string_handler.GetValue());
+        string_handler.Clear();
+
+        // Get the terminator token
+        token = SkipSeparators(lexer);
+
+        // Try to match any punctuator
+        try
+        {
+            Match(token.get(), tokens::Punctuator::Type::kRightSquareBracket);
+            return;
+        }
+        catch(const exceptions::UnexpectedTokenException&)
+        {
+            Match(token.get(), tokens::Punctuator::Type::kComma);
+        }
+    } while(token);
+
+    throw exceptions::UnexpectedEndOfFileException(lexer.GetContext());
+}
+\end{lstlisting}
+
+Zamiast tego implementacja stanu \texttt{Array} jest bardziej złożona, ponieważ zamiast pojedynczego znaku kończącego, takiego jak cudzysłowy w ciągu znaków, tablica używa przecinków do oddzielania kolejnych sekwencji znaków, a także nawiasów kwadratowych aby zaznaczyć krawędzie tablicy. Zamiast tego w kodzie przetwarzającym ciągi znaków wykorzystano gotową klasę \texttt{String}, co znacznie upraszcza implementację tablic oraz poprawia jakość, stabilność i czystość kodu.
+
+\subsubsection{Klasy słów kluczowych}
+
+Implementacja każdego słowa kluczowego wymagała oddzielnych klas, ale w rzeczywistości wszystkie z nich są potomkami klas \texttt{String} lub \texttt{Array} (w zależności od cech gramatycznych konkretnego słowa). Podobnie jak omówione powyżej klasy typu bazowego, klasy każdego pojedynczego słowa posiadają własną implementację metody \texttt{Process()}, która służy do przetwarzania tokenów otrzymanych od obiektu klasy \texttt{Lexer}. Wszystkie słowa są opisane w sekcji ''Gramatyka języka''.
+
+Przykładem słowa kluczowego wywodzącego się z typu „sekwencja znaków” jest \texttt{cflags}, czyli słowo definiujące parametry kompilacji projektu. Jak widać z poniższego kodu, w metodzie \texttt{Process} odpowiedniej klasy najpierw wykonywana jest metoda klasy nadrzędnej, a następnie wynikowa wartość przekazywana jest do obiektu klasy \texttt{Job} poprzez odpowiednie wywołanie metody. Sam obiekt uzyskuje się poprzez wywołanie modułu pobierającego obiekt mediatora. Ostatnim krokiem jest przejście do stanu standardowego \texttt{Statement}, który rozpoczyna cykl przetwarzania każdej linii od nowa (zgodnie z architekturą odgórną parsera).
+
+\begin{lstlisting}[label=list:cflags,caption=Metoda CFlags::Process(),basicstyle=\footnotesize\ttfamily]
+void CFlags::Process(lexer::Lexer& lexer)
+{
+    String::Process(lexer);
+
+    // Set the compilation flags
+    auto& job = mediator_.BorrowJob();
+    job.SetCompilationFlags(std::move(GetValue()));
+
+    // Return to the Statement state
+    mediator_.SetState(std::make_unique<Statement>(mediator_));
+}
+\end{lstlisting}
+    
+Na szczególną uwagę zasługuje klasa \texttt{Keyword}, która jest implementacją stanu parsera odpowiadającego nieterminalowi o tej samej nazwie. Jej celem jest przejście do prawidłowego stanu słowa kluczowego w celu jego obsługi przez program, metoda \texttt{Process()} tej klasy jest niczym innym jak implementacją wzorca projektowego ''Metoda fabryczna'' [link] , wzór generujący. Metoda ta ma konstrukcję \texttt{switch-case} i nie różni się niczym innym.
+
+\begin{lstlisting}[label=list:keywords,caption=Metoda Keyword::Process(),basicstyle=\footnotesize\ttfamily]
+void Keyword::Process(lexer::Lexer& lexer)
+{
+    // Check if the next token exists
+    const auto token = lexer.Next();
+    if(!token)
+    {
+        throw exceptions::UnexpectedEndOfFileException(lexer.GetContext());
+    }
+
+    // Process the correct keyword
+    const auto& keyword = token->GetValue();
+    if(keyword == "cflags")
+    {
+        mediator_.SetState(std::make_unique<keywords::CFlags>(mediator_));
+        return;
+    }
+    else if(keyword == "deps")
+    {
+        mediator_.SetState(std::make_unique<keywords::Deps>(mediator_));
+        return;
+    }
+    else if(keyword == "files")
+    {
+        mediator_.SetState(std::make_unique<keywords::Files>(mediator_));
+        return;
+    }
+    else if(keyword == "prj")
+    {
+        mediator_.SetState(std::make_unique<keywords::Project>(mediator_));
+        return;
+    }
+    else if(keyword == "pre")
+    {
+        mediator_.SetState(std::make_unique<keywords::Pre>(mediator_));
+        return;
+    }
+    else if(keyword == "post")
+    {
+        mediator_.SetState(std::make_unique<keywords::Post>(mediator_));
+        return;
+    }
+    else if(keyword == "let")
+    {
+        mediator_.SetState(std::make_unique<keywords::Let>(mediator_));
+        return;
+    }
+    else if(keyword == "inc")
+    {
+        mediator_.SetState(std::make_unique<keywords::Inc>(mediator_));
+        return;
+    }
+    
+    throw exceptions::UnexpectedKeywordException(lexer.GetContext(), token->GetValue());
+}
+\end{lstlisting}
+
+\subsubsection{Klasa Variable}
+
+Jedną z najważniejszych klas stanu i filarem funkcji wykorzystania i przetwarzania zmiennych języka projektu jest klasa \texttt{Variable}. Klasa ta zajmuje się wyłącznie przetwarzaniem nazw zmiennych i na wyjściu zwraca wartość tej zmiennej, jeśli została ona wcześniej dodana do tablicy symboli.
+
+Implementacja tej klasy nie jest zbyt trudna, nie jest podobna do żadnej innej metody pokrewnych klas i opiera się w dużej mierze na obiekcie Mediator, który sam ma tablicę symboli.
+
+\begin{lstlisting}[label=list:keywords,caption=Metoda Keyword::Process(),basicstyle=\footnotesize\ttfamily]
+void Variable::Process(lexer::Lexer& lexer)
+{
+    // Check if EOF is reached
+    const auto token = lexer.Next();
+    if(!token)
+    {
+        throw exceptions::UnexpectedEndOfFileException(lexer.GetContext());
+    }
+
+    // Check if the ID is a word
+    auto ptr = dynamic_cast<tokens::Word*>(token.get());
+    if(!ptr)
+    {
+        throw exceptions::UnexpectedTokenException(token->GetValue());
+    }
+    
+    value_ = mediator_.GetVariableValue(token->GetValue());
+}
+\end{lstlisting}
+
+Jak widać z implementacji głównej metody klasy powyżej, pierwszym etapem jej pracy jest pobranie i sprawdzenie aktualnego tokena pod kątem poprawności (nazwa zmiennej może być tylko słowem, w odróżnieniu od typu „sekwencja znaków”, który może zaakceptować prawie wszystko). Po wszystkich niezbędnych sprawdzeniach metoda zwraca wartość zmiennej, jeśli taka istnieje.
+
+\subsubsection{Klasa Statement}
+
+Ta klasa jest nieterminalną implementacją o tej samej nazwie. Ta klasa jest wyłącznie odpowiedzialna za sprawdzanie obecności wykrzyknika na początku każdego słowa kluczowego i przejście do stanu „Słowo kluczowe”.
+
+\subsubsection{Klasa State}
+
+Klasa \texttt{State} stanowi interfejs dla wszystkich klas stanu parsera, dzięki czemu już na etapie parsowania osiągana jest poprawna i wydajna architektura projektu. Jednak dodatkowo klasa ta zawiera bez przesady najważniejsze metody dla wszystkich stanów, a mianowicie
+
+\begin{itemize}
+	\item SkipSeparators() - odpowiada za pomijanie znaków oddzielających
+	\item Match() - sprawdzanie typu interpunkcji pod kątem równości z bieżącym tokenem
+\end{itemize}
+
+Implementacja metody SkipSeparators() polega na odebraniu kolejnych tokenów z obiektu klasy \texttt{Lexer} i próbie ich skonwertowania do typu \texttt{Separator}. Pierwszy token nieseparator opuszcza pętlę i kończy funkcję.
+
+\begin{lstlisting}[label=list:separator_skip,caption=Metoda State::SkipSeparators(),basicstyle=\footnotesize\ttfamily]
+std::shared_ptr<tokens::Token> State::SkipSeparators(lexer::Lexer& lexer)
+{
+    std::shared_ptr<tokens::Token> token;
+    while((token = lexer.Next()))
+    {
+        // Token might be nullptr, handle this case
+        if(!token)
+        {
+            throw std::runtime_error("State::SkipSeparators() was called with nullptr.");
+        }
+    
+        if(!dynamic_cast<tokens::Separator*>(token.get()))
+        {
+            break;
+        }
+    }
+    
+    return token;
+}
+\end{lstlisting}
+
+Z kolei metoda \texttt{Match()} działa podobnie jak poprzednia: jej zasada polega na konwersji wskaźnika na token na typ \texttt{Punctuator}, który następnie jest sprawdzany pod kątem identyczności z żądanym.
+
+\begin{lstlisting}[label=list:match,caption=Metoda State::Match(),basicstyle=\footnotesize\ttfamily]
+void State::Match(tokens::Token* token, tokens::Punctuator::Type value)
+{
+    if(!token)
+    {
+        throw exceptions::UnexpectedTokenException("EOF");
+    }
+    
+    const auto ptr = dynamic_cast<tokens::Punctuator*>(token);
+    if(!ptr || ptr->type != value)
+    {
+        throw exceptions::UnexpectedTokenException(std::move(token->GetValue()));
+    }
+}
+\end{lstlisting}
