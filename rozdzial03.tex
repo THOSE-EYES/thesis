@@ -72,13 +72,13 @@ Deklaracje tworzące nowe zmienne muszą być napisane zgodnie z gramatyką, prz
 
 Wyrażenia z kolei opisują dokładnie, jakie słowa kluczowe są użyte w tej konfiguracji. Obecnie istnieje tylko 7 słów kluczowych, które muszą być obsługiwane przez język BBS:
 \begin{itemize}
-    \item \texttt{!prj} - deklaracja projektu określająca jego nazwę będącą jednocześnie nazwą źródłowego pliku wykonywalnego
-    \item \texttt{!pliki} - udostępnia listę plików należących do projektu, które podczas budowy projektu zostaną skompilowane w jeden plik wykonywalny
-    \item \texttt{!deps} - lista podprojektów, od których zależy ten projekt; zostaną zbudowane przed głównym
-    \item \texttt{!cflags} - deklaracja parametrów kompilatora, które będą używane podczas kompilacji każdego pojedynczego pliku
-    \item \texttt{!pre} - polecenie, które zostanie wykonane przed etapem montażu tego projektu
-    \item \texttt{!post} - polecenie, które zostanie wykonane przed etapem montażu tego projektu
-    \item \texttt{!inc} - deklaracja listy folderów zawierających pliki nagłówkowe
+    \item \texttt{!prj} -- deklaracja projektu określająca jego nazwę będącą jednocześnie nazwą źródłowego pliku wykonywalnego
+    \item \texttt{!pliki} -- udostępnia listę plików należących do projektu, które podczas budowy projektu zostaną skompilowane w jeden plik wykonywalny
+    \item \texttt{!deps} -- lista podprojektów, od których zależy ten projekt; zostaną zbudowane przed głównym
+    \item \texttt{!cflags} -- deklaracja parametrów kompilatora, które będą używane podczas kompilacji każdego pojedynczego pliku
+    \item \texttt{!pre} -- polecenie, które zostanie wykonane przed etapem montażu tego projektu
+    \item \texttt{!post} -- polecenie, które zostanie wykonane przed etapem montażu tego projektu
+    \item \texttt{!inc} -- deklaracja listy folderów zawierających pliki nagłówkowe
 \end{itemize}
 
 Każde z tych słów kluczowych może zostać użyte tylko raz (tj. drugie użycie tego samego słowa kluczowego nie może łączyć danych). Warto również zauważyć, że w gramatyce języka nie bez powodu deklaracje mają pierwszeństwo przed wyrażeniami w pliku: jeśli deklaracja następuje po wyrażeniu korzystającym z zadeklarowanej zmiennej, to w tym przypadku program musi się zakończyć, wyświetlanie komunikatu o błędzie.
@@ -86,7 +86,7 @@ Każde z tych słów kluczowych może zostać użyte tylko raz (tj. drugie użyc
 \section{Struktura interpretera}
 Zgodnie ze standardową strukturą kompilatorów i interpreterów, oprogramowanie BBS implementuje część frontend (czyli tę, która przeprowadza analizę) prawie w całości, natomiast backend nie zajmuje się optymalizacją ani generowaniem kodu, ponieważ wykonuje on określone instrukcje na podstawie danych wejściowych (czyli proces syntezy de facto nie zachodzi) \cite{compilers}.
 
-Jeśli patrzyć na dane oprogramowanie ze względu na ogólnie przyjęte fazy kompilacji (które odpowiadają opisanym powyżej częściom standardowego kompilatora lub interpretera), to BBS realizuje prawie wszystkie fazy frontendu, z wyjątkiem generowania kodu pośredniego. Wynika to z niepraktyczności generowania kodu pośredniego bez znaczących opcji jego dalszego wykorzystania. Więc BBS zamiast tej fazy ma swoją, specjalną fazę - fazę wypełniania wewnętrznej struktury opisującej projekt, który ma zostać zbudowany z BBS. Sama konstrukcja, a także procesy zachodzące w tej fazie zostaną szczegółowo opisane w dalszej części.
+Jeśli patrzyć na dane oprogramowanie ze względu na ogólnie przyjęte fazy kompilacji (które odpowiadają opisanym powyżej częściom standardowego kompilatora lub interpretera), to BBS realizuje prawie wszystkie fazy frontendu, z wyjątkiem generowania kodu pośredniego. Wynika to z niepraktyczności generowania kodu pośredniego bez znaczących opcji jego dalszego wykorzystania. Więc BBS zamiast tej fazy ma swoją, specjalną fazę -- fazę wypełniania wewnętrznej struktury opisującej projekt, który ma zostać zbudowany z BBS. Sama konstrukcja, a także procesy zachodzące w tej fazie zostaną szczegółowo opisane w dalszej części.
 
 Podejście do implementacji backendu zasadniczo różni się od standardowego: nie jest wymagane dalsze tłumaczenie kodu na inny język, nie są realizowane fazy generowania kodu w innym języku. Zamiast tego backend na podstawie informacji o projekcie dostarczonych użytkownikowi wybiera określone polecenia do kontrolowania i budowania projektów.
 
@@ -225,10 +225,10 @@ Pełna funkcjonalność parsera w projekcie BBS zaimplementowana jest w klasach 
 Danymi wejściowymi dla parsera są ''tokeny'' -- sklasyfikowane dane, które odbierane są na wyjściu leksera. Program BBS dla ogólnej prostoty, co jest jednym z głównych wymagań, używa języka z tylko dwoma typami danych i praktycznie bez instrukcji. Poniżej znajduje się lista wszystkich tokenów, które mogą zostać przetworzone przez program BBS. Wykonanie każdego z nich jest podobne i bardzo proste, dlatego nie będzie tutaj opisywane.
 
 \begin{itemize}
-	\item \texttt{Operator} - ''='' oraz ''\$''
-	\item \texttt{Punctuator} - kropki, przecinki, nawiasy oraz wykrzykniki
-	\item \texttt{Separator} - spacje
-	\item \texttt{Word} - litery alphabetu lacińskiego
+	\item \texttt{Operator} -- ''='' oraz ''\$''
+	\item \texttt{Punctuator} -- kropki, przecinki, nawiasy oraz wykrzykniki
+	\item \texttt{Separator} -- spacje
+	\item \texttt{Word} -- litery alphabetu lacińskiego
 \end{itemize}
 
 \subsubsection{Klasa Parser}
@@ -471,8 +471,8 @@ Ta klasa jest nieterminalną implementacją o tej samej nazwie. Ta klasa jest wy
 Klasa \texttt{State} stanowi interfejs dla wszystkich klas stanu parsera, dzięki czemu już na etapie parsowania osiągana jest poprawna i wydajna architektura projektu. Jednak dodatkowo klasa ta zawiera bez przesady najważniejsze metody dla wszystkich stanów, a mianowicie
 
 \begin{itemize}
-	\item SkipSeparators() - odpowiada za pomijanie znaków oddzielających
-	\item Match() - sprawdzanie typu interpunkcji pod kątem równości z bieżącym tokenem
+	\item SkipSeparators() -- odpowiada za pomijanie znaków oddzielających
+	\item Match() -- sprawdzanie typu interpunkcji pod kątem równości z bieżącym tokenem
 \end{itemize}
 
 Implementacja metody SkipSeparators() polega na odebraniu kolejnych tokenów z obiektu klasy \texttt{Lexer} i próbie ich skonwertowania do typu \texttt{Separator}. Pierwszy token nieseparator opuszcza pętlę i kończy funkcję.
@@ -523,3 +523,333 @@ Analizator semantyczny wykorzystuje drzewo składni i informacje zawarte w tabli
 Na przykład wiele zdefiniowanych języków programowania wymaga, aby indeks tablicy był liczbą całkowitą; kompilator powinien zgłosić błąd, jeśli do indeksowania tablicy użyto liczby zmiennoprzecinkowej.
 
 Ponieważ program BBS nie musi generować żadnego kodu (tj. nie jest kompilatorem), co oznacza, że nie musi generować drzewa składniowego, nie zaimplementowano etapu analizy semantycznej. Decyzja ta ilustruje także fakt, że początkowy wymóg nałożył duże ograniczenie na liczbę typów danych wewnętrznych sprawdzanych przez usługę BBS, a także typów, które nie wymagają odpowiedniej konwersji czy adresowania tablic. Podsumowując, analiza semantyczna nie stała się częścią programu BBS.
+
+\section{Synteza}
+Synteza jest jednym z kluczowych etapów procesu kompilacji, zaraz po analizie (leksemicznej, składniowej i semantycznej). Jego celem jest przekształcenie pośredniej reprezentacji aplikacji w docelową formę kodu, którą można uruchomić na wybranej platformie. Proces ten obejmuje generowanie, optymalizację i uzupełnianie kodu obiektowego. Cały proces przedstawia poniższy diagram:
+
+[Wykres]
+\begin{figure}[h]
+    \caption{Diagram procesu syntezy}
+    \centering
+    \includegraphics[width=0.4\textwidth]{Images/synthesis.png}
+\end{figure}
+
+Na początku syntezy kompilator pracuje z wewnętrzną reprezentacją kodu, na przykład:
+\begin{itemize}
+    \item Drzewo składniowe (AST -- Abstrakcyjne Drzewo Syntaktyczne),
+    \item Kod trójadresowy lub inny format kodu pośredniego,
+    \item Tablice symboli przechowujące informacje o zmiennych, funkcjach i ich właściwościach.
+\end{itemize}
+
+Jak wspomniano w poprzednich sekcjach, projekt BBS nie posiada kodu generującego drzewo składni w pełnym tego słowa znaczeniu (ani w ogóle żadnej pośredniej formy kodu). Wynika to z faktu, że w procesie syntezy BBS nie tłumaczy plików wejściowych bezpośrednio na kod maszynowy, lecz korzysta z gotowych rozwiązań (czyli gotowych kompilatorów, w większości przypadków jest to GNU GCC). I choć kompilacja plików wejściowych za pomocą BBS-a ma charakter pośredni, to i tak warto rozważyć ten proces na przykładzie gotowych rozwiązań, aby lepiej zrozumieć cel BBS-a i logikę jego działania.
+
+\subsection{Generowanie kodu pośredniego}
+Na wczesnym etapie syntezy generowany jest kod pośredni, będący abstrakcyjną reprezentacją logicznych operacji programu. Jego celem jest odejście od określonej architektury sprzętowej. Kod ten zawiera instrukcje o uproszczonej strukturze, które można łatwo przekształcić w kod maszynowy.
+
+Kod pośredni jest często optymalizowany w celu poprawy wydajności programu. Proces ten może obejmować:
+\begin{itemize}
+    \item Eliminacja martwego kodu
+    \item Optymalizacja pętli (rozmieszczenie pętli, niezmienny ruch kodu),
+    \item Zmniejszenie liczby stosowanych rejestrów.
+\end{itemize}
+
+\subsection{Generowanie kodu maszynowego}
+Na tym etapie kod pośredni jest konwertowany na kod maszynowy specyficzny dla wybranej architektury procesora. Generowanie kodu maszynowego obejmuje:
+
+\begin{itemize}
+    \item Przypisanie rejestrów procesora do zmiennych,
+    \item Tłumaczenie instrukcji na zestaw operacji dostępnych na docelowym sprzęcie,
+    \item Dodanie pewnych elementów, takich jak wektory przerwań lub wywołania systemowe.
+\end{itemize}
+
+\subsection{Łączenie i alokacja zasobów}
+Synteza obejmuje również proces łączenia (t.zw. ''linking''), w którym połączone pomiędzy sobą zostają różne moduły oprogramowania, w tym biblioteki dynamiczne i statyczne, a także rozwiązano odniesienia do symboli pomiędzy różnymi plikami. W wyniku tego procesu z wielu plików obiektowych powstaje jeden plik wykonywalny w jednej z poniżej wymienionych postaci:
+
+\begin{itemize}
+    \item Plik wykonywalny (np. ELF, PE),
+    \item Kod odpowiedni do tłumaczenia (w przypadku tłumaczy),
+    \item Kod bajtowy maszyny (np. dla maszyn wirtualnych takich jak JVM lub CLR).
+\end{itemize}
+
+\subsection{Opis procesu}
+
+Jeśli chodzi o sam projekt BBS, proces syntezy w nim przebiega następująco: podczas analizy listy tokenów przez parser natychmiast wypełniana jest wewnętrzna struktura Job (jak już wspomniano, drzewo nie jest budowane bezpośrednio, ale Parser wykonuje akcje w oparciu o etapy przeglądania takiego drzewa), które następnie wykorzystywane są przez obiekt Pipeline, który z kolei wykonuje zgodnie z wewnętrznym planem stworzonym przez obiekt Scheduler. Obiekt klasy Pipeline odpowiada za kompilację i dalsze linkowanie każdego pliku, który jest powiązany z tym obiektem Job, w tym celu wykorzystywane są wywołania do wybranego przez użytkownika kompilatora (domyślnie jest to GNU GCC), któremu przekazywane są parametry kompilacji wzięte z tego samego obiektu klasy Job. Po pomyślnych wywołaniach podany katalog powinien zawierać plik wykonywalny w formacie odpowiadającym docelowemu systemowi operacyjnemu i architekturze procesora (ELF dla systemów UNIX-podobnych, PE dla Windows), który będzie miał taką samą nazwę jak nazwa podanego projektu przez użytkownika za pomocą słowa kluczowego \texttt{!prj} w pliku konfiguracyjnym.
+
+\subsubsection{Kompilacja}
+Jak wspomniano powyżej, BBS nie jest bezpośrednio odpowiedzialny za kompilację plików, skupiając się wyłącznie na zarządzaniu zależnościami pomiędzy plikami i projektami oraz skracając czas kompilacji poprzez ignorowanie plików, które nie wymagają kompilacji (proces ten zostanie omówiony bardziej szczegółowo później).
+
+Do kompilacji plików wejściowych określonych przez użytkownika w pliku konfiguracyjnym wykorzystywane są kompilatory istniejące w systemie (domyślnie jest to GNU GCC, który jest obecnie jedynym obsługiwanym kompilatorem). W celu prawidłowego wykorzystania różnych kompilatorów i uzyskania większej modułowości kodu utworzono warstwę abstrakcji składającą się z klas modułu \texttt{sys::tools::compilers}, potomków interfejsu Compiler, które realizują pomost pomiędzy BBS-em i kompilator, a także fabrykę, dzięki której można łatwo wybrać żądaną klasę kompilatora na podstawie parametrów przekazanych przez użytkownika poprzez plik konfiguracyjny.
+
+Przed samą kompilacją BBS sprawdza, czy wskazane przez użytkownika pliki istnieją, czy są to pliki, a nie np. katalogi, co zapewnia poprawne działanie zastosowanych kompilatorów, obcinając bezwzględną większość błędów na etapie przygotowawczym : w przypadku wystąpienia jakichkolwiek problemów BBS w trybie awaryjnym zakończy pracę, podświetlając szczegółowy opis każdego problemu wraz z lokalizacją błędu w pliku konfiguracyjnym.
+
+Ponadto ważną częścią BBS jest optymalizacja procesu kompilacji na poziomie projektu. Oznacza to, że BBS powinien ujawnić pliki, które nie uległy zmianie od czasu ostatniej pełnej kompilacji określonego pakietu i uniemożliwić ich ponowną kompilację. Funkcjonalność ta zostanie opisana poniżej, gdyż dotyczy ona nie tylko etapu kompilacji, ale także linkowania, co wymusza umieszczenie jej opisu w osobnym rozdziale.
+
+Jeżeli ani BBS, ani wybrany kompilator nie wykryli błędów i nie zakończyli poprawnie swojej pracy, pojawia się tzw pliki obiektowe, które zawierają tylko kod obecny w odpowiednim pliku wejściowym. Zamiast tego wszystkie odniesienia do funkcji zewnętrznych pozostają referencjami, które zostaną zastąpione właściwymi wywołaniami dopiero po prawidłowym zakończeniu procesu łączenia (więcej o tym później).
+
+\subsubsection{Łączenie}
+Podobnie jak w przypadku kompilacji, projekt BBS nie ma możliwości bezpośredniego łączenia plików obiektowych w jeden plik wykonywalny, rolę tę ponownie, z powodów opisanych wcześniej, powierzono gotowym rozwiązaniom. Domyślnie kompilator GNU GCC jest używany przez BBS zarówno jako kompilator, jak i linker.
+
+Proces łączenia to ważny proces, którego celem jest utworzenie pojedynczego pliku wykonywalnego z wejściowych plików obiektowych w formacie specyficznym dla docelowego systemu operacyjnego i architektury procesora. Proces ten pobiera indywidualne funkcje każdego pojedynczego pliku wejściowego skompilowanego do kodu maszynowego i zmienia zewnętrzne, nierozwiązane wywołania na prawidłowe adresy wywołań funkcji lub zmienne zewnętrzne.
+
+Ponieważ współczesne kompilatory mają możliwość łączenia gotowych plików obiektowych, do zaimplementowania procesu łączenia użyłem tej samej warstwy abstrakcji, co w przypadku procesu kompilacji.
+
+\subsubsection{Optymalizacja procesu budowlanego}
+Wracając do tematu optymalizacji budowy projektu, rozważmy następujący przypadek, który pozwoli nam pokazać wagę istnienia takiego rozwiązania jak BBS: istnieje pewien projekt A, który ma ponad 100 plików. Wybrany projekt został zbudowany, ale później tylko jeden plik został nieco zmodyfikowany, aby rozwiązać określony problem. W standardowym przypadku, korzystając z gotowych poleceń, najprawdopodobniej wszystkie pliki, nawet jeśli nie zostały zmienione, zostałyby przekompilowane, ponieważ wyszukiwanie tego samego wśród ponad 100 plików może być problematyczne i powodować błędy podatne rozwiązanie. Sytuacja komplikuje się z każdym kolejnym plikiem, gdyż albo kompilacja będzie trwała zbyt długo, albo ze względu na ludzką naturę podczas kompilacji zostaną popełnione błędy. Takie sytuacje są niedopuszczalne, gdy w grę wchodzą ograniczenia narzucone przez Klienta.
+
+Z tego powodu powstał projekt BBS, w którym natywne narzędzia kompilatora śledzą, które pliki uległy zmianie, dzięki czemu tylko te pliki zostaną ponownie skompilowane przy następnym wywołaniu BBS. Mechanizm ten działa w następujący sposób:
+
+\begin{itemize}
+    \item BBS odczytuje konfigurację projektu i ją analizuje
+    \item Przed rozpoczęciem kompilacji BBS sprawdza każdy plik pod kątem zmian (tzn. czy czas modyfikacji pliku jest krótszy niż odpowiedni czas utworzenia pliku obiektowego)
+    \item Jeżeli plik nie został zmieniony, przy pomocy kompilatora BBS otrzyma listę zależności dla tego pliku
+    \item Każdą zależność sprawdzamy analogicznie jak plik główny z punktu 2.
+    \item Po analizie plik, który nie został zmodyfikowany, jest ignorowany, BBS przechodzi do następnego pliku i rozpoczyna ten sam proces od kroku 1.
+\end{itemize}
+
+W rezultacie każdy niezmienny plik jest odfiltrowywany, co w dużych projektach pozwala na znaczne skrócenie czasu kompilacji, przy jednoczesnym zmniejszeniu ryzyka problemów spowodowanych przez człowieka (co z kolei dodatkowo skraca czas testowania produktu i naprawiania nie -- istniejące problemy spowodowane mieszaniem starych i nowych plików obiektowych).
+
+Jako przykład należy przytoczyć implementację metody odbierającej listę plików, od których zależy dany plik, zapisaną z wykorzystaniem funkcji kompilatora GNU GCC.
+
+\begin{lstlisting}[label=list:dependencies,caption=Implementacja metody GNUPlusPlus::GetDependencies(),basicstyle=\footnotesize\ttfamily]
+std::vector<std::filesystem::path>
+GNUPlusPlus::GetDependencies(const std::filesystem::path& file) const
+{
+	std::stringstream parameters;
+	parameters << kFlags << " -MM " << file.string();
+
+	// Add include directories
+	for(auto& directory : kDirectories)
+	{
+		parameters << " -I " << directory.string();
+	}
+
+	SystemCommand command{kCompiler, parameters.str()};
+	if(!command.Execute())
+	{
+		throw exceptions::CompilationErrorException(file);
+	}
+
+	// Clear the output from the unprintable symbols
+	auto output = command.GetOutput();
+	output.erase(
+		std::remove_if(output.begin(), output.end(), [](auto x) { return std::iscntrl(x); }),
+		output.end());
+
+	// Split the output into a vector of files
+	auto strings = Split(output, " ");
+	std::vector<std::filesystem::path> dependencies;
+	for(auto it = strings.begin() + 2; it != strings.end(); ++it)
+	{
+		dependencies.emplace_back(*it);
+	}
+	return dependencies;
+}
+\end{lstlisting}
+
+Podany zestawienie pokazuje, jak obiekt klasy \texttt{Command} (co zostanie omówione później) wykonuje wcześniej przygotowane polecenie, którego celem jest uzyskanie listy zależności dla danego pliku. Proces ten przebiega następująco: najpierw tworzona jest lista parametrów, składająca się z pliku do analizy, listy folderów z nagłówkami oraz parametru kompilatora odpowiedzialnego za funkcję analizy zależności (w przypadku GNU GCC jest to \ teksttt{-MM} \cite{gcc} ). Następnie podejmowana jest próba wykonania polecenia, w przypadku niepowodzenia generowany jest wyjątek z informacją o przyczynie błędu i pliku, który spowodował ten błąd. Jeśli wykonanie polecenia powiedzie się, następnym krokiem będzie pobranie wyniku polecenia i podzielenie listy plików na poszczególne nazwy plików, aby ułatwić użycie funkcji \texttt{Split()} (nie będzie to omawiane w tym artykule, ponieważ jest bardzo prosta funkcja).
+
+\subsubsection{Klasa Job}
+
+Jedną z klas podstawowych wymaganych do działania BBS jest klasa \texttt{Job}. Klasa ta nie jest implementacją żadnego wzorca i nie jest szczególnie wartościowa pod względem złożoności oprogramowania czy architektury, ale jest ważna, ponieważ zawiera wszystkie informacje o projekcie zebrane w procesie analizy. Składa się wyłącznie z metod pobierających i ustawiających, które bezpiecznie uzyskują dostęp do danych i przekazują je do docelowych klas lub metod.
+
+Poniżej znajduje się lista danych jakie można dodać do obiektu klasy \texttt{Job}:
+\begin{itemize}
+    \item Lista poleceń wykonywanych przed procesem budowy projektu
+    \item Lista poleceń wykonywanych po zakończeniu procesu budowy projektu
+    \item Parametry kompilatora
+    \item Lista plików projektu
+    \item Lista folderów, w których znajdują się tytuły
+    \item Nazwa projektu i jego lokalizacja
+    \item Lista zależności
+\end{itemize}
+
+Obiekt faktycznie jest właścicielem swoich danych, a aby uzyskać do nich dostęp, używane są stałe wskaźniki. Warto również zaznaczyć, że kopiowanie obiektu klasy \texttt{Job} jest zabronione (usunięto konstruktor i operator kopiowania). Odbywa się to w myśl założenia, że projektu nie należy kopiować, dane na jego temat powinny znajdować się w jednym miejscu dokładnie do momentu zakończenia budowy, po czym należy je usunąć ze względu na niepotrzebność.
+
+\subsubsection{Klasy potomne interfejsu Command}
+
+Jak wspomniano powyżej, kompilator używany do uruchamiania BBS jest oddzielnym programem wykonywanym za pomocą poleceń wydawanych systemowi. Oznacza to, że do wywołania kompilatora używane są narzędzia systemowe, do których dostęp istnieje za pośrednictwem wiersza poleceń lub wywołań systemowych. Żadna z tych metod nie jest jednak taka sama dla różnych systemów, co utrudnia spełnienie wymagań projektu BBS.
+
+Język C++ pozwala na wykorzystanie specjalnego, ujednoliconego interfejsu do wykonywania poleceń systemowych w bardzo prosty i przejrzysty sposób. Takie rozwiązanie pozwala na abstrahowanie od różnic pomiędzy systemami docelowymi i skupienie się na realizacji ważniejszych komponentów programu. Dodatkowo zastosowanie wystandaryzowanego i przetestowanego kodu zwiększa niezawodność projektu, w którym jest on zastosowany, a także skraca czas jego realizacji.
+
+Na samym początku wdrożenia wybrałem tę metodę ze względu na zalety wymienione w poprzednim akapicie, jednak bardzo szybko widoczne stały się ograniczenia, jakie narzuca zastosowanie tego podejścia: po wykonaniu polecenia funkcja \texttt{std ::system} jest w stanie zwrócić tylko kod wykonania polecenia. Jest to wystarczające dla większości zadań postawionych przed BBS-em, ale dla jednej z głównych funkcji projektu ta wada jest krytyczna: chodzi o optymalizację kompilacji. Funkcja ta opiera się na możliwości współczesnych kompilatorów, przy założeniu poprawnych parametrów, zwrócenia listy plików, od których zależy dany plik. Ta funkcjonalność wykracza poza proste powiadamianie o stanie polecenia, dlatego \texttt{std::system} jest przestarzały.
+
+Zamiast tego do realizacji tak ważnego procesu wybrano mechanizm potoków UNIX. Pozwala przekierować wyjście programu, a po jego zamknięciu uzyskać kod wykonawczy. Jednak to podejście ma wadę: nie jest przenośne, więc aby osiągnąć przenośność BBS na platformę Windows, należy oddzielić i uwzględnić implementacje klas hermetyzujących wykonywanie poleceń, w zależności od docelowego systemu operacyjnego. W tym celu stworzono wspólny interfejs Command, który jest implementowany przez klasy Command z dwóch różnych modułów: \texttt{nix} i \texttt{win} (obecnie nie zaimplementowane).
+
+Oto implementacja klasy \texttt{Command} z modułu \texttt{nix}, która opiera się na mechanizmie potoków UNIX:
+
+\begin{lstlisting}[label=list:command,caption=Metoda Command::Execute(),basicstyle=\footnotesize\ttfamily]
+bool Command::Execute()
+{
+	auto pipe = popen(command_.c_str(), "r");
+	if(!pipe)
+	{
+		return false;
+	}
+
+	std::array<char, 128> buffer;
+	while(fgets(buffer.data(), static_cast<int>(buffer.size()), pipe) != nullptr)
+	{
+		output_ += buffer.data();
+	}
+
+	return pclose(pipe) == 0;
+}
+\end{lstlisting}
+
+Jak widać, otwarcie potoku rozpoczyna się na podstawie polecenia przekazanego wcześniej konstruktorowi klasy \texttt{Command}, po czym należy sprawdzić, czy potok został utworzony. Następnie podejmowana jest próba odczytania danych wysyłanych poleceniem na standardowe wyjście, po czym funkcja \texttt{Execute} zwraca kod wykonania polecenia, który można odczytać po zamknięciu potoku. Dane wykonania polecenia zapisywane są do zmiennej wewnętrznej \texttt{output\_}, którą można odczytać za pomocą odpowiedniego modułu pobierającego.
+
+Aby poprawnie użyć polecenia, które jest zaimplementowane wyłącznie dla właściwego systemu, należy w miejscu jego użycia dodać następujący blok kodu:
+
+\begin{lstlisting}[label=list:include_command,caption=Podłączenie prawidłowej klasy Command,basicstyle=\footnotesize\ttfamily]
+#ifdef __linux__
+    #include "sys/nix/command.hpp"
+
+    using Command = sys::nix::Command;
+#endif
+\end{lstlisting}
+
+Kod ten zawiera plik napisany specjalnie dla systemu docelowego, a także tworzy alias dla klasy \texttt{Command} w celu wygodnego użycia.
+
+\subsubsection{Klasy potomne interfejsu kompilatora}
+
+Oprócz bezpośredniego wykonywania poleceń, w projekcie BBS ważna jest maksymalna abstrakcja z zewnętrznych bibliotek lub programów. Jest to konieczne, aby wyeliminować ewentualne ryzyko związane z aktualizacją interfejsów lub poleceń, które może pojawić się w przyszłości. Dlatego interakcja z kompilatorami wspieranymi przez projekt BBS odbywa się poprzez klasy potomne interfejsu \texttt{Compiler}. Wszystkie są implementacjami wzorca projektowego zwanego ``Adapter'' \cite{adapter}.
+
+Główną zaletą szablonu „Adapter” jest jego prostota, a także możliwość hermetyzacji interakcji z interfejsami zewnętrznymi, dzięki czemu w przypadku ich zmiany projekt, który z nich korzysta, musi zostać zmieniony tylko w jednym miejscu. Takie podejście zwiększa bezpieczeństwo i niezawodność oprogramowania, a także skraca czas i koszty utrzymania produktu w przypadku zmiany zależności zewnętrznych.
+
+Każda klasa implementująca interfejs Compiler musi mieć następującą strukturę: konieczne są tylko dwie główne metody, które zapewniają abstrakcję z procesu kompilacji i uzyskują listę zależności.
+
+\begin{lstlisting}[label=list:compiler,caption=Struktura interfejsu Compiler,basicstyle=\footnotesize\ttfamily]
+struct Compiler
+{
+	/**
+	 * @brief Compile the given file
+	 * 
+	 * @param file - the file to compile
+	 * @param out - the file where to store the output
+	 */
+	virtual void Compile(const std::filesystem::path& file, const std::filesystem::path& out) = 0;
+
+	/**
+	 * @brief Get the dependencies of the file
+	 * 
+	 * @param file - the file to inspect
+	 * @return std::vector<std::filesystem::path> - a vector of dependencies
+	 */
+	virtual std::vector<std::filesystem::path>
+	GetDependencies(const std::filesystem::path& file) const = 0;
+};
+\end{lstlisting}
+
+Ponieważ metoda \texttt{GetDependency()} została omówiona powyżej, tutaj opiszę szczegółowo drugą metodę, a mianowicie \texttt{Compile()} opartą na klasie potomnej \texttt{GNUPlusPlus}, która jest wymagana do pracy z Kompilator GNU GCC.
+
+\begin{lstlisting}[label=list:compiler,caption=Implementacja metody GNUPlusPlus::Compile(),basicstyle=\footnotesize\ttfamily]
+void GNUPlusPlus::Compile(const std::filesystem::path& file, const std::filesystem::path& out)
+{
+	std::stringstream parameters;
+	parameters << kFlags << " -c " << file.string() << " -o " << out.string();
+
+	// Add include directories
+	for(auto& directory : kDirectories)
+	{
+		parameters << " -I " << directory.string();
+	}
+
+	SystemCommand command{kCompiler, parameters.str()};
+	if(!command.Execute())
+	{
+		throw exceptions::CompilationErrorException(file);
+	}
+}
+\end{lstlisting}
+
+Metoda ta ma prostą strukturę: najpierw tworzony jest ciąg parametrów, które odpowiadają za nazwę plików wejściowych i wyjściowych uzyskanych poprzez parametry funkcji. Następnie każdy indywidualny katalog ze stałej \texttt{kDirectories} utworzony podczas konstruowania obiektu z parametrów konstruktora jest dodawany do parametrów jako katalog z nagłówkami (przy użyciu sekwencji parametrów z klawiszem \texttt{-I} na początku \cite{gcc}). Następnie wykonywana jest komenda, a w przypadku błędu metoda generuje wyjątek informujący o niemożności skompilowania tego pliku. W przypadku tego polecenia istotny jest parametr \texttt{-c}, wskazujący na konieczność utworzenia pliku obiektowego.
+
+\subsubsection{Klasa Pipeline}
+
+Klasa \texttt{Pipeline} służy do kontrolowania procesu budowy projektu od początku do końca. Klasa ta zawiera metody odpowiedzialne za każdą kolejną fazę budowania projektu, a mianowicie wykonanie poleceń przed kompilacją, weryfikację plików, kompilację, łączenie i wykonanie poleceń po kompilacji.
+
+Wszystkie metody tej klasy wykorzystują wybrany kompilator do wykonania kompilacji i linkowania, a wykonanie poleceń polega na utworzeniu obiektów klasy \texttt{Command} odpowiadających systemowi operacyjnemu i wywołaniu jej metody \texttt{Execute} (opisanej powyżej).
+
+Najciekawszą samodzielną funkcją tej klasy jest funkcja \texttt{IsCompiled()}, która sprawdza, czy plik został już skompilowany. Opiera się bezpośrednio na funkcjonalności kompilatora, który zwraca listę zależności dla danego pliku. Jest to jednak tylko część analizy, którą wykonuje metoda w celu ustalenia, czy dany plik wymaga kompilacji. Dodatkowo metoda analizuje czas utworzenia pliku obiektowego, czas ostatniej modyfikacji samego analizowanego pliku, a także każdy pojedynczy plik, od którego zależy pierwszy. Jeżeli którykolwiek z wymienionych plików został zmieniony po utworzeniu pliku obiektowego (o ile w ogóle istnieje), to plik nie jest uważany za skompilowany, co oznacza jego przebudowanie.
+
+\begin{lstlisting}[label=list:is_compiled,caption=Implementacja metody Pipeline::IsCompiled(),basicstyle=\footnotesize\ttfamily]
+bool Pipeline::IsCompiled(const std::filesystem::path& file,
+						  const std::filesystem::path& folder) const
+{
+	// Check if the object file is built or created after the file was updated
+	const auto obj = folder / file.filename().replace_extension(".o");
+	if(!std::filesystem::exists(obj) ||
+	   std::filesystem::last_write_time(file) > std::filesystem::last_write_time(obj))
+	{
+		return false;
+	}
+
+	const auto dependencies = compiler_->GetDependencies(file);
+	for(const auto& dependency : dependencies)
+	{
+		if(std::filesystem::last_write_time(obj) < std::filesystem::last_write_time(dependency))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+\end{lstlisting}
+
+\subsubsection{Klasa Executor}
+
+Klasa \texttt{Executor} jest kluczowym komponentem organizującym i wykonującym sekwencję zadań reprezentowanych jako obiekty klasy \texttt{Pipeline}. Jego głównym celem jest uporządkowanie tych zadań poprzez przechowywanie ich w kolejce i przetwarzanie w kolejności, w jakiej zostały dodane. W tym celu używana jest standardowa struktura danych \texttt{std::queue}, która zapewnia dostęp do zadań według kolejności zgłoszeń.
+
+Metoda \texttt{Add()} umożliwia dodanie do kolejki nowych obiektów Pipeline. Używa \texttt{std::move}, aby uniknąć niepotrzebnego kopiowania obiektu, co zwiększa wydajność. Dodanie do kolejki nie wykonuje samego zadania, a jedynie zapewnia, że jest ono gotowe do realizacji. Wykonanie zadania rozpoczyna się po wywołaniu metody \texttt{Run()}, która odpowiada za wykonanie wszystkich zadań w kolejce.
+
+\begin{lstlisting}[label=list:executor,caption=Implementacja klasy Executor,basicstyle=\footnotesize\ttfamily]
+void Executor::Add(pipeline::Pipeline pipeline)
+{
+	pipelines_.push(std::move(pipeline));
+}
+
+void Executor::Run()
+{
+	while(!pipelines_.empty())
+	{
+		// Run the pipeline
+		const auto pipeline = std::move(pipelines_.front());
+		pipeline.Run();
+
+		// Pop the pipeline from the queue
+		pipelines_.pop();
+	}
+}
+\end{lstlisting}
+
+\subsubsection{Klasa Application}
+
+Główną klasą, która łączy wszystkie poprzednie, jest klasa \texttt{Application}. Ma to na celu konsekwentne wykonywanie faz analizy i syntezy, ale także zapewnienie prawidłowego działania całej aplikacji. Klasa ta zawiera metodę \texttt{Process()}, która odpowiada za utworzenie poprawnej kolejki zadań w obiekcie klasy \texttt{Executor}, a także za obsługę wszystkich wyjątków (w moim przypadku przetwarzanie odbywa się tak prosto, jak to możliwe, komunikat o wyjątku jest przesyłany na standardowe wyjście, a następnie aplikacja zostaje zakończona).
+
+\begin{lstlisting}[label=list:application,caption=Implementacja metody Application::Process(),basicstyle=\footnotesize\ttfamily]
+void Application::Process(std::filesystem::path path)
+{
+	parser::Parser parser{path / kBuildFile};
+	try
+	{
+		auto job = parser.Process();
+		job.SetProjectPath(path);
+
+		// Process dependencies
+		for(const auto& dependency : job.GetDependencies())
+		{
+			Process(path / dependency);
+		}
+
+		// Create a new pipeline to build the project
+		scheduler::pipeline::Pipeline pipeline{std::move(job)};
+		executor_.Add(std::move(pipeline));
+	}
+	catch(const std::exception& ex)
+	{
+		std::cout << ex.what() << std::endl;
+		return;
+	}
+}
+\end{lstlisting}
