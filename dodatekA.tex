@@ -1,0 +1,70 @@
+\section{Instrukcja wdrożeniowa}
+
+\subsection{Wprowadzenie}
+Better Build System (BBS) to dedykowane narzędzie automatyzujące proces budowania projektów w języku C++. Jego celem jest uproszczenie kompilacji, linkowania oraz zarządzania zależnościami w rozbudowanych projektach, oferując spójny i wydajny sposób pracy. Dzięki wsparciu społeczności i naciskowi na wydajność oraz elastyczność, BBS umożliwia efektywne zarządzanie dużymi bazami kodu w języku C++.
+
+\subsection{Wymagania wstępne}
+Aby zainstalować BBS, upewnij się, że Twój system spełnia poniższe wymagania:
+\begin{itemize}
+    \item System operacyjny: macOS, Linux, FreeBSD, OpenBSD lub inne systemy UNIX-podobne (mogą wymagać drobnych modyfikacji),
+    \item Narzędzia: zainstalowany CMake, kompilator zgodny z C++17 (np. GCC 14), Doxygen (opcjonalnie, do generowania dokumentacji), GTest(opcjonalnie, służy do uruchomienia testów jednostkowych).
+\end{itemize}
+
+\subsection{Proces instalacji}
+Proces instalacji Better Build System (BBS) jest prosty i przejrzysty. Rozpoczyna się od pobrania kodu źródłowego z repozytorium projektu. Następnie należy utworzyć katalog \texttt{build} i w nim uruchomić CMake, aby wygenerować pliki konfiguracyjne odpowiednie dla wybranego systemu i generatora. Po tym kroku wystarczy skompilować projekt poleceniem \texttt{make}, a opcjonalnie można go zainstalować w systemie za pomocą \texttt{make install}. Dodatkowo istnieje możliwość wygenerowania dokumentacji za pomocą Doxygena oraz przeprowadzenia testów jednostkowych przy użyciu \texttt{ctest}, co pozwala zweryfikować poprawność działania narzędzia.
+
+\paragraph{Pobranie kodu źródłowego:} 
+Skopiuj repozytorium projektu BBS z wybranego źródła (np. GitHub lub inna platforma hostingowa).
+
+\paragraph{Budowanie projektu:}
+\begin{enumerate}
+    \item Otwórz terminal i przejdź do katalogu głównego projektu:
+    \begin{verbatim}
+    cd /ścieżka/do/projektu
+    \end{verbatim}
+    \item Utwórz katalog dla plików budowania:
+    \begin{verbatim}
+    mkdir build && cd build
+    \end{verbatim}
+    \item Uruchom CMake w celu wygenerowania plików konfiguracyjnych:
+    \begin{verbatim}
+    cmake ..
+    \end{verbatim}
+\end{enumerate}
+
+\paragraph{Kompilacja:} 
+W katalogu \texttt{build} uruchom proces budowania:
+\begin{verbatim}
+make
+\end{verbatim}
+
+\paragraph{Instalacja:} 
+Zainstaluj BBS w systemie (opcjonalnie, wymaga uprawnień administratora albo wykorzystania \texttt{sudo}):
+\begin{verbatim}
+make install
+\end{verbatim}
+
+\subsection{Generowanie dokumentacji}
+Jeśli chcesz wygenerować dokumentację:
+\begin{enumerate}
+    \item Zainstaluj Doxygen (jeśli jeszcze tego nie zrobiłeś).
+    \item W katalogu głównym projektu uruchom Doxygen z dostarczonym plikiem konfiguracyjnym:
+    \begin{verbatim}
+    doxygen Doxyfile
+    \end{verbatim}
+\end{enumerate}
+Wygenerowana dokumentacja będzie dostępna w katalogu \texttt{docs}.
+
+\subsection{Testowanie}
+Aby uruchomić testy jednostkowe projektu:
+\begin{enumerate}
+    \item Uruchom CMake z poniższymi flagami oraz Make w celu budowania projektu oraz testów:
+    \begin{verbatim}
+    cmake -DCMAKE_BUILD_TYPE=Debug .. && make
+    \end{verbatim}
+    \item Po kompilacji w katalogu \texttt{build/tests} uruchom polecenie:
+    \begin{verbatim}
+    ctest
+    \end{verbatim}
+\end{enumerate}
+Wyniki testów pozwolą zweryfikować poprawność działania narzędzia.
