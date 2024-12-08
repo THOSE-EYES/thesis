@@ -34,30 +34,37 @@ Gramatyka bezkontekstowa składa się z czterech elementów:
 Główne wymagania stawiane językowi stosowanemu w projekcie BBS to prostota gramatyki, minimalna liczba słów kluczowych, typów danych i zmiennych wewnętrznych. W trakcie pracy powstał język o następującej gramatyce:
 
 \begin{lstlisting}[label=list:grammar,caption=Gramatyka języka projektu BBS,basicstyle=\footnotesize\ttfamily]
-script -> declarations statements
-statements -> statements statement | epsilon
-statement -> !prj string | !files array | 
-			 !deps array | !cflags string | 
-			 !pre string | !post string | 
-			 !inc array
+<script> ::= <declarations> <statements>
 
-declarations -> declarations declaration | epsilon
-declaration -> !let id = string
+<statements> ::= <statements> <statement> | <empty>
+<statement> ::= "!prj" <string>
+              | "!files" <array>
+              | "!deps" <array>
+              | "!cflags" <string>
+              | "!pre" <string>
+              | "!post" <string>
+              | "!inc" <array>
 
-array -> [ strings variables ]
-strings -> strings, string | epsilon
-variables -> variables, variable | epsilon
+<declarations> ::= <declarations> <declaration> | <empty>
+<declaration> ::= "!let" <id> "=" <string>
 
-string -> "characters separators punctuators"
-variable -> $id
-id -> characters
+<array> ::= "[" <elements> "]"
+<elements> ::= <strings> ["," <variables>] | <variables> | <empty>
+<strings> ::= <string> {"," <string>}
+<variables> ::= <variable> {"," <variable>}
 
-characters -> characters character | epsilon
-character -> A | B |..| z
-separators -> separators separator | epsilon
-separator -> SPACE
-punctuators -> punctuators punctuator | epsilon
-punctuator -> / | - | _ | . | ,
+<string> ::= '"' <characters> <separators> <punctuators> '"'
+<variable> ::= "$" <id>
+<id> ::= <characters>
+
+<characters> ::= <character> {<character>}
+<character> ::= "A" | "B" | ... | "Z" | "a" | "b" | ... | "z"
+
+<separators> ::= <separator> {<separator>}
+<separator> ::= " "
+
+<punctuators> ::= <punctuator> {<punctuator>}
+<punctuator> ::= "/" | "-" | "_" | "." | ","
 \end{lstlisting}
 
 Jak widać z opisu gramatyki, język operuje na dwóch głównych typach danych: sekwencji symboli i tablicy (ciągów znaków). Każdy ciąg znaków może składać się z liter, separatorów i znaków interpunkcyjnych i musi być ujęty w cudzysłów. Z kolei tablica składa się z jednego lub większej liczby ciągów znaków oddzielonych przecinkami i ujętych w nawiasy kwadratowe.
