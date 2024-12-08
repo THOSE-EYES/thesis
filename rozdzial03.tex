@@ -439,7 +439,7 @@ Jedną z najważniejszych klas stanu i filarem funkcji wykorzystania i przetwarz
 
 Implementacja tej klasy nie jest zbyt trudna, nie jest podobna do żadnej innej metody pokrewnych klas i opiera się w dużej mierze na obiekcie Mediator, który sam ma tablicę symboli.
 
-\begin{lstlisting}[label=list:keywords,caption=Metoda Keyword::Process(),basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[label=list:variables,caption=Metoda Variable::Process(),basicstyle=\footnotesize\ttfamily]
 void Variable::Process(lexer::Lexer& lexer)
 {
     // Check if EOF is reached
@@ -742,7 +742,7 @@ struct Compiler
 
 Ponieważ metoda \texttt{GetDependency()} została omówiona powyżej, tutaj opiszę szczegółowo drugą metodę, a mianowicie \texttt{Compile()} opartą na klasie potomnej \texttt{GNUPlusPlus}, która jest wymagana do pracy z Kompilator GNU GCC.
 
-\begin{lstlisting}[label=list:compiler,caption=Implementacja metody GNUPlusPlus::Compile(),basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[label=list:gnu_compiler,caption=Implementacja metody GNUPlusPlus::Compile(),basicstyle=\footnotesize\ttfamily]
 void GNUPlusPlus::Compile(const std::filesystem::path& file, const std::filesystem::path& out)
 {
 	std::stringstream parameters;
