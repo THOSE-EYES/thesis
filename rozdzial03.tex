@@ -13,13 +13,13 @@ Dodatkowo oprogramowanie to zawiera również preprocesor. Dzieje się tak, aby 
 
 \section{Gramatyka języka}
 
-W tej sekcji wprowadzimy notację -- ''gramatykę bezkontekstową'' lub dla zwięzłości ''gramatykę'' -- która jest używana do definiowania składni języka. Gramatyka będzie używana w tej książce do organizowania interfejsu kompilatora. Gramatyka w naturalny sposób opisuje hierarchiczną strukturę większości struktur językowych \cite{compilers}. Używając zmiennej \texttt{expr} do oznaczenia wyrażenia i zmiennej \texttt{stmt} do oznaczenia instrukcji, tę regułę strukturyzacji można wyrazić jako :
+W tej sekcji wprowadzimy notację -- „gramatykę bezkontekstową” lub dla zwięzłości „gramatykę” -- która jest używana do definiowania składni języka. Gramatyka będzie używana w tej książce do organizowania interfejsu kompilatora. Gramatyka w naturalny sposób opisuje hierarchiczną strukturę większości struktur językowych \cite{compilers}. Używając zmiennej \texttt{expr} do oznaczenia wyrażenia i zmiennej \texttt{stmt} do oznaczenia instrukcji, tę regułę strukturyzacji można wyrazić jako :
 
 \begin{lstlisting}[label=list:example_grammar,caption=Przykładowy opis gramatyki,basicstyle=\footnotesize\ttfamily]
 stmt -> if (expr) stmt else stmt
 \end{lstlisting}
 
-w którą strzałkę można odczytać jako „może mieć formę”. Taka zasada nazywa się ''produkcją''. Produkty posiadają takie elementy leksykalne, jak słowo kluczowe \texttt{if} i nawias, nazywane są ''terminalami''. Zmienne takie jak \texttt{expr} i \texttt{stmt} reprezentują sekwencje terminali i nazywane są ''nieterminalami''.
+w którą strzałkę można odczytać jako „może mieć formę”. Taka zasada nazywa się „produkcją”. Produkty posiadają takie elementy leksykalne, jak słowo kluczowe \texttt{if} i nawias, nazywane są „terminalami”. Zmienne takie jak \texttt{expr} i \texttt{stmt} reprezentują sekwencje terminali i nazywane są „nieterminalami”.
 
 Gramatyka bezkontekstowa składa się z czterech elementów:
 \begin{itemize}
@@ -188,7 +188,7 @@ protected:
 };
 \end{lstlisting}
 
-Oznacza to, że każdy obiekt przetwarzający po utworzeniu otrzymuje łącze do następcy, do którego zostanie przekazane żądanie w przypadku niepowodzenia podczas jego realizacji. Jeśli żaden z programów obsługi nie był w stanie przetworzyć żądania, ostatni w łańcuchu tworzy wyjątek. Implementacja ta pozwoliła maksymalnie uprościć klasę \texttt{Lexer}, kod metody \texttt{Next()}, która wymusza na parserze odczytanie kolejnego tokena z pliku, dzięki wzorcowi "łańcuch odpowiedzialności" \cite{cor} został uproszczony do następującej postaci bez poświęcania stabilności i bezpieczeństwa programu:
+Oznacza to, że każdy obiekt przetwarzający po utworzeniu otrzymuje łącze do następcy, do którego zostanie przekazane żądanie w przypadku niepowodzenia podczas jego realizacji. Jeśli żaden z programów obsługi nie był w stanie przetworzyć żądania, ostatni w łańcuchu tworzy wyjątek. Implementacja ta pozwoliła maksymalnie uprościć klasę \texttt{Lexer}, kod metody \texttt{Next()}, która wymusza na parserze odczytanie kolejnego tokena z pliku, dzięki wzorcowi „łańcuch odpowiedzialności” \cite{cor} został uproszczony do następującej postaci bez poświęcania stabilności i bezpieczeństwa programu:
 
 \begin{lstlisting}[label=list:scanner,caption=Metoda Lexer::Next(),basicstyle=\footnotesize\ttfamily]
 std::shared_ptr<Lexer::Token> Lexer::Next()
@@ -200,7 +200,7 @@ std::shared_ptr<Lexer::Token> Lexer::Next()
 
 Klasa \texttt{Lexer} na wejściu otrzymuje nazwę pliku (która jest przekazywana do obiektu klasy Scanner i nie jest zapisywana bezpośrednio), na wyjściu \texttt{Lexer} zwraca aktualny token, a także umożliwia odczytanie nowy. W przypadku znalezienia nieznanych symboli, których nie przewidywała gramatyka języka, analizator tworzy odpowiedni wyjątek ze szczegółowym opisem położenia symbolu i przyczyną błędu.
 
-Lista tokenów, które program może przetworzyć, odpowiada podanemu językowi i została opisana w sekcji ''Gramatyk języka''.
+Lista tokenów, które program może przetworzyć, odpowiada podanemu językowi i została opisana w sekcji „Gramatyk języka”.
 
 \subsection{Analiza składni}
 
@@ -214,7 +214,7 @@ Po analizie leksykalnej lista tokenów wyodrębniona z plików wejściowych jest
    <id,2>   <id,3>
 \end{lstlisting}
 
-Jak wspomniano w sekcji ``Gramatyka języka'', opracowany język plików konfiguracyjnych projektu BBS jest dość prymitywny, co jest konsekwencją wymagań stawianych projektowi. Z tego powodu język nie obsługuje operacji arytmetycznych, łączenia ciągów znaków i zmiennych oraz nie zawiera żadnych innych typów danych niż typy „sekwencja znaków” i „tablica sekwencji znaków”. Biorąc pod uwagę wszystko, co napisano wcześniej, podjąłem decyzję o rezygnacji z implementacji parsera w taki sposób, aby możliwe było bezpośrednie utworzenie drzewa składniowego. Zamiast tego parser BBS, wykonując te same czynności, co wszystkie konwencjonalne parsery, natychmiast wykonuje funkcje zapisu danych projektu do pośredniej struktury danych.
+Jak wspomniano w sekcji „Gramatyka języka”, opracowany język plików konfiguracyjnych projektu BBS jest dość prymitywny, co jest konsekwencją wymagań stawianych projektowi. Z tego powodu język nie obsługuje operacji arytmetycznych, łączenia ciągów znaków i zmiennych oraz nie zawiera żadnych innych typów danych niż typy „sekwencja znaków” i „tablica sekwencji znaków”. Biorąc pod uwagę wszystko, co napisano wcześniej, podjąłem decyzję o rezygnacji z implementacji parsera w taki sposób, aby możliwe było bezpośrednie utworzenie drzewa składniowego. Zamiast tego parser BBS, wykonując te same czynności, co wszystkie konwencjonalne parsery, natychmiast wykonuje funkcje zapisu danych projektu do pośredniej struktury danych.
 
 Warto zaznaczyć, że parser ten stosuje podejście odgórne do analizy danych, czyli analizuje dane rozpoczynając od nieterminala początkowego i sprawdzając każdy symbol pod kątem zgodności z pochodnymi tego nieterminala. W przypadku BBS algorytm ten jest realizowany poprzez proste sprawdzenie danych wejściowych od lewej do prawej. Projektując spośród innych algorytmów (np. oddolnych) wybrano ten algorytm ze względu na prostotę implementacji, a także ze względu na ogólną prostotę zaimplementowanego języka.
 
@@ -222,10 +222,10 @@ Pełna funkcjonalność parsera w projekcie BBS zaimplementowana jest w klasach 
 
 \subsubsection{Tokeny}
 
-Danymi wejściowymi dla parsera są ''tokeny'' -- sklasyfikowane dane, które odbierane są na wyjściu leksera. Program BBS dla ogólnej prostoty, co jest jednym z głównych wymagań, używa języka z tylko dwoma typami danych i praktycznie bez instrukcji. Poniżej znajduje się lista wszystkich tokenów, które mogą zostać przetworzone przez program BBS. Wykonanie każdego z nich jest podobne i bardzo proste, dlatego nie będzie tutaj opisywane.
+Danymi wejściowymi dla parsera są „tokeny” -- sklasyfikowane dane, które odbierane są na wyjściu leksera. Program BBS dla ogólnej prostoty, co jest jednym z głównych wymagań, używa języka z tylko dwoma typami danych i praktycznie bez instrukcji. Poniżej znajduje się lista wszystkich tokenów, które mogą zostać przetworzone przez program BBS. Wykonanie każdego z nich jest podobne i bardzo proste, dlatego nie będzie tutaj opisywane.
 
 \begin{itemize}
-	\item \texttt{Operator} -- ''='' oraz ''\$''
+	\item \texttt{Operator} -- „=” oraz „\$”
 	\item \texttt{Punctuator} -- kropki, przecinki, nawiasy oraz wykrzykniki
 	\item \texttt{Separator} -- spacje
 	\item \texttt{Word} -- litery alphabetu lacińskiego
@@ -233,7 +233,7 @@ Danymi wejściowymi dla parsera są ''tokeny'' -- sklasyfikowane dane, które od
 
 \subsubsection{Klasa Parser}
 
-Najważniejszą klasą jest klasa \texttt{Parser}, która w rzeczywistości jest implementacją wzorca projektowego ''State Machine'' \cite{state}. Ten wzorzec projektowy służy do przeniesienia każdego stanu klasy do osobnej klasy z własną implementacją tych samych metod. Decyzja o zastosowaniu tego szablonu wynikała z faktu, że parser jest maszyną stanową w klasycznym sensie, gdyż rolą parsera jest sprawdzanie tokenu po tokenie, przy czym każdy kolejny token jest całkowicie syntaktycznie zależny od poprzedniego (tj. jest jeden i sam token może być oczekiwany lub nieoczekiwany, w zależności od tokena, który był wcześniej przetwarzany przez parser).
+Najważniejszą klasą jest klasa \texttt{Parser}, która w rzeczywistości jest implementacją wzorca projektowego „State Machine” \cite{state}. Ten wzorzec projektowy służy do przeniesienia każdego stanu klasy do osobnej klasy z własną implementacją tych samych metod. Decyzja o zastosowaniu tego szablonu wynikała z faktu, że parser jest maszyną stanową w klasycznym sensie, gdyż rolą parsera jest sprawdzanie tokenu po tokenie, przy czym każdy kolejny token jest całkowicie syntaktycznie zależny od poprzedniego (tj. jest jeden i sam token może być oczekiwany lub nieoczekiwany, w zależności od tokena, który był wcześniej przetwarzany przez parser).
 
 Każdy stan parsera odpowiada oddzielnym nieterminalom zdefiniowanym w gramatyce języka użytego w projekcie. Interesująca jest implementacja każdego indywidualnego stanu, podczas gdy parser ma tylko jedną pełnoprawną metodę, która wywołuje metodę przetwarzania kolejnego znacznika bieżącego stanu i sprawdza istnienie tego stanu.
 
@@ -260,7 +260,7 @@ Ponadto ważnym elementem parsera jest także klasa \texttt{Mediator}, o czym b�
 
 \subsubsection{Klasa Mediator}
 
-Niezwykle ważną klasą jest klasa \texttt{Mediator}, która de facto jest implementacją znanego wzorca projektowego „Mediator”. Jego istotą jest uproszczenie połączeń pomiędzy klasami poprzez delegowanie metod komunikacji pomiędzy tymi klasami innej klasie zwanej ''Mediatorem'' \cite{mediator}.
+Niezwykle ważną klasą jest klasa \texttt{Mediator}, która de facto jest implementacją znanego wzorca projektowego „Mediator”. Jego istotą jest uproszczenie połączeń pomiędzy klasami poprzez delegowanie metod komunikacji pomiędzy tymi klasami innej klasie zwanej „Mediatorem” \cite{mediator}.
 
 W mojej implementacji parsera ta klasa jest potrzebna do uproszczenia zależności pomiędzy klasami \texttt{Parser}, każdą potomką interfejsów \texttt{State} i \texttt{Application}. Mediator ukrywa aktualny stan parsera, wskaźnik do obiektu struktury Job (o czym będzie mowa w następnej sekcji) oraz tablicę symboli. Wszystkie metody są w ten czy inny sposób getterami lub setterami, więc opisywanie ich implementacji nie jest tutaj szczególnie cenne.
 
@@ -310,9 +310,9 @@ void String::Process(lexer::Lexer& lexer)
 }
 \end{lstlisting}
 
-Zacznijmy od przeanalizowania bardziej podstawowego typu ''sekwencji znaków''. Jak widać z powyższego kodu, każda sekwencja zaczyna się i kończy podwójnymi cudzysłowami, więc kod najpierw sprawdza, czy bieżący token jest cudzysłowem. Następnie każdy kolejny token (dowolnego typu) jest dodawany do wartości sekwencji, aż program napotka znak cudzysłowu. Jeśli token końcowy nie jest cudzysłowem, program zakończy działanie, zgłaszając wyjątek.
+Zacznijmy od przeanalizowania bardziej podstawowego typu „sekwencji znaków”. Jak widać z powyższego kodu, każda sekwencja zaczyna się i kończy podwójnymi cudzysłowami, więc kod najpierw sprawdza, czy bieżący token jest cudzysłowem. Następnie każdy kolejny token (dowolnego typu) jest dodawany do wartości sekwencji, aż program napotka znak cudzysłowu. Jeśli token końcowy nie jest cudzysłowem, program zakończy działanie, zgłaszając wyjątek.
 
-Na szczególną uwagę zasługuje ciąg znaków sprawdzający obecność znaku dolara, który reprezentuje nazwę zmiennej, co zostanie omówione w dalszej części tego rozdziału. Przed dodaniem tokena do pełnej wartości „ciągu znaków” parser sprawdza, czy nazwa zmiennej została odnaleziona. Jeżeli odpowiedź jest pozytywna, podejmowana jest próba zamiany nazwy zmiennej na jej wartość przy pomocy obiektu klasy \texttt{Variable}, który następnie jest dodawany do pełnej wartości ''ciągu znaków''
+Na szczególną uwagę zasługuje ciąg znaków sprawdzający obecność znaku dolara, który reprezentuje nazwę zmiennej, co zostanie omówione w dalszej części tego rozdziału. Przed dodaniem tokena do pełnej wartości „ciągu znaków” parser sprawdza, czy nazwa zmiennej została odnaleziona. Jeżeli odpowiedź jest pozytywna, podejmowana jest próba zamiany nazwy zmiennej na jej wartość przy pomocy obiektu klasy \texttt{Variable}, który następnie jest dodawany do pełnej wartości „ciągu znaków”
 
 
 \begin{lstlisting}[label=list:array,caption=Metoda Array::Process(),basicstyle=\footnotesize\ttfamily]
@@ -356,7 +356,7 @@ Zamiast tego implementacja stanu \texttt{Array} jest bardziej złożona, poniewa
 
 \subsubsection{Klasy słów kluczowych}
 
-Implementacja każdego słowa kluczowego wymagała oddzielnych klas, ale w rzeczywistości wszystkie z nich są potomkami klas \texttt{String} lub \texttt{Array} (w zależności od cech gramatycznych konkretnego słowa). Podobnie jak omówione powyżej klasy typu bazowego, klasy każdego pojedynczego słowa posiadają własną implementację metody \texttt{Process()}, która służy do przetwarzania tokenów otrzymanych od obiektu klasy \texttt{Lexer}. Wszystkie słowa są opisane w sekcji ''Gramatyka języka''.
+Implementacja każdego słowa kluczowego wymagała oddzielnych klas, ale w rzeczywistości wszystkie z nich są potomkami klas \texttt{String} lub \texttt{Array} (w zależności od cech gramatycznych konkretnego słowa). Podobnie jak omówione powyżej klasy typu bazowego, klasy każdego pojedynczego słowa posiadają własną implementację metody \texttt{Process()}, która służy do przetwarzania tokenów otrzymanych od obiektu klasy \texttt{Lexer}. Wszystkie słowa są opisane w sekcji „Gramatyka języka”.
 
 Przykładem słowa kluczowego wywodzącego się z typu „sekwencja znaków” jest \texttt{cflags}, czyli słowo definiujące parametry kompilacji projektu. Jak widać z poniższego kodu, w metodzie \texttt{Process} odpowiedniej klasy najpierw wykonywana jest metoda klasy nadrzędnej, a następnie wynikowa wartość przekazywana jest do obiektu klasy \texttt{Job} poprzez odpowiednie wywołanie metody. Sam obiekt uzyskuje się poprzez wywołanie modułu pobierającego obiekt mediatora. Ostatnim krokiem jest przejście do stanu standardowego \texttt{Statement}, który rozpoczyna cykl przetwarzania każdej linii od nowa (zgodnie z architekturą odgórną parsera).
 
@@ -374,7 +374,7 @@ void CFlags::Process(lexer::Lexer& lexer)
 }
 \end{lstlisting}
     
-Na szczególną uwagę zasługuje klasa \texttt{Keyword}, która jest implementacją stanu parsera odpowiadającego nieterminalowi o tej samej nazwie. Jej celem jest przejście do prawidłowego stanu słowa kluczowego w celu jego obsługi przez program, metoda \texttt{Process()} tej klasy jest niczym innym jak implementacją wzorca projektowego ''Metoda fabryczna'' [link] , wzór generujący. Metoda ta ma konstrukcję \texttt{switch-case} i nie różni się niczym innym.
+Na szczególną uwagę zasługuje klasa \texttt{Keyword}, która jest implementacją stanu parsera odpowiadającego nieterminalowi o tej samej nazwie. Jej celem jest przejście do prawidłowego stanu słowa kluczowego w celu jego obsługi przez program, metoda \texttt{Process()} tej klasy jest niczym innym jak implementacją wzorca projektowego „Metoda fabryczna” [link] , wzór generujący. Metoda ta ma konstrukcję \texttt{switch-case} i nie różni się niczym innym.
 
 \begin{lstlisting}[label=list:keywords,caption=Metoda Keyword::Process(),basicstyle=\footnotesize\ttfamily]
 void Keyword::Process(lexer::Lexer& lexer)
@@ -563,7 +563,7 @@ Na tym etapie kod pośredni jest konwertowany na kod maszynowy specyficzny dla w
 \end{itemize}
 
 \subsection{Łączenie i alokacja zasobów}
-Synteza obejmuje również proces łączenia (t.zw. ''linking''), w którym połączone pomiędzy sobą zostają różne moduły oprogramowania, w tym biblioteki dynamiczne i statyczne, a także rozwiązano odniesienia do symboli pomiędzy różnymi plikami. W wyniku tego procesu z wielu plików obiektowych powstaje jeden plik wykonywalny w jednej z poniżej wymienionych postaci:
+Synteza obejmuje również proces łączenia (t.zw. „linking”), w którym połączone pomiędzy sobą zostają różne moduły oprogramowania, w tym biblioteki dynamiczne i statyczne, a także rozwiązano odniesienia do symboli pomiędzy różnymi plikami. W wyniku tego procesu z wielu plików obiektowych powstaje jeden plik wykonywalny w jednej z poniżej wymienionych postaci:
 
 \begin{itemize}
     \item Plik wykonywalny (np. ELF, PE),
@@ -712,7 +712,7 @@ Kod ten zawiera plik napisany specjalnie dla systemu docelowego, a także tworzy
 
 \subsubsection{Klasy potomne interfejsu kompilatora}
 
-Oprócz bezpośredniego wykonywania poleceń, w projekcie BBS ważna jest maksymalna abstrakcja z zewnętrznych bibliotek lub programów. Jest to konieczne, aby wyeliminować ewentualne ryzyko związane z aktualizacją interfejsów lub poleceń, które może pojawić się w przyszłości. Dlatego interakcja z kompilatorami wspieranymi przez projekt BBS odbywa się poprzez klasy potomne interfejsu \texttt{Compiler}. Wszystkie są implementacjami wzorca projektowego zwanego ``Adapter'' \cite{adapter}.
+Oprócz bezpośredniego wykonywania poleceń, w projekcie BBS ważna jest maksymalna abstrakcja z zewnętrznych bibliotek lub programów. Jest to konieczne, aby wyeliminować ewentualne ryzyko związane z aktualizacją interfejsów lub poleceń, które może pojawić się w przyszłości. Dlatego interakcja z kompilatorami wspieranymi przez projekt BBS odbywa się poprzez klasy potomne interfejsu \texttt{Compiler}. Wszystkie są implementacjami wzorca projektowego zwanego „Adapter” \cite{adapter}.
 
 Główną zaletą szablonu „Adapter” jest jego prostota, a także możliwość hermetyzacji interakcji z interfejsami zewnętrznymi, dzięki czemu w przypadku ich zmiany projekt, który z nich korzysta, musi zostać zmieniony tylko w jednym miejscu. Takie podejście zwiększa bezpieczeństwo i niezawodność oprogramowania, a także skraca czas i koszty utrzymania produktu w przypadku zmiany zależności zewnętrznych.
 
