@@ -213,13 +213,11 @@ Lista tokenów, które program może przetworzyć, odpowiada podanemu językowi 
 
 Po analizie leksykalnej lista tokenów wyodrębniona z plików wejściowych jest wysyłana do parsera. Praca parsera zazwyczaj polega na tworzeniu tzw drzewo składniowe, które jest pośrednią reprezentacją kodu wejściowego, odzwierciedlającą jego strukturę gramatyczną. Takie drzewo wygodnie zachowuje kolejność operacji i może wyglądać tak dla przykładowego wyrażenia $a = b + c$, gdzie $a$, $b$ i $c$ to identyfikatory dodane wcześniej do tablicy symboli:
 
-\begin{lstlisting}[label=list:syntax_tree,caption=Struktura gramatyczna przykładowego wyrażenia,basicstyle=\footnotesize\ttfamily]
-       =
-     /	 \
-<id, 1>   +
-        /   \
-   <id,2>   <id,3>
-\end{lstlisting}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Images/syntax_tree.png}
+    \caption{Struktura gramatyczna przykładowego wyrażenia}
+\end{figure}
 
 Jak wspomniano w sekcji „Gramatyka języka”, opracowany język plików konfiguracyjnych projektu BBS jest dość prymitywny, co jest konsekwencją wymagań stawianych projektowi. Z tego powodu język nie obsługuje operacji arytmetycznych, łączenia ciągów znaków i zmiennych oraz nie zawiera żadnych innych typów danych niż typy „sekwencja znaków” i „tablica sekwencji znaków”. Biorąc pod uwagę wszystko, co napisano wcześniej, podjąłem decyzję o rezygnacji z implementacji parsera w taki sposób, aby możliwe było bezpośrednie utworzenie drzewa składniowego. Zamiast tego parser BBS, wykonując te same czynności, co wszystkie konwencjonalne parsery, natychmiast wykonuje funkcje zapisu danych projektu do pośredniej struktury danych.
 
@@ -534,7 +532,6 @@ Ponieważ program BBS nie musi generować żadnego kodu (tj. nie jest kompilator
 \section{Synteza}
 Synteza jest jednym z kluczowych etapów procesu kompilacji, zaraz po analizie (leksemicznej, składniowej i semantycznej). Jego celem jest przekształcenie pośredniej reprezentacji aplikacji w docelową formę kodu, którą można uruchomić na wybranej platformie. Proces ten obejmuje generowanie, optymalizację i uzupełnianie kodu obiektowego. Cały proces przedstawia poniższy diagram:
 
-[Wykres]
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.4\textwidth]{Images/synthesis.png}
