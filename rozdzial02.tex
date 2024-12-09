@@ -5,7 +5,7 @@ W tej części pracy będą opisane narzędzia, które zostały wykorzystane pod
 \subsection{Język programowania}
 Projekt BBS został zrealizowany w języku C++ standardu C++17.
 
-C++ to uniwersalny język programowania, który łączy wydajność niskopoziomowego C z zaletami programowania obiektowego \cite{cpp}. Umożliwia tworzenie zarówno prostych, jak i bardzo złożonych systemów, co czyni go popularnym wyborem w takich dziedzinach jak gry, systemy operacyjne, oprogramowanie osadzone i aplikacje wymagające wysokiej wydajności. Dzięki wsparciu dla obiektowości, C++ pozwala na lepszą organizację kodu i zarządzanie złożonymi strukturami \cite{oop}. Jednocześnie, umożliwia precyzyjną kontrolę nad pamięcią i zasobami, co jest kluczowe w aplikacjach, gdzie wydajność ma największe znaczenie. Standardowa biblioteka STL dodatkowo ułatwia pracę, oferując gotowe struktury danych i algorytmy \cite{cpp_reference}.
+C++ to uniwersalny język programowania, który łączy wydajność niskopoziomowego C z zaletami programowania obiektowego \cite{cpp}. Umożliwia tworzenie zarówno prostych, jak i bardzo złożonych systemów, co czyni go popularnym wyborem w takich dziedzinach jak gry, systemy operacyjne, oprogramowanie osadzone i aplikacje wymagające wysokiej wydajności. Dzięki wsparciu dla obiektowości, C++ pozwala na lepszą organizację kodu i zarządzanie złożonymi strukturami \cite{oop}. Jednocześnie umożliwia precyzyjną kontrolę nad pamięcią i zasobami, co jest kluczowe w aplikacjach, gdzie wydajność ma największe znaczenie. Standardowa biblioteka STL dodatkowo ułatwia pracę, oferując gotowe struktury danych i algorytmy \cite{cpp_reference}.
 
 C++17 (czyli standard, wykorzystany podczas napisania BBS) to wersja języka C++, która wprowadza liczne usprawnienia zwiększające wygodę kodowania i wydajność programów. W standardzie C++17 pojawiły się nowe narzędzia, które ułatwiają programowanie, jak np. \texttt{std::optional} \cite{cpp_optional}, pomagający w obsłudze wartości opcjonalnych, oraz \texttt{std::variant} \cite{cpp_variant}, umożliwiający przechowywanie wielu typów w jednej zmiennej. Standard ten wprowadza też udoskonalenia w zakresie optymalizacji kodu, dzięki czemu aplikacje mogą działać szybciej i sprawniej. Zawiera także nowe algorytmy w STL, które skracają czas potrzebny na pisanie i testowanie kodu \cite{cpp17,cpp17_guide}.
 
@@ -29,7 +29,7 @@ Projekt, który powstał podczas pisania tej pracy dyplomowej, nie korzysta z ż
 W przypadku, gdyby wymagania projektowe ograniczały możliwości wykorzystania nowszych standardów języka C++, do napisania tego samego kodu niezbędnym by było podłączenie biblioteki Boost (zawiera w sobie m.in. funkcje, które obecnie są w nagłówku \texttt{filesystem} \cite{cpp_filesystem} albo \texttt{optional} \cite{cpp_optional}).
 
 \subsection{System budowania}
-Do zarządzania procesem budowania projektu wybrałem CMake, który umożliwia łatwą konfigurację kompilacji oraz automatyczne zarządzanie zależnościami. Skoro jest on wielosystemowym, CMake pozwala na płynne dostosowanie budowania do różnych platform oraz integrację z zewnętrznymi bibliotekami przez korzystanie z dobrze opisanych funkcji i zmiennych \cite{cmake}.
+Do zarządzania procesem budowania projektu wybrałem CMake, który umożliwia łatwą konfigurację kompilacji oraz automatyczne zarządzanie zależnościami. Skoro jest on wielosystemowy, CMake pozwala na płynne dostosowanie budowania do różnych platform oraz integrację z zewnętrznymi bibliotekami przez korzystanie z dobrze opisanych funkcji i zmiennych \cite{cmake}.
 
 W moim projekcie istnieje jeden główny plik \texttt{CMakeLists.txt}, który zawiera definicję plików źródłowych oraz katalogu plików nagłówkowych, oraz niezbędne klucze kompilatora. Osobno także dodałem możliwość kompilacji testów, która zależy od trybu budowania projektu (\texttt{DEBUG} czy \texttt{RELEASE}).
 
@@ -38,9 +38,9 @@ Testy mają inną strukturę : są one podzielone na osobne, izolowane podprojek
 \subsection{Kompilator}
 Do kompilacji projektu użyłem kompilatora GCC 14 \cite{gcc_14}, który w pełni wspiera standard C++17 i dostarcza narzędzi optymalizujących generowany kod.
 
-GCC \eng{\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection} -- to open-source kompilator wspierający wiele języków programowania. Jest jednym z najpopularniejszych kompilatorów na świecie, głównie ze względu na swoją niezawodność, wydajność i szeroką kompatybilność z różnymi systemami operacyjnymi, takimi jak Linux, Windows, i macOS \cite{gcc}. 
+GCC \eng{\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection} -- to open-source kompilator wspierający wiele języków programowania. Jest jednym z najpopularniejszych kompilatorów na świecie, głównie ze względu na swoją niezawodność, wydajność i szeroką kompatybilność z różnymi systemami operacyjnymi, takimi jak Linux, Windows i macOS \cite{gcc}. 
 
-GCC cechuje się modularną budową, co oznacza, że każdy jego komponent odpowiada za kompilację innego języka programowania lub realizację konkretnego etapu procesu kompilacji. Dzięki tej modularności, GCC obsługuje wiele języków, takich jak C, C++, Fortran czy Ada, z osobnymi frontendami (czyli modułami wstępnie przetwarzającymi kod), które przekształcają kod źródłowy na wspólną reprezentację pośrednią. Następnie, backend kompilatora dokonuje optymalizacji tej reprezentacji i generuje kod maszynowy dostosowany do architektury docelowego procesora.
+GCC cechuje się modularną budową, co oznacza, że każdy jego komponent odpowiada za kompilację innego języka programowania lub realizację konkretnego etapu procesu kompilacji. Dzięki tej modularności, GCC obsługuje wiele języków, takich jak C, C++, Fortran czy Ada, z osobnymi frontendami (czyli modułami wstępnie przetwarzającymi kod), które przekształcają kod źródłowy na wspólną reprezentację pośrednią. Następnie backend kompilatora dokonuje optymalizacji tej reprezentacji i generuje kod maszynowy dostosowany do architektury docelowego procesora.
 
 \subsection{Testowanie}
 W celu zapewnienia jakości i poprawności kodu wykorzystałem framework Google Test do tworzenia testów jednostkowych. Testy pozwalają na automatyczne sprawdzanie poprawności funkcji oraz łatwiejsze wykrywanie i naprawę błędów.
@@ -54,7 +54,7 @@ Google Test (GTest) to framework do testowania jednostkowego napisany w języku 
     \item Wyniki -- Moduł odpowiedzialny za raportowanie wyników oferuje różne formaty, w tym XML, co ułatwia integrację z innymi narzędziami do analizy wyników testów. Pozwala na szczegółowe monitorowanie i analizę wyników w środowiskach CI/CD.
 \end{enumerate}
 
-Ten framework został wybrany do testowania BBS, ponieważ to jest jeden z najbardziej rozpowszechnionych framework'ów, który korzysta z C++, a także jest bardzo prosty, wygodny i potężny.
+Ten framework został wybrany do testowania BBS, ponieważ to jest jeden z najbardziej rozpowszechnionych frameworków, który korzysta z C++, a także jest bardzo prosty, wygodny i potężny.
 
 \subsection{Dokumentacja}
 Dokumentacja projektu została wygenerowana przy użyciu narzędzia Doxygen, co pozwoliło na uzyskanie przejrzystej dokumentacji API wraz z automatycznie generowanymi diagramami klas, co ułatwia analizę struktury projektu.
@@ -63,17 +63,17 @@ Doxygen to narzędzie do automatycznego generowania dokumentacji z komentarzy w 
 
 Narzędzie generuje dokumentację w różnych formatach, takich jak HTML, LaTeX, PDF czy XML, a także oferuje możliwość tworzenia diagramów klas i zależności między modułami. Używając Doxygen, można w łatwy sposób wygenerować interaktywną dokumentację, która zawiera opisy funkcji, metod oraz struktur danych, a także umożliwia przeglądanie zależności pomiędzy poszczególnymi elementami kodu.
 
-Konfiguracja jednak nie jest aż tak prosta, ponieważ aby wymusić poprawne zachowanie narzędzia jest potrzebna zmiana pliku konfiguracyjnego, zawierająca tysiące linii. Z kolei każdy parametr jest dobrze opisany, więc potrzeba tylko poświęcić jakiś czas zapoznaniu się z narzędziem\cite{doxygen_config}.
+Konfiguracja jednak nie jest aż tak prosta, ponieważ aby wymusić poprawne zachowanie narzędzia, jest potrzebna zmiana pliku konfiguracyjnego, zawierająca tysiące linii. Z kolei każdy parametr jest dobrze opisany, więc potrzeba tylko poświęcić jakiś czas zapoznaniu się z narzędziem\cite{doxygen_config}.
 
 \subsection{Tekst pracy}
 Cała część tekstowa pracy dyplomowej została napisana w \LaTeX-u. Użycie tego systemu składania tekstu pozwoliło na uzyskanie profesjonalnego i spójnego formatu dokumentu, szczególnie przydatnego przy generowaniu równań, tabel oraz bibliografii \cite{latex}.
 
-LaTeX to system, który umożliwia tworzenie zgodnych z pewnym szablonem dokumentów. W LaTeX-u, zamiast zwykłego tekstu, opisuje się strukturę dokumentu i jego formatowanie za pomocą specjalnych poleceń.
+LaTeX to system, który umożliwia tworzenie zgodnych z pewnym szablonem dokumentów. W \LaTeX-u, zamiast zwykłego tekstu, opisuje się strukturę dokumentu i jego formatowanie za pomocą specjalnych poleceń.
 
 Jedną z najważniejszych cech LaTeX jest tworzenie równań, tabel, wykresów i zarządzanie bibliografią. Także LaTeX automatycznie zajmuje się numerowaniem stron, tworzeniem spisów treści i cytowaniami (jeśli są podłączone specjalne biblioteki, których jest mnóstwo), co czyni go idealnym narzędziem do pisania dokumentów technicznych i naukowych, takich jak prace dyplomowe.
 
 \section{Wymagania projektowe}
- Wymagania do projektu/systemu mogą być funkcjonalne lub niefunkcjonalne.
+Wymagania do projektu/systemu mogą być funkcjonalne lub niefunkcjonalne.
 
 Przed rozpoczęciem pracy nad projektem bardzo ważne jest określić wymagania, ponieważ bez tego śledzenie procesu wykonania zadań jest niemożliwe. Określenie wymagań to kluczowy etap w cyklu życia każdego systemu lub oprogramowania. Podczas trwania tego etapu tworzony jest szczegółowy zestaw wymagań zgodny z celami, jakie ma realizować przyszły system. Proces ten jest złożony, często podatny na błędy.
 
@@ -119,7 +119,7 @@ Poniżej są wymienione wymagania niefunkcjonalne dla projektu "Better Build Sys
     \caption{Przypadki użycia projektu BBS}
 \end{figure}
 
-Oprócz wymagań muszą być opisane przypadki użycia programu. Przypadki użycia opisują sekwencje interakcji pomiędzy aktorem (użytkownikiem), a systemem. One są ściśle powiązane z wymaganiami projektowymi i pozwalają wdrożyć tylko i wyłącznie potrzebne funkcje, odrzucając wszystkie inne niewykorzystane funkcje.
+Oprócz wymagań muszą być opisane przypadki użycia programu. Przypadki użycia opisują sekwencje interakcji pomiędzy aktorem (użytkownikiem) a systemem. One są ściśle powiązane z wymaganiami projektowymi i pozwalają wdrożyć tylko i wyłącznie potrzebne funkcje, odrzucając wszystkie inne niewykorzystane funkcje.
 
 Takie podejście nie tylko pozwala usunąć zbędne funkcje, skracając czas realizacji projektu i zmniejszając koszt jego tworzenia, ale też skupia się na użytkownikach.
 
