@@ -25,7 +25,7 @@ Dla kompletnego opisu projektu także muszą być podane jego główne funkcje. 
 \end{itemize}
 
 \section{Inne rozwiązania}
-Język C++ standardowo nie ma swojego systemu do budowania, jak to jest np. w języku Rust \cite{rust-cargo}. Skoro projekty w tym języku stawały się i nadal stają coraz większe i bardziej skomplikowane, musiały powstać takie narzędzia. Najpopularniejszymi teraz są Make, CMake, Visual Studio(VS) i Meson. Każdy z nich będzie opisany poniżej.
+Język C++ standardowo nie ma swojego systemu do budowania, jak to jest np. w języku Rust~\cite{rust-cargo}. Kiedy projekty w tym języku stawały się i nadal stają coraz większe i bardziej skomplikowane, musiały powstać takie narzędzia. Najpopularniejszymi teraz są Make, CMake, Visual Studio(VS) i Meson. Każdy z nich będzie opisany poniżej.
 
 \subsection{Make}
 Make\cite{make} jest jednym z najstarszych i najbardziej podstawowych narzędzi do budowania projektów, które polega na ręcznym tworzeniu plików Makefile. To narzędzie jest stosunkowo niskopoziomowe i wymaga, aby użytkownik samodzielnie zdefiniował wszystkie reguły budowania oraz zależności.
@@ -33,7 +33,7 @@ Make\cite{make} jest jednym z najstarszych i najbardziej podstawowych narzędzi 
 \subsubsection{Zalety}
 Make to bardzo elastyczne narzędzie, które umożliwia pełną kontrolę nad procesem budowania. Ono jest dobrze znane i jest prawie zawsze wykorzystywane do budowania projektów w systemach pochodnych od UNIX (bezpośrednio lub pośrednio przez CMake \cite{cmake}). 
 
-Także istnieje podobne narzędzie od Microsoft, które nazywa się \textbf{NMake}, które również działa na podstawie plików makefile, ale jest ściśle związane z kompilatorami z Visual Studio i oferuje ograniczoną funkcjonalność w porównaniu do Make, a także ma zupełnie inną składnię \cite{nmake}.
+Także istnieje podobne narzędzie od Microsoft, które nazywa się \textbf{NMake}, które również działa na podstawie plików makefile, ale jest ściśle związane z kompilatorami z Visual Studio i oferuje ograniczoną funkcjonalność w porównaniu do Make, a także ma zupełnie inną składnię~\cite{nmake}.
 
 \subsubsection{Wady}
 Ale także Make ma swoje wady: ręczne zarządzanie zależnościami jest podatne na błędy, może być czasochłonne i trudne w utrzymaniu w dużych projektach. Także to rozwiązanie nie jest wieloplatformowe, ponieważ nie ma bezpośredniego wsparcia tego systemu w Windows, gdzie najczęściej są wykorzystywane inne narzędzia.

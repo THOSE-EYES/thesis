@@ -13,13 +13,13 @@ Dodatkowo oprogramowanie to zawiera również preprocesor. Dzieje się tak, aby 
 
 \section{Gramatyka języka}
 
-W tej sekcji wprowadzimy notację -- „gramatykę bezkontekstową” lub dla zwięzłości „gramatykę” -- która jest używana do definiowania składni języka. Gramatyka będzie używana w tej książce do organizowania interfejsu kompilatora. Gramatyka w naturalny sposób opisuje hierarchiczną strukturę większości struktur językowych \cite{compilers}. Używając zmiennej \texttt{expr} do oznaczenia wyrażenia i zmiennej \texttt{stmt} do oznaczenia instrukcji, tę regułę strukturyzacji można wyrazić jako :
+W tej sekcji wprowadzimy notację -- „gramatykę bezkontekstową” lub dla zwięzłości „gramatykę” -- która jest używana do definiowania składni języka. Gramatyka będzie używana w tej dokumentacji do organizowania interfejsu kompilatora. Gramatyka w naturalny sposób opisuje hierarchiczną strukturę większości struktur językowych \cite{compilers}. Używając zmiennej \texttt{expr} do oznaczenia wyrażenia i zmiennej \texttt{stmt} do oznaczenia instrukcji, tę regułę strukturyzacji można wyrazić jako :
 
 \begin{lstlisting}[label=list:example_grammar,caption=Przykładowy opis gramatyki,basicstyle=\footnotesize\ttfamily]
 stmt -> if (expr) stmt else stmt
 \end{lstlisting}
 
-w którą strzałkę można odczytać jako „może mieć formę”. Taka zasada nazywa się „produkcją”. Produkty posiadają takie elementy leksykalne, jak słowo kluczowe \texttt{if} i nawias, nazywane są „terminalami”. Zmienne takie jak \texttt{expr} i \texttt{stmt} reprezentują sekwencje terminali i nazywane są „nieterminalami”.
+w której strzałkę można odczytać jako „może mieć formę”. Taka zasada nazywa się „produkcją”. Produkty posiadają takie elementy leksykalne, jak słowo kluczowe \texttt{if} i nawias, nazywane są „terminalami”. Zmienne takie jak \texttt{expr} i \texttt{stmt} reprezentują sekwencje terminali i nazywane są „nieterminalami”.
 
 Gramatyka bezkontekstowa składa się z czterech elementów:
 \begin{itemize}
@@ -88,7 +88,7 @@ Wyrażenia z kolei opisują dokładnie, jakie słowa kluczowe są użyte w tej k
     \item \texttt{!inc} -- deklaracja listy folderów zawierających pliki nagłówkowe
 \end{itemize}
 
-Każde z tych słów kluczowych może zostać użyte tylko raz (tj. drugie użycie tego samego słowa kluczowego nie może łączyć danych). Warto również zauważyć, że w gramatyce języka nie bez powodu deklaracje mają pierwszeństwo przed wyrażeniami w pliku: jeśli deklaracja następuje po wyrażeniu korzystającym z zadeklarowanej zmiennej, to w tym przypadku program musi się zakończyć, wyświetlanie komunikatu o błędzie.
+Każde z tych słów kluczowych może zostać użyte tylko raz (tj. drugie użycie tego samego słowa kluczowego nie może łączyć danych). Warto również zauważyć, że w gramatyce języka nie bez powodu deklaracje mają pierwszeństwo przed wyrażeniami w pliku: jeśli deklaracja następuje po wyrażeniu korzystającym z zadeklarowanej zmiennej, to w tym przypadku program musi się zakończyć, wyświetlając komunikat o błędzie.
 
 \section{Struktura interpretera}
 Zgodnie ze standardową strukturą kompilatorów i interpreterów, oprogramowanie BBS implementuje część frontend (czyli tę, która przeprowadza analizę) prawie w całości, natomiast backend nie zajmuje się optymalizacją ani generowaniem kodu, ponieważ wykonuje on określone instrukcje na podstawie danych wejściowych (czyli proces syntezy de facto nie zachodzi) \cite{compilers}.
@@ -113,7 +113,7 @@ Jak opisano powyżej, dane wejściowe są analizowane w części frontendowej pr
 \subsection{Analiza leksykalna}
 Analiza leksykalna jest pierwszym etapem analizy danych wejściowych. Analizator leksykalny odczytuje strumień symboli i grupuje je w sensowną sekwencję zwaną leksemami, dla których analizator leksykalny generuje tzw. token składający się z typu pary -- odwołanie do tabeli symboli \cite{compilers}.
 
-W projekcie BBS analizator leksykalny jest podzielony na dwie odrębne klasy, \texttt{Lexer} i \texttt{Scanner}, dla których zaimplementowana jest także klasa pomocnicza \texttt{Context}. Także klasy te korzystają z dodatkowych elementów, które zostaną opisane później (ale będą tu omawiane tylko te, które naprawdę zasługują na uwagę, np. nie będzie tu opisu klas wyjątków).
+W projekcie BBS analizator leksykalny jest podzielony na dwie odrębne klasy, \texttt{Lexer} i \texttt{Scanner}, dla których zaimplementowana jest także klasa pomocnicza \texttt{Context}. Klasy te korzystają także z dodatkowych elementów, które zostaną opisane później (ale będą tu omawiane tylko te, które naprawdę zasługują na uwagę, np. nie będzie tu opisu klas wyjątków).
 
 \subsubsection{Klasa Scanner}
 Klasa \texttt{Scanner} jest osobną klasą, której delegowana jest rola odczytu plików. To właśnie w tej klasie hermetyzowane są wszelkie operacje sprawdzania istnienia, otwierania i odczytywania plików znak po znaku, a także omijania pustych linii czy komentarzy. Jego implementacja jest dość prosta, gdyż \texttt{Scanner} umożliwia odczytanie bieżącego znaku (funkcja \texttt{Get()}) i przejście do następnego (funkcja \texttt{Move()}). Z kolei operacja \texttt{Get()} opiera się na \texttt{std::optional} \cite{cpp_optional}, innowacji w C++17, która pozwala przechowywać wartość lub nic w bezpieczny i przejrzysty sposób. Klasa na wejściu otrzymuje nazwę pliku do odczytania, a na wyjściu zwraca przeczytany znak (odfiltrowując niepotrzebne), jeśli takie istnieją.
@@ -157,7 +157,7 @@ Klasa \texttt{Context} zawiera bieżącą linię przetwarzaną przez program, je
 \subsubsection{Klasa Lexer}
 Klasa \texttt{Lexer}, jak sama nazwa wskazuje, jest implementacją analizatora leksykalnego. Ta klasa jest najbardziej złożona ze wszystkich w module, a jej struktura jest modułowa, co ułatwia zmianę jej elementów w miarę zmiany wymagań lub gramatyki języka.
 
-Główna klasa \texttt{Lexer} ma tylko metody manipulacji tokenami (\texttt{Get()} do odczytania bieżącego tokena i \texttt{Next()} do żądania odczytania następnego tokena), ponieważ praca z plikami została delegowany do klasy \texttt{Scanner}.
+Główna klasa \texttt{Lexer} ma tylko metody manipulacji tokenami (\texttt{Get()} do odczytania bieżącego tokena i \texttt{Next()} do żądania odczytania następnego tokena), ponieważ praca z plikami została delegowana do klasy \texttt{Scanner}.
 
 Proces kategoryzacji tokenów został delegowany do szeregu klas zwanych procedurami obsługi. Klasy te stanowią implementację wzorca projektowego „Łańcuch odpowiedzialności” \cite{cor}, który polega na przetwarzaniu określonych żądań przez dany obiekt i ich późniejszym przekazywaniu do kolejnych obiektów, w przypadku gdyby żądanie nie powiodło się. Ten wzorzec został użyty, aby wycofać użycie \texttt{switch-case}, aby umożliwić znacznie łatwiejsze (i jednolite) podłączanie nowych klas obsługi przy minimalnych zmianach w istniejącym kodzie (zgodnie z zasadami SOLID \cite{solid}). Klasy te posiadają następujący interfejs:
 
@@ -221,7 +221,7 @@ Po analizie leksykalnej lista tokenów wyodrębniona z plików wejściowych jest
 
 Jak wspomniano w sekcji „Gramatyka języka”, opracowany język plików konfiguracyjnych projektu BBS jest dość prymitywny, co jest konsekwencją wymagań stawianych projektowi. Z tego powodu język nie obsługuje operacji arytmetycznych, łączenia ciągów znaków i zmiennych oraz nie zawiera żadnych innych typów danych niż typy „sekwencja znaków” i „tablica sekwencji znaków”. Biorąc pod uwagę wszystko, co napisano wcześniej, podjąłem decyzję o rezygnacji z implementacji parsera w taki sposób, aby możliwe było bezpośrednie utworzenie drzewa składniowego. Zamiast tego parser BBS, wykonując te same czynności, co wszystkie konwencjonalne parsery, natychmiast wykonuje funkcje zapisu danych projektu do pośredniej struktury danych.
 
-Warto zaznaczyć, że parser ten stosuje podejście odgórne do analizy danych, czyli analizuje dane rozpoczynając od nieterminala początkowego i sprawdzając każdy symbol pod kątem zgodności z pochodnymi tego nieterminala. W przypadku BBS algorytm ten jest realizowany poprzez proste sprawdzenie danych wejściowych od lewej do prawej. Projektując spośród innych algorytmów (np. oddolnych) wybrano ten algorytm ze względu na prostotę implementacji, a także ze względu na ogólną prostotę zaimplementowanego języka.
+Warto zaznaczyć, że parser ten stosuje podejście odgórne do analizy danych, czyli analizuje dane rozpoczynając od nieterminala początkowego i sprawdzając każdy symbol pod kątem zgodności z pochodnymi tego nieterminala. W przypadku BBS algorytm ten jest realizowany poprzez proste sprawdzenie danych wejściowych od lewej do prawej. Projektując, spośród innych algorytmów (np. oddolnych) wybrano ten algorytm ze względu na prostotę implementacji, a także ze względu na ogólną prostotę zaimplementowanego języka.
 
 Pełna funkcjonalność parsera w projekcie BBS zaimplementowana jest w klasach \texttt{Parser}, \texttt{Mediator}, a także klasach wywodzących się z interfejsu \texttt{State}.
 
@@ -238,7 +238,7 @@ Danymi wejściowymi dla parsera są „tokeny” -- sklasyfikowane dane, które 
 
 \subsubsection{Klasa Parser}
 
-Najważniejszą klasą jest klasa \texttt{Parser}, która w rzeczywistości jest implementacją wzorca projektowego „State Machine” \cite{state}. Ten wzorzec projektowy służy do przeniesienia każdego stanu klasy do osobnej klasy z własną implementacją tych samych metod. Decyzja o zastosowaniu tego szablonu wynikała z faktu, że parser jest maszyną stanową w klasycznym sensie, gdyż rolą parsera jest sprawdzanie tokenu po tokenie, przy czym każdy kolejny token jest całkowicie syntaktycznie zależny od poprzedniego (tj. jest jeden i sam token może być oczekiwany lub nieoczekiwany, w zależności od tokena, który był wcześniej przetwarzany przez parser).
+Najważniejszą klasą jest klasa \texttt{Parser}, która w rzeczywistości jest implementacją wzorca projektowego „State Machine” \cite{state}. Ten wzorzec projektowy służy do przeniesienia każdego stanu klasy do osobnej klasy z własną implementacją tych samych metod. Decyzja o zastosowaniu tego szablonu wynikała z faktu, że parser jest maszyną stanową w klasycznym sensie, gdyż rolą parsera jest sprawdzanie tokenu po tokenie, przy czym każdy kolejny token jest całkowicie syntaktycznie zależny od poprzedniego (tj. dany token może być oczekiwany lub nieoczekiwany, w zależności od tokena, który był wcześniej przetwarzany przez parser).
 
 Każdy stan parsera odpowiada oddzielnym nieterminalom zdefiniowanym w gramatyce języka użytego w projekcie. Interesująca jest implementacja każdego indywidualnego stanu, podczas gdy parser ma tylko jedną pełnoprawną metodę, która wywołuje metodę przetwarzania kolejnego znacznika bieżącego stanu i sprawdza istnienie tego stanu.
 
@@ -267,7 +267,7 @@ Ponadto ważnym elementem parsera jest także klasa \texttt{Mediator}, o czym b�
 
 Niezwykle ważną klasą jest klasa \texttt{Mediator}, która de facto jest implementacją znanego wzorca projektowego „Mediator”. Jego istotą jest uproszczenie połączeń pomiędzy klasami poprzez delegowanie metod komunikacji pomiędzy tymi klasami innej klasie zwanej „Mediatorem” \cite{mediator}.
 
-W mojej implementacji parsera ta klasa jest potrzebna do uproszczenia zależności pomiędzy klasami \texttt{Parser}, każdą potomką interfejsów \texttt{State} i \texttt{Application}. Mediator ukrywa aktualny stan parsera, wskaźnik do obiektu struktury Job (o czym będzie mowa w następnej sekcji) oraz tablicę symboli. Wszystkie metody są w ten czy inny sposób getterami lub setterami, więc opisywanie ich implementacji nie jest tutaj szczególnie cenne.
+W mojej implementacji parsera ta klasa jest potrzebna do uproszczenia zależności pomiędzy klasami \texttt{Parser}, każdą potomną interfejsów \texttt{State} i \texttt{Application}. Mediator ukrywa aktualny stan parsera, wskaźnik do obiektu struktury Job (o czym będzie mowa w następnej sekcji) oraz tablicę symboli. Wszystkie metody są w ten czy inny sposób getterami lub setterami, więc opisywanie ich implementacji nie jest tutaj szczególnie cenne.
 
 \subsubsection{Klasy typów danych}
 
@@ -317,7 +317,7 @@ void String::Process(lexer::Lexer& lexer)
 
 Zacznijmy od przeanalizowania bardziej podstawowego typu „sekwencji znaków”. Jak widać z powyższego kodu, każda sekwencja zaczyna się i kończy podwójnymi cudzysłowami, więc kod najpierw sprawdza, czy bieżący token jest cudzysłowem. Następnie każdy kolejny token (dowolnego typu) jest dodawany do wartości sekwencji, aż program napotka znak cudzysłowu. Jeśli token końcowy nie jest cudzysłowem, program zakończy działanie, zgłaszając wyjątek.
 
-Na szczególną uwagę zasługuje ciąg znaków sprawdzający obecność znaku dolara, który reprezentuje nazwę zmiennej, co zostanie omówione w dalszej części tego rozdziału. Przed dodaniem tokena do pełnej wartości „ciągu znaków” parser sprawdza, czy nazwa zmiennej została odnaleziona. Jeżeli odpowiedź jest pozytywna, podejmowana jest próba zamiany nazwy zmiennej na jej wartość przy pomocy obiektu klasy \texttt{Variable}, który następnie jest dodawany do pełnej wartości „ciągu znaków”
+Na szczególną uwagę zasługuje ciąg znaków sprawdzający obecność znaku dolara, który reprezentuje nazwę zmiennej, co zostanie omówione w dalszej części tego rozdziału. Przed dodaniem tokena do pełnej wartości „ciągu znaków” parser sprawdza, czy nazwa zmiennej została odnaleziona. Jeżeli odpowiedź jest pozytywna, podejmowana jest próba zamiany nazwy zmiennej na jej wartość przy pomocy obiektu klasy \texttt{Variable}, który następnie jest dodawany do pełnej wartości „ciągu znaków”.
 
 
 \begin{lstlisting}[label=list:array,caption=Metoda Array::Process(),basicstyle=\footnotesize\ttfamily]
