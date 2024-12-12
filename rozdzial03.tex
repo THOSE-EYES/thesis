@@ -2,7 +2,7 @@
 \section{Wprowadzenie}
 Celem tego rozdziału jest szczegółowy opis podejścia do realizacji projektu BBS, a mianowicie wyjaśnienie podstawowych pojęć, analiza architektury oraz algorytmów stosowanych do przetwarzania danych.
 
-Chciałbym zacząć od tego, czym właściwie jest BBS. Zgodnie z definicją projekt jest w rzeczywistości procesorem języka \cite{compilers}, a konkretnie tłumaczem według następujących cech, które wynikają bezpośrednio z wymagań opisanych w sekcji 2:
+Chciałbym zacząć od tego, czym właściwie jest BBS. Zgodnie z definicją projekt jest w rzeczywistości procesorem języka \cite{compilers}, a konkretnie tłumaczem według następujących cech, które wynikają bezpośrednio z wymagań opisanych w rozdziale 2 \ref{design}:
 \begin{itemize}
     \item Oprogramowanie analizuje kod wejściowy, napisany w specjalnie opracowanym na potrzeby projektu języku
     \item Oprogramowanie powinno wykrywać i raportować możliwe błędy logiczne lub składniowe w pliku wejściowym
@@ -16,10 +16,10 @@ Dodatkowo oprogramowanie to zawiera również preprocesor. Dzieje się tak, aby 
 W tej sekcji wprowadzimy notację -- „gramatykę bezkontekstową” lub dla zwięzłości „gramatykę” -- która jest używana do definiowania składni języka. Gramatyka będzie używana w tej dokumentacji do organizowania interfejsu kompilatora. Gramatyka w naturalny sposób opisuje hierarchiczną strukturę większości struktur językowych \cite{compilers}. Używając zmiennej \texttt{expr} do oznaczenia wyrażenia i zmiennej \texttt{stmt} do oznaczenia instrukcji, tę regułę strukturyzacji można wyrazić jako :
 
 \begin{lstlisting}[label=list:example_grammar,caption=Przykładowy opis gramatyki,basicstyle=\footnotesize\ttfamily]
-stmt -> if (expr) stmt else stmt
+<stmt> ::= "if" "(" <expr> ")" <stmt> "else" <stmt>
 \end{lstlisting}
 
-w której strzałkę można odczytać jako „może mieć formę”. Taka zasada nazywa się „produkcją”. Produkty posiadają takie elementy leksykalne, jak słowo kluczowe \texttt{if} i nawias, nazywane są „terminalami”. Zmienne takie jak \texttt{expr} i \texttt{stmt} reprezentują sekwencje terminali i nazywane są „nieterminalami”.
+w której ''::='' można odczytać jako „może mieć formę”. Taka zasada nazywa się „produkcją”. Produkty posiadają takie elementy leksykalne, jak słowo kluczowe \texttt{if} i nawias, nazywane są „terminalami”. Zmienne takie jak \texttt{expr} i \texttt{stmt} reprezentują sekwencje terminali i nazywane są „nieterminalami”.
 
 Gramatyka bezkontekstowa składa się z czterech elementów:
 \begin{itemize}
@@ -27,6 +27,47 @@ Gramatyka bezkontekstowa składa się z czterech elementów:
     \item Zbiór nieterminali, czasami nazywany „zmiennymi składniowymi”. Każdy nieterminal reprezentuje zestaw ciągów końcowych, tak jak to zrobimy opisać
     \item Zbiór produkcji, gdzie każda produkcja składa się z nieterminala, zwanego głową lub lewą stroną produkcji, strzałki oraz sekwencji terminali i nieterminali, zwanej treścią lub prawą stroną produkcji.
     \item Oznaczenie jednego z nieterminali jako symbolu początkowego.
+\end{itemize}
+
+W celu opisu gramatyki będziemy musieli się posługiwać notacją BNF, która jest jedną z najprostszych i najczęściej używanych. O niej dalej.
+
+\subsection{Backus-Naur Form (BNF)}
+
+Backus-Naur Form (BNF) to formalna notacja używana do opisywania składni języków programowania oraz innych formalnych struktur. BNF pozwala definiować reguły gramatyczne w sposób precyzyjny, umożliwiając zrozumienie i implementację języka. Jest ona powszechnie stosowana w tworzeniu kompilatorów, interpreterów oraz dokumentacji języków programowania.
+
+BNF składa się z zestawu reguł, z których każda opisuje, w jaki sposób można skonstruować element języka. Reguły te są definiowane za pomocą produkcji w postaci:
+
+\begin{verbatim}
+<nazwa-symbolu> ::= <elementy-składniowe>
+\end{verbatim}
+
+Symbol \texttt{::=} oznacza „jest definiowane jako” i oddziela nazwę symbolu nieterminalnego (po lewej stronie) od jego definicji (po prawej stronie). Symbol nieterminalny jest konstrukcją, która wymaga dalszego rozwinięcia w postaci innych symboli terminalnych lub nieterminalnych.
+
+\paragraph{Znaczenie używanych symboli w BNF:}
+\begin{itemize}
+    \item \textbf{Symbol \texttt{|}}: Służy do reprezentacji alternatywy, wskazując, że dowolny z podanych elementów może zostać wybrany. Na przykład:
+    \begin{verbatim}
+    <digit> ::= "0" | "1" | "2"
+    \end{verbatim}
+    Definiuje, że \texttt{<digit>} może być jednym z trzech symboli: \texttt{0}, \texttt{1}, lub \texttt{2}.
+    
+    \item \textbf{Kwadratowe nawiasy \texttt{[]}}: Oznaczają, że element wewnątrz nich jest opcjonalny. Jeśli nawiasy te są używane, to konstrukcja może, ale nie musi, zawierać podany element. Na przykład:
+    \begin{verbatim}
+    <optional-part> ::= "prefix" [<suffix>]
+    \end{verbatim}
+    Wskazuje, że \texttt{<optional-part>} może zawierać tylko \texttt{"prefix"} lub \texttt{"prefix"} wraz z \texttt{<suffix>}.
+    
+    \item \textbf{Klamry \texttt{\{\}}}: Oznaczają powtarzalność, wskazując, że element wewnątrz może wystąpić dowolną liczbę razy, w tym zero. Na przykład:
+    \begin{verbatim}
+    <list> ::= "item" {"," "item"}
+    \end{verbatim}
+    Wskazuje, że \texttt{<list>} może składać się z jednego elementu \texttt{"item"} lub wielu elementów oddzielonych przecinkami.
+    
+    \item \textbf{Trójkątne nawiasy \texttt{<>}}: Są używane do oznaczania symboli nieterminalnych, czyli tych, które wymagają dalszego rozwinięcia. Na przykład w produkcji:
+    \begin{verbatim}
+    <expr> ::= <term> | <term> "+" <term>
+    \end{verbatim}
+    Symbol \texttt{<expr>} jest nieterminalny, podczas gdy \texttt{term} wymaga definicji w kolejnej regule.
 \end{itemize}
 
 \subsection{Gramatyka języka BBS}
