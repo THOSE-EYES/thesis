@@ -13,11 +13,11 @@ C++17 (czyli standard, wykorzystany podczas napisania BBS) to wersja języka C++
 W ramach pracy intensywnie korzystałem z biblioteki standardowej języka C++. Oto są najczęściej używane biblioteki, na bazie których powstał projekt BBS:
 
 \begin{itemize}
-    \item \texttt{string} -- operacje na ciągach tekstowych; najczęściej wykorzystane podczas przetwarzania danych z plików wejściowych do postaci tokenów \cite{cpp_string}, 
-    \item \texttt{vector} -- do dynamicznego przechowywania danych; kontener jest częścią kodu służącego do przetwarzania danych wejściowych do postaci tokenów, a także wykorzystany do przechowywania danych o plikach i katalogach projektu \cite{cpp_vector}, 
+    \item \texttt{string} -- operacje na ciągach tekstowych; najczęściej wykorzystane podczas przetwarzania danych z plików wejściowych do postaci leksemów \cite{cpp_string}, 
+    \item \texttt{vector} -- do dynamicznego przechowywania danych; kontener jest częścią kodu służącego do przetwarzania danych wejściowych do postaci leksemów, a także wykorzystany do przechowywania danych o plikach i katalogach projektu \cite{cpp_vector}, 
     \item \texttt{map} -- do dynamicznego przechowywania danych; jest bazą funkcji, które odpowiadają za mechanizm zmiennych \cite{cpp_map},
     \item \texttt{optional} -- do przechowywania wartości opcjonalnych; służy najczęściej do przetwarzania danych wejściowych \cite{cpp_optional}, 
-    \item \texttt{algorithm} -- do sprawnego przetwarzania danych; biblioteka wykorzystana jest jedynie do przetwarzania tokenów do postaci tekstowej w celu wyświetlenia ich wartości gdy program napotka na błędy \cite{cpp_algorithm},
+    \item \texttt{algorithm} -- do sprawnego przetwarzania danych; biblioteka wykorzystana jest jedynie do przetwarzania leksemów do postaci tekstowej w celu wyświetlenia ich wartości gdy program napotka na błędy \cite{cpp_algorithm},
     \item \texttt{filesystem} -- do obsługi operacji na plikach i ścieżkach systemowych; na tej bibliotece opera się mechanizm przyspieszenia budowania projektu przez ignorowanie już istniejących plików \cite{cpp_filesystem}, 
     \item \texttt{fstream} -- do odczytu i zapisu plików \cite{cpp_fstream},
     \item \texttt{memory} -- inteligentne wskaźniki, za pomocą których udało się ograniczyć ryzyko wycieków pamięci i lepiej określić relacje pomiędzy klasami \cite{cpp_memory}.
