@@ -643,13 +643,13 @@ Wracając do tematu optymalizacji budowy projektu, rozważmy następujący przyp
 
 Z tego powodu powstał projekt BBS, w którym natywne narzędzia kompilatora śledzą, które pliki uległy zmianie, dzięki czemu tylko te pliki zostaną ponownie skompilowane przy następnym wywołaniu BBS. Mechanizm ten działa w następujący sposób:
 
-\begin{itemize}
+\begin{enumerate}
     \item BBS odczytuje konfigurację projektu i ją analizuje
     \item Przed rozpoczęciem kompilacji BBS sprawdza każdy plik pod kątem zmian (tzn. czy czas modyfikacji pliku jest krótszy niż odpowiedni czas utworzenia pliku obiektowego)
     \item Jeżeli plik nie został zmieniony, przy pomocy kompilatora BBS otrzyma listę zależności dla tego pliku
     \item Każdą zależność sprawdzamy analogicznie jak plik główny z punktu 2.
     \item Po analizie plik, który nie został zmodyfikowany, jest ignorowany, BBS przechodzi do następnego pliku i rozpoczyna ten sam proces od kroku 1.
-\end{itemize}
+\end{enumerate}
 
 W rezultacie każdy niezmieniony plik jest odfiltrowywany, co w dużych projektach pozwala na znaczne skrócenie czasu kompilacji, przy jednoczesnym zmniejszeniu ryzyka problemów spowodowanych przez człowieka (co z kolei dodatkowo skraca czas testowania produktu i naprawiania nieistniejących problemów spowodowanych mieszaniem starych i nowych plików obiektowych).
 
