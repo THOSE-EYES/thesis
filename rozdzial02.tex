@@ -5,9 +5,9 @@ W tej części pracy będą opisane narzędzia, które zostały wykorzystane pod
 \subsection{Język programowania}
 Projekt BBS został zrealizowany w języku C++ standardu C++17.
 
-C++ to uniwersalny język programowania, który łączy wydajność niskopoziomowego C z zaletami programowania obiektowego \cite{cpp}. Umożliwia tworzenie zarówno prostych, jak i bardzo złożonych systemów, co czyni go popularnym wyborem w takich dziedzinach jak gry, systemy operacyjne, oprogramowanie osadzone i aplikacje wymagające wysokiej wydajności. Dzięki wsparciu dla obiektowości, C++ pozwala na lepszą organizację kodu i zarządzanie złożonymi strukturami \cite{oop}. Jednocześnie umożliwia precyzyjną kontrolę nad pamięcią i zasobami, co jest kluczowe w aplikacjach, gdzie wydajność ma największe znaczenie. Standardowa biblioteka STL dodatkowo ułatwia pracę, oferując gotowe struktury danych i algorytmy \cite{cpp_reference}.
+C++ to uniwersalny język programowania, który łączy wydajność niskopoziomowego języka C z zaletami programowania obiektowego \cite{cpp}. Umożliwia tworzenie zarówno prostych, jak i~bardzo złożonych systemów, co czyni go popularnym wyborem w takich dziedzinach jak gry, systemy operacyjne, oprogramowanie osadzone i aplikacje wymagające wysokiej wydajności. Dzięki wsparciu dla obiektowości, C++ pozwala na lepszą organizację kodu i zarządzanie złożonymi strukturami \cite{oop}. Jednocześnie umożliwia precyzyjną kontrolę nad pamięcią i zasobami, co jest kluczowe w aplikacjach, gdzie wydajność ma największe znaczenie. Standardowa biblioteka STL dodatkowo ułatwia pracę, oferując gotowe struktury danych i algorytmy \cite{cpp_reference}.
 
-C++17 (czyli standard, wykorzystany podczas napisania BBS) to wersja języka C++, która wprowadza liczne usprawnienia zwiększające wygodę kodowania i wydajność programów. W standardzie C++17 pojawiły się nowe narzędzia, które ułatwiają programowanie, jak np. \texttt{std::optional} \cite{cpp_optional}, pomagający w obsłudze wartości opcjonalnych, oraz \texttt{std::variant} \cite{cpp_variant}, umożliwiający przechowywanie wielu typów w jednej zmiennej. Standard ten wprowadza też udoskonalenia w zakresie optymalizacji kodu, dzięki czemu aplikacje mogą działać szybciej i sprawniej. Zawiera także nowe algorytmy w STL, które skracają czas potrzebny na pisanie i testowanie kodu \cite{cpp17,cpp17_guide}.
+C++17 (czyli standard, wykorzystany podczas napisania BBS) to wersja języka C++, która wprowadza liczne usprawnienia zwiększające wygodę kodowania i wydajność programów. W standardzie C++17 pojawiły się nowe narzędzia, które ułatwiają programowanie, jak np. \texttt{std::optional} \cite{cpp_optional}, pomagający w obsłudze wartości opcjonalnych, oraz \texttt{std::variant} \cite{cpp_variant}, umożliwiający przechowywanie wielu typów w jednej zmiennej. Standard ten wprowadza też udoskonalenia w zakresie optymalizacji kodu, dzięki czemu aplikacje mogą działać szybciej i sprawniej. Zawiera także nowe algorytmy w STL, które skracają czas potrzebny na pisanie i~testowanie kodu \cite{cpp17,cpp17_guide}.
 
 \subsubsection{Biblioteka języka}
 W ramach pracy intensywnie korzystałem z biblioteki standardowej języka C++. Oto są najczęściej używane biblioteki, na bazie których powstał projekt BBS:
@@ -26,10 +26,10 @@ W ramach pracy intensywnie korzystałem z biblioteki standardowej języka C++. O
 \subsubsection{Biblioteki zewnętrzne}
 Projekt, który powstał podczas pisania tej pracy dyplomowej, nie korzysta z żadnych zewnętrznych bibliotek, oprócz framework'u do testowania (który jest opisany poniżej), głównie dlatego, że został wykorzystany standard C++17. 
 
-W przypadku, gdyby wymagania projektowe ograniczały możliwości wykorzystania nowszych standardów języka C++, do napisania tego samego kodu niezbędnym by było podłączenie biblioteki Boost (zawiera w sobie m.in. funkcje, które obecnie są w nagłówku \texttt{filesystem} \cite{cpp_filesystem} albo \texttt{optional} \cite{cpp_optional}).
+W przypadku, gdyby wymagania projektowe ograniczały możliwości wykorzystania nowszych standardów języka C++, do napisania tego samego kodu niezbędne by było podłączenie biblioteki Boost (zawiera w sobie m.in. funkcje, które obecnie są w nagłówku \texttt{filesystem} \cite{cpp_filesystem} albo \texttt{optional} \cite{cpp_optional}).
 
 \subsection{System budowania}
-Do zarządzania procesem budowania projektu wybrałem CMake, który umożliwia łatwą konfigurację kompilacji oraz automatyczne zarządzanie zależnościami. Ponieważ CMake jest wielosystemowy, pozwala na płynne dostosowanie budowania do różnych platform oraz integrację z zewnętrznymi bibliotekami przez korzystanie z dobrze opisanych funkcji i zmiennych \cite{cmake}.
+Do zarządzania procesem budowania projektu wybrałem CMake, który umożliwia łatwą konfigurację kompilacji oraz automatyczne zarządzanie zależnościami. Ponieważ CMake jest wielosystemowy, pozwala na płynne dostosowanie budowania do różnych platform oraz integrację z~zewnętrznymi bibliotekami przez korzystanie z dobrze opisanych funkcji i zmiennych \cite{cmake}.
 
 W moim projekcie istnieje jeden główny plik \texttt{CMakeLists.txt}, który zawiera definicję plików źródłowych oraz katalogu plików nagłówkowych, oraz niezbędne klucze kompilatora. Osobno także dodałem możliwość kompilacji testów, która zależy od trybu budowania projektu (\texttt{DEBUG} czy \texttt{RELEASE}).
 
@@ -54,7 +54,7 @@ Google Test (GTest) to framework do testowania jednostkowego napisany w języku 
     \item Wyniki -- Moduł odpowiedzialny za raportowanie wyników oferuje różne formaty, w tym XML, co ułatwia integrację z innymi narzędziami do analizy wyników testów. Pozwala na szczegółowe monitorowanie i analizę wyników w środowiskach CI/CD.
 \end{enumerate}
 
-Ten framework został wybrany do testowania BBS, ponieważ to jest jeden z najbardziej rozpowszechnionych frameworków, który korzysta z C++, a także jest bardzo prosty, wygodny i potężny.
+Ten framework został wybrany do testowania BBS, ponieważ to jest jeden z najbardziej rozpowszechnionych frameworków, który korzysta z C++, a także jest bardzo prosty, wygodny i~potężny.
 
 \subsection{Dokumentacja}
 Dokumentacja projektu została wygenerowana przy użyciu narzędzia Doxygen, co pozwoliło na uzyskanie przejrzystej dokumentacji API wraz z automatycznie generowanymi diagramami klas, co ułatwia analizę struktury projektu.
@@ -75,7 +75,7 @@ Jedną z najważniejszych cech \LaTeX{} jest tworzenie równań, tabel, wykresó
 \section{Wymagania projektowe}
 Wymagania do projektu/systemu mogą być funkcjonalne lub niefunkcjonalne.
 
-Przed rozpoczęciem pracy nad projektem bardzo ważne jest określić wymagania, ponieważ bez tego śledzenie procesu wykonania zadań jest niemożliwe. Określenie wymagań to kluczowy etap w cyklu życia każdego systemu lub oprogramowania. Podczas trwania tego etapu tworzony jest szczegółowy zestaw wymagań zgodny z celami, jakie ma realizować przyszły system. Proces ten jest złożony, często podatny na błędy.
+Przed rozpoczęciem pracy nad projektem bardzo ważne jest określenie wymagań, ponieważ bez tego śledzenie procesu wykonania zadań jest niemożliwe. Określenie wymagań to kluczowy etap w cyklu życia każdego systemu lub oprogramowania. Podczas trwania tego etapu tworzony jest szczegółowy zestaw wymagań zgodny z celami, jakie ma realizować przyszły system. Proces ten jest złożony, często podatny na błędy.
 
 Ten etap  ma szczególne znaczenie, ponieważ dobrze określone wymagania stanowią fundament całego projektu i decydują o jego sukcesie. Błędy popełnione na tym etapie są niezwykle kosztowne, ponieważ naprawa ,,fundamentu'' projektu jest trudna, czasochłonna i bardzo niebezpieczna z punktu widzenia jakości oraz planowania.
 
@@ -101,7 +101,7 @@ Wymagania niefunkcjonalne odnoszą się do tego, jak system ma działać i jakie
 Poniżej są wymienione wymagania niefunkcjonalne dla projektu "Better Build System".
 \begin{enumerate}
     \item \textbf{Wydajność}: System powinien efektywnie zarządzać zależnościami, aby uniknąć niepotrzebnej rekompilacji.
-    \item \textbf{Niezawodność}: BBS musi działać stabilnie i obsługiwać duże ilości kodu bez awarii. W przypadku błędów kompilacji lub testów, powinien przekazywać czytelne komunikaty.
+    \item \textbf{Niezawodność}: BBS musi działać stabilnie i obsługiwać duże ilości kodu bez awarii. W~przypadku błędów kompilacji lub testów, powinien przekazywać czytelne komunikaty.
     \item \textbf{Łatwość użytkowania}: Konfiguracja programu powinny być intuicyjne. Dokumentacja oraz komunikaty powinny być jasne, a konfiguracja wymagać minimalnej ilości kroków.
     \item \textbf{Przenośność i kompatybilność}: System powinien działać na różnych platformach (Linux, Windows, macOS), wspierając popularne kompilatory (szczególnie GCC). Wykorzystywane technologie i narzędzia powinny być kompatybilne z językiem C++17, a sam projekt musi być zarządzany za pomocą wieloplatformowego systemu budowania (w tym przypadku CMake).
     \item \textbf{Modularność i elastyczność}: Architektura systemu musi być modularna, aby umożliwić łatwe dodawanie nowych funkcji i wsparcie dla kolejnych narzędzi czy technologii. Każda klasa musi być w osobnym pliku oraz w module, który nazywa się tak samo jak i katalog, w którym znajduje się plik.
@@ -109,7 +109,7 @@ Poniżej są wymienione wymagania niefunkcjonalne dla projektu "Better Build Sys
     \item \textbf{Skalowalność}: System musi być skalowalny, aby efektywnie obsługiwać zarówno małe, jak i rozbudowane projekty C++ bez utraty wydajności i stabilności. Podstawą do tego służy napisanie kodu zgodnie z zasadami OOP i SOLID
     \item \textbf{Bezpieczeństwo}: BBS powinien chronić integralność plików źródłowych, nie modyfikując ich bez wyraźnej instrukcji użytkownika.
     \item \textbf{Wysoka jakość kodu}: Kod źródłowy systemu powinien być napisany zgodnie z zasadami OOP oraz SOLID, poprawnie formatowany za pomocą narzędzia clang-format i być zgodny z Google Styleguide.
-    \item \textbf{Dostępność dokumentacji}: System musi umożliwiać łatwe generowanie dokumentacji projektu przy użyciu narzędzia Doxygen. Dokumentacja powinna być pełna i wyczerpująca, opisując zarówno instalację, konfigurację, jak i wszystkie funkcje BBS, by użytkownicy mogli szybko uzyskać potrzebne informacje. Dokumentacja musi być dostępna w kilku formatach: HTML, XML, PDF.
+    \item \textbf{Dostępność dokumentacji}: System musi umożliwiać łatwe generowanie dokumentacji projektu przy użyciu narzędzia Doxygen. Dokumentacja powinna być pełna i wyczerpująca, opisując zarówno instalację, konfigurację, jak i wszystkie funkcje BBS, by użytkownicy mogli szybko uzyskać potrzebne informacje. Dokumentacja musi być dostępna w~kilku formatach: HTML, XML, PDF.
 \end{enumerate}
 
 \subsection{Przypadki użycia}
@@ -119,7 +119,7 @@ Poniżej są wymienione wymagania niefunkcjonalne dla projektu "Better Build Sys
     \caption{Przypadki użycia projektu BBS}
 \end{figure}
 
-Oprócz wymagań muszą być opisane przypadki użycia programu. Przypadki użycia opisują sekwencje interakcji pomiędzy aktorem (użytkownikiem) a systemem. One są ściśle powiązane z wymaganiami projektowymi i pozwalają wdrożyć tylko i wyłącznie potrzebne funkcje, odrzucając wszystkie inne niewykorzystane funkcje.
+Oprócz wymagań muszą być opisane przypadki użycia programu. Przypadki użycia opisują sekwencje interakcji pomiędzy aktorem (użytkownikiem) a systemem. One są ściśle powiązane z~wymaganiami projektowymi i pozwalają wdrożyć tylko i wyłącznie potrzebne funkcje, odrzucając wszystkie inne niewykorzystane funkcje.
 
 Takie podejście nie tylko pozwala usunąć zbędne funkcje, skracając czas realizacji projektu i zmniejszając koszt jego tworzenia, ale też skupia się na użytkownikach.
 

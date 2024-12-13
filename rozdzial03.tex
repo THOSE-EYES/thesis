@@ -2,10 +2,10 @@
 \section{Wprowadzenie}
 Celem tego rozdziału jest szczegółowy opis podejścia do realizacji projektu BBS, a mianowicie wyjaśnienie podstawowych pojęć, analiza architektury oraz algorytmów stosowanych do przetwarzania danych.
 
-Chciałbym zacząć od tego, czym właściwie jest BBS. Zgodnie z definicją projekt jest w rzeczywistości procesorem języka \cite{compilers}, a konkretnie tłumaczem według następujących cech, które wynikają bezpośrednio z wymagań opisanych w rozdziale 2 \ref{design}:
+Chciałbym zacząć od tego, czym właściwie jest BBS. Zgodnie z definicją projekt jest w rzeczywistości procesorem języka \cite{compilers}, a konkretnie tłumaczem według następujących cech, które wynikają bezpośrednio z wymagań opisanych w rozdziale~\ref{design}:
 \begin{itemize}
     \item Oprogramowanie analizuje kod wejściowy, napisany w specjalnie opracowanym na potrzeby projektu języku
-    \item Oprogramowanie powinno wykrywać i raportować możliwe błędy logiczne lub składniowe w pliku wejściowym
+    \item Oprogramowanie powinno wykrywać i raportować możliwe błędy logiczne lub składniowe w~pliku wejściowym
     \item Zamiast tłumaczyć plik wejściowy na inny język programowania, program powinien wykonać polecenia opisane w pliku wejściowym
 \end{itemize}
 
@@ -19,21 +19,21 @@ W tej sekcji wprowadzimy notację -- „gramatykę bezkontekstową” lub dla zw
 <stmt> ::= "if" "(" <expr> ")" <stmt> "else" <stmt>
 \end{lstlisting}
 
-w której ''::='' można odczytać jako „może mieć formę”. Taka zasada nazywa się „produkcją”. Produkty posiadają takie elementy leksykalne, jak słowo kluczowe \texttt{if} i nawias, nazywane są „terminalami”. Zmienne takie jak \texttt{expr} i \texttt{stmt} reprezentują sekwencje terminali i nazywane są „nieterminalami”.
+w której ''::='' można odczytać jako „może mieć formę”. Taka zasada nazywa się „produkcją”. Produkcje posiadają takie elementy leksykalne, jak słowo kluczowe \texttt{if} i nawias, nazywane są „terminalami”. Zmienne takie jak \texttt{expr} i \texttt{stmt} reprezentują sekwencje terminali i nazywane są „nieterminalami”.
 
 Gramatyka bezkontekstowa składa się z czterech elementów:
 \begin{itemize}
-    \item Zestaw znaków końcowych, czasami nazywany „leksemami”. Terminale to podstawowe symbole języka zdefiniowane przez gramatykę.
-    \item Zbiór nieterminali, czasami nazywany „zmiennymi składniowymi”. Każdy nieterminal reprezentuje zestaw ciągów końcowych ciągów końcowych lub innych nieterminali
-    \item Zbiór produkcji, gdzie każda produkcja składa się z nieterminala, zwanego głową lub lewą stroną produkcji, strzałki oraz sekwencji terminali i nieterminali, zwanej treścią lub prawą stroną produkcji.
+    \item Zestaw symboli końcowych, nazywanych „leksemami”. Terminale to podstawowe symbole języka zdefiniowane przez gramatykę.
+    \item Zbiór nieterminali, czasami nazywany „zmiennymi składniowymi”. Każdy nieterminal reprezentuje zestaw symboli końcowych lub innych nieterminali
+    \item Zbiór produkcji, gdzie każda produkcja składa się z nieterminala, zwanego głową lub lewą stroną produkcji, strzałki oraz sekwencji terminali i nieterminali, zwanej treścią, definicją lub prawą stroną produkcji.
     \item Oznaczenie jednego z nieterminali jako symbolu początkowego.
 \end{itemize}
 
-W celu opisu gramatyki będziemy musieli się posługiwać notacją BNF, która jest jedną z najprostszych i najczęściej używanych. O niej dalej.
+W celu opisu gramatyki będziemy musieli się posługiwać notacją BNF, która jest jedną z~najprostszych i najczęściej używanych. O niej dalej.
 
 \subsection{Backus-Naur Form (BNF)}
 
-Backus-Naur Form (BNF) to formalna notacja używana do opisywania składni języków programowania oraz innych formalnych struktur. BNF pozwala definiować reguły gramatyczne w sposób precyzyjny, umożliwiając zrozumienie i implementację języka. Jest ona powszechnie stosowana w tworzeniu kompilatorów, interpreterów oraz dokumentacji języków programowania.
+Backus-Naur Form (BNF) to formalna notacja używana do opisywania składni języków programowania oraz innych formalnych struktur. BNF pozwala definiować reguły gramatyczne w~sposób precyzyjny, umożliwiając zrozumienie i implementację języka. Jest ona powszechnie stosowana w tworzeniu kompilatorów, interpreterów oraz dokumentacji języków programowania.
 
 BNF składa się z zestawu reguł, z których każda opisuje, w jaki sposób można skonstruować element języka. Reguły te są definiowane za pomocą produkcji w postaci:
 
@@ -67,7 +67,7 @@ Symbol \texttt{::=} oznacza „jest definiowane jako” i oddziela nazwę symbol
     \begin{verbatim}
     <expr> ::= <term> | <term> "+" <term>
     \end{verbatim}
-    Symbol \texttt{<expr>} jest nieterminalny, podczas gdy \texttt{term} wymaga definicji w kolejnej regule.
+    Symbol \texttt{<expr>} jest nieterminalny, \texttt{term} wymaga definicji w kolejnej regule, a "+" jest symbolem terminalnym.
 \end{itemize}
 
 \subsection{Gramatyka języka BBS}
@@ -108,7 +108,7 @@ Główne wymagania stawiane językowi stosowanemu w projekcie BBS to prostota gr
 <punctuator> ::= "/" | "-" | "_" | "." | ","
 \end{lstlisting}
 
-Jak widać z opisu gramatyki, język operuje na dwóch głównych typach danych: sekwencji symboli i tablicy (ciągów znaków). Każdy ciąg znaków może składać się z liter, separatorów i znaków interpunkcyjnych i musi być ujęty w cudzysłów. Z kolei tablica składa się z jednego lub większej liczby ciągów znaków oddzielonych przecinkami i ujętych w nawiasy kwadratowe.
+Jak widać z opisu gramatyki, język operuje na dwóch głównych typach danych: sekwencji symboli i tablicy (ciągów znaków). Każdy ciąg znaków może składać się z liter, separatorów i~znaków interpunkcyjnych i musi być ujęty w cudzysłów. Z kolei tablica składa się z jednego lub większej liczby ciągów znaków oddzielonych przecinkami i ujętych w nawiasy kwadratowe.
 
 Struktura tego języka składa się z deklaracji i wyrażeń.
 \begin{itemize}
@@ -116,7 +116,7 @@ Struktura tego języka składa się z deklaracji i wyrażeń.
     \item Wyrażenia opisują działania lub konfigurację projektu.
 \end{itemize}
 
-Deklaracje tworzące nowe zmienne muszą być napisane zgodnie z gramatyką, przy czym nazwa zmiennej może zawierać wyłącznie litery alfabetu łacińskiego, a jej wartość może być jedynie ciągiem znaków. Użycie zmiennej może znajdować się w środku ciągu znaków (co z kolei oznacza również możliwość użycia zmiennych wewnątrz tablic, ale tylko wtedy, gdy są one również ujęte w cudzysłów), w tym celu wystarczy użyć znak dolara obok nazwy zmiennej.
+Deklaracje tworzące nowe zmienne muszą być napisane zgodnie z gramatyką, przy czym nazwa zmiennej może zawierać wyłącznie litery alfabetu łacińskiego, a jej wartość może być jedynie ciągiem znaków. Użycie zmiennej może znajdować się w środku ciągu znaków (co z~kolei oznacza również możliwość użycia zmiennych wewnątrz tablic, ale tylko wtedy, gdy są one również ujęte w cudzysłowy), w tym celu wystarczy użyć znaku dolara obok nazwy zmiennej.
 
 Wyrażenia z kolei opisują dokładnie, jakie słowa kluczowe są użyte w tej konfiguracji. Obecnie istnieje tylko 7 słów kluczowych, które muszą być obsługiwane przez język BBS:
 \begin{itemize}
@@ -136,7 +136,7 @@ Zgodnie ze standardową strukturą kompilatorów i interpreterów, oprogramowani
 
 Jeśli patrzyć na dane oprogramowanie ze względu na ogólnie przyjęte fazy kompilacji (które odpowiadają opisanym powyżej częściom standardowego kompilatora lub interpretera), to BBS realizuje prawie wszystkie fazy frontendu, z wyjątkiem generowania kodu pośredniego. Wynika to z niepraktyczności generowania kodu pośredniego bez znaczących opcji jego dalszego wykorzystania. Więc BBS zamiast tej fazy ma swoją, specjalną fazę -- fazę wypełniania wewnętrznej struktury opisującej projekt, który ma zostać zbudowany z BBS. Sama konstrukcja, a także procesy zachodzące w tej fazie zostaną szczegółowo opisane w dalszej części.
 
-Podejście do implementacji backendu zasadniczo różni się od standardowego: nie jest wymagane dalsze tłumaczenie kodu na inny język, nie są realizowane fazy generowania kodu w innym języku. Zamiast tego backend na podstawie informacji o projekcie dostarczonych użytkownikowi wybiera określone polecenia do kontrolowania i budowania projektów.
+Podejście do implementacji backendu zasadniczo różni się od standardowego: nie jest wymagane dalsze tłumaczenie kodu na inny język, nie są realizowane fazy generowania kodu w~innym języku. Zamiast tego backend na podstawie informacji o projekcie dostarczonych użytkownikowi wybiera określone polecenia do kontrolowania i budowania projektów.
 
 Schemat fazowy BBS wygląda następująco:
 
@@ -146,15 +146,15 @@ Schemat fazowy BBS wygląda następująco:
     \caption{Schemat fazowy projektu BBS}
 \end{figure}
 
-Następnie opis procesu implementacji programu zostanie podzielony na części, które również dzielą się na fazy. Ma to na celu proste opisanie procesów zachodzących w środku programu, a także zademonstrowanie danych wejściowych/wyjściowych.
+Następnie opis procesu implementacji programu zostanie podzielony na części, które również dzielą się na fazy. Ma to na celu proste opisanie procesów zachodzących w środku programu, a~także zademonstrowanie danych wejściowych/wyjściowych.
 
 \section{Analiza}
 Jak opisano powyżej, dane wejściowe są analizowane w części frontendowej programu. Analizator dzieli dane wejściowe na części i narzuca im strukturę gramatyczną, która później posłuży do zbudowania projektu. Jeżeli parser stwierdzi, że dane wejściowe są niepoprawne składniowo lub semantycznie, informuje o tym użytkownika w najbardziej zrozumiały sposób. Dodatkowo analizator zbiera informacje w postaci tablicy symboli, co zostanie opisane w dalszej części.
 
 \subsection{Analiza leksykalna}
-Analiza leksykalna jest pierwszym etapem analizy danych wejściowych. Analizator leksykalny odczytuje strumień symboli i grupuje je w sensowną sekwencję zwaną leksemami, dla których analizator leksykalny generuje tzw. leksem składający się z typu pary -- odwołanie do tabeli symboli \cite{compilers}.
+Analiza leksykalna jest pierwszym etapem analizy danych wejściowych. Analizator leksykalny odczytuje strumień symboli i grupuje je w sensowne sekwencje zwane leksemami, dla których analizator leksykalny generuje tzw. tokeny będące obiektami składającymi się z przynajmniej pary (leksem, typ leksemu) -- odwołanie do tabeli symboli \cite{compilers}.
 
-W projekcie BBS analizator leksykalny jest podzielony na dwie odrębne klasy, \texttt{Lexer} i \texttt{Scanner}, dla których zaimplementowana jest także klasa pomocnicza \texttt{Context}. Klasy te korzystają także z dodatkowych elementów, które zostaną opisane później (ale będą tu omawiane tylko te, które naprawdę zasługują na uwagę, np. nie będzie tu opisu klas wyjątków).
+W projekcie BBS analizator leksykalny jest podzielony na dwie odrębne klasy, \texttt{Lexer} i~\texttt{Scanner}, dla których zaimplementowana jest także klasa pomocnicza \texttt{Context}. Klasy te korzystają także z dodatkowych elementów, które zostaną opisane później (ale będą tu omawiane tylko te, które naprawdę zasługują na uwagę, np. nie będzie tu opisu klas wyjątków).
 
 \subsubsection{Klasa Scanner}
 Klasa \texttt{Scanner} jest osobną klasą, której delegowana jest rola odczytu plików. To właśnie w tej klasie hermetyzowane są wszelkie operacje sprawdzania istnienia, otwierania i odczytywania plików znak po znaku, a także omijania pustych linii czy komentarzy. Jego implementacja jest dość prosta, gdyż \texttt{Scanner} umożliwia odczytanie bieżącego znaku (funkcja \texttt{Get()}) i przejście do następnego (funkcja \texttt{Move()}). Z kolei operacja \texttt{Get()} opiera się na \texttt{std::optional} \cite{cpp_optional}, innowacji w C++17, która pozwala przechowywać wartość lub nic w bezpieczny i przejrzysty sposób. Klasa na wejściu otrzymuje nazwę pliku do odczytania, a na wyjściu zwraca przeczytany znak (odfiltrowując niepotrzebne), jeśli takie istnieją.
@@ -200,7 +200,7 @@ Klasa \texttt{Lexer}, jak sama nazwa wskazuje, jest implementacją analizatora l
 
 Główna klasa \texttt{Lexer} ma tylko metody manipulacji leksemami (\texttt{Get()} do odczytania bieżącego leksemu i \texttt{Next()} do żądania odczytania następnego leksemu), ponieważ praca z plikami została delegowana do klasy \texttt{Scanner}.
 
-Proces kategoryzacji leksemów został delegowany do szeregu klas zwanych procedurami obsługi. Klasy te stanowią implementację wzorca projektowego „Łańcuch odpowiedzialności” \cite{cor}, który polega na przetwarzaniu określonych żądań przez dany obiekt i ich późniejszym przekazywaniu do kolejnych obiektów, w przypadku gdyby żądanie nie powiodło się. Ten wzorzec został użyty, aby wycofać użycie \texttt{switch-case}, aby umożliwić znacznie łatwiejsze (i jednolite) podłączanie nowych klas obsługi przy minimalnych zmianach w istniejącym kodzie (zgodnie z zasadami SOLID \cite{solid}). Klasy te posiadają następujący interfejs:
+Proces kategoryzacji leksemów został delegowany do szeregu klas zwanych procedurami obsługi. Klasy te stanowią implementację wzorca projektowego „Łańcuch odpowiedzialności” \cite{cor}, który polega na przetwarzaniu określonych żądań przez dany obiekt i ich późniejszym przekazywaniu do kolejnych obiektów, w przypadku gdyby żądanie nie powiodło się. Ten wzorzec został użyty, aby wycofać użycie \texttt{switch-case}, aby umożliwić znacznie łatwiejsze (i jednolite) podłączanie nowych klas obsługi przy minimalnych zmianach w istniejącym kodzie (zgodnie z~zasadami SOLID \cite{solid}). Klasy te posiadają następujący interfejs:
 
 \begin{lstlisting}[label=list:handler,caption=Klasa Handler,basicstyle=\footnotesize\ttfamily]
 /**
@@ -246,13 +246,13 @@ std::shared_ptr<Lexer::Token> Lexer::Next()
 }
 \end{lstlisting}
 
-Klasa \texttt{Lexer} na wejściu otrzymuje nazwę pliku (która jest przekazywana do obiektu klasy Scanner i nie jest zapisywana bezpośrednio), na wyjściu \texttt{Lexer} zwraca aktualny leksem, a także umożliwia odczytanie nowy. W przypadku znalezienia nieznanych symboli, których nie przewidywała gramatyka języka, analizator tworzy odpowiedni wyjątek ze szczegółowym opisem położenia symbolu i przyczyną błędu.
+Klasa \texttt{Lexer} na wejściu otrzymuje nazwę pliku (która jest przekazywana do obiektu klasy Scanner i nie jest zapisywana bezpośrednio), na wyjściu \texttt{Lexer} zwraca aktualny leksem, a także umożliwia odczytanie nowego. W przypadku znalezienia nieznanych symboli, których nie przewidywała gramatyka języka, analizator tworzy odpowiedni wyjątek ze szczegółowym opisem położenia symbolu i przyczyną błędu.
 
-Lista leksemów, które program może przetworzyć, odpowiada podanemu językowi i została opisana w sekcji „Gramatyk języka”.
+Lista leksemów, które program może przetworzyć, odpowiada podanemu językowi i została opisana w sekcji „Gramatyka języka”.
 
 \subsection{Analiza składni}
 
-Po analizie leksykalnej lista leksemów wyodrębniona z plików wejściowych jest wysyłana do parsera. Praca parsera zazwyczaj polega na tworzeniu tzw drzewo składniowe, które jest pośrednią reprezentacją kodu wejściowego, odzwierciedlającą jego strukturę gramatyczną. Takie drzewo wygodnie zachowuje kolejność operacji i może wyglądać tak dla przykładowego wyrażenia $a = b + c$, gdzie $a$, $b$ i $c$ to identyfikatory dodane wcześniej do tablicy symboli:
+Po analizie leksykalnej lista tokenów wyodrębniona z plików wejściowych jest wysyłana do parsera. Praca parsera zazwyczaj polega na tworzeniu. tzw drzewa składniowego, które jest pośrednią reprezentacją kodu wejściowego, odzwierciedlającą jego strukturę gramatyczną. Takie drzewo wygodnie zachowuje kolejność operacji i może wyglądać tak dla przykładowego wyrażenia $a = b + c$, gdzie $a$, $b$ i $c$ to identyfikatory dodane wcześniej do tablicy symboli:
 
 \begin{figure}[h]
     \centering
@@ -260,15 +260,15 @@ Po analizie leksykalnej lista leksemów wyodrębniona z plików wejściowych jes
     \caption{Struktura gramatyczna przykładowego wyrażenia}
 \end{figure}
 
-Jak wspomniano w sekcji „Gramatyka języka”, opracowany język plików konfiguracyjnych projektu BBS jest dość prymitywny, co jest konsekwencją wymagań stawianych projektowi. Z tego powodu język nie obsługuje operacji arytmetycznych, łączenia ciągów znaków i zmiennych oraz nie zawiera żadnych innych typów danych niż typy „sekwencja znaków” i „tablica sekwencji znaków”. Biorąc pod uwagę wszystko, co napisano wcześniej, podjąłem decyzję o rezygnacji z implementacji parsera w taki sposób, aby możliwe było bezpośrednie utworzenie drzewa składniowego. Zamiast tego parser BBS, wykonując te same czynności, co wszystkie konwencjonalne parsery, natychmiast wykonuje funkcje zapisu danych projektu do pośredniej struktury danych.
+Jak wspomniano w sekcji „Gramatyka języka”, opracowany język plików konfiguracyjnych projektu BBS jest dość prymitywny, co jest konsekwencją wymagań stawianych projektowi. Z~tego powodu język nie obsługuje operacji arytmetycznych, łączenia ciągów znaków i zmiennych oraz nie zawiera żadnych innych typów danych niż typy „sekwencja znaków” i „tablica sekwencji znaków”. Biorąc pod uwagę wszystko, co napisano wcześniej, podjąłem decyzję o~rezygnacji z implementacji parsera w taki sposób, aby możliwe było bezpośrednie utworzenie drzewa składniowego. Zamiast tego parser BBS, wykonując te same czynności, co wszystkie konwencjonalne parsery, natychmiast wykonuje funkcje zapisu danych projektu do pośredniej struktury danych.
 
 Warto zaznaczyć, że parser ten stosuje podejście odgórne do analizy danych, czyli analizuje dane rozpoczynając od nieterminala początkowego i sprawdzając każdy symbol pod kątem zgodności z pochodnymi tego nieterminala. W przypadku BBS algorytm ten jest realizowany poprzez proste sprawdzenie danych wejściowych od lewej do prawej. Projektując, spośród innych algorytmów (np. oddolnych) wybrano ten algorytm ze względu na prostotę implementacji, a także ze względu na ogólną prostotę zaimplementowanego języka.
 
 Pełna funkcjonalność parsera w projekcie BBS zaimplementowana jest w klasach \texttt{Parser}, \texttt{Mediator}, a także klasach wywodzących się z interfejsu \texttt{State}.
 
-\subsubsection{Leksemy}
+\subsubsection{Tokeny}
 
-Danymi wejściowymi dla parsera są „leksemy” -- sklasyfikowane dane, które odbierane są na wyjściu leksera. Program BBS dla ogólnej prostoty, co jest jednym z głównych wymagań, używa języka z tylko dwoma typami danych i praktycznie bez instrukcji. Poniżej znajduje się lista wszystkich leksemów, które mogą zostać przetworzone przez program BBS. Wykonanie każdego z nich jest podobne i bardzo proste, dlatego nie będzie tutaj opisywane.
+Danymi wejściowymi dla parsera są „tokeny” -- obiekty zawierające sklasyfikowane dane, które odbierane są z wyjścia leksera. Program BBS dla ogólnej prostoty, co jest jednym z głównych wymagań, używa języka z tylko dwoma typami danych i praktycznie bez instrukcji. Poniżej znajduje się lista wszystkich leksemów, które mogą zostać przetworzone przez program BBS. Wykonanie każdego z nich jest podobne i bardzo proste, dlatego nie będzie tutaj opisywane.
 
 \begin{itemize}
 	\item \texttt{Operator} -- „=” oraz „\$”
@@ -279,7 +279,7 @@ Danymi wejściowymi dla parsera są „leksemy” -- sklasyfikowane dane, które
 
 \subsubsection{Klasa Parser}
 
-Najważniejszą klasą jest klasa \texttt{Parser}, która w rzeczywistości jest implementacją wzorca projektowego „State Machine” \cite{state}. Ten wzorzec projektowy służy do przeniesienia każdego stanu klasy do osobnej klasy z własną implementacją tych samych metod. Decyzja o zastosowaniu tego szablonu wynikała z faktu, że parser jest maszyną stanową w klasycznym sensie, gdyż rolą parsera jest sprawdzanie leksemu po leksemie, przy czym każdy kolejny leksem jest całkowicie syntaktycznie zależny od poprzedniego (tj. dany leksem może być oczekiwany lub nieoczekiwany, w zależności od leksemu, który był wcześniej przetwarzany przez parser).
+Najważniejszą klasą jest klasa \texttt{Parser}, która w rzeczywistości jest implementacją wzorca projektowego „State Machine” \cite{state}. Ten wzorzec projektowy służy do przeniesienia każdego stanu klasy do osobnej klasy z własną implementacją tych samych metod. Decyzja o zastosowaniu tego szablonu wynikała z faktu, że parser jest maszyną stanową w klasycznym sensie, gdyż rolą parsera jest sprawdzanie tokena po tokenie, przy czym każdy kolejny token jest całkowicie syntaktycznie zależny od poprzedniego (tj. dany token może być oczekiwany lub nieoczekiwany, w~zależności od tokena, który był wcześniej przetwarzany przez parser).
 
 Każdy stan parsera odpowiada oddzielnym nieterminalom zdefiniowanym w gramatyce języka użytego w projekcie. Interesująca jest implementacja każdego indywidualnego stanu, podczas gdy parser ma tylko jedną pełnoprawną metodę, która wywołuje metodę przetwarzania kolejnego znacznika bieżącego stanu i sprawdza istnienie tego stanu.
 
@@ -312,7 +312,7 @@ W mojej implementacji parsera ta klasa jest potrzebna do uproszczenia zależnoś
 
 \subsubsection{Klasy typów danych}
 
-Jak już wspomniano, oprogramowanie to implementuje tylko dwa typy danych, a mianowicie „sekwencję znaków” i „tablicę sekwencji znaków”. Implementacja tych typów nie jest trudna i pod wieloma względami „tablica” opiera się na już istniejącej implementacji stanu „sekwencji znaków”, nie ma jednak pomiędzy nimi zależności hierarchicznych.
+Jak już wspomniano, oprogramowanie to implementuje tylko dwa typy danych, a mianowicie „sekwencję znaków” i „tablicę sekwencji znaków”. Implementacja tych typów nie jest trudna i~pod wieloma względami „tablica” opiera się na już istniejącej implementacji stanu „sekwencji znaków”, nie ma jednak pomiędzy nimi zależności hierarchicznych.
 
 Każdy z tych typów implementuje interfejs \texttt{State}, co oznacza, że główną metodą, która nas interesuje w kontekście parsera jest \texttt{Process()}.
 
@@ -398,7 +398,7 @@ void Array::Process(lexer::Lexer& lexer)
 }
 \end{lstlisting}
 
-Zamiast tego implementacja stanu \texttt{Array} jest bardziej złożona, ponieważ zamiast pojedynczego znaku kończącego, takiego jak cudzysłowy w ciągu znaków, tablica używa przecinków do oddzielania kolejnych sekwencji znaków, a także nawiasów kwadratowych aby zaznaczyć krawędzie tablicy. Zamiast tego w kodzie przetwarzającym ciągi znaków wykorzystano gotową klasę \texttt{String}, co znacznie upraszcza implementację tablic oraz poprawia jakość, stabilność i czystość kodu.
+Zamiast tego implementacja stanu \texttt{Array} jest bardziej złożona, ponieważ zamiast pojedynczego znaku kończącego, takiego jak cudzysłowy w ciągu znaków, tablica używa przecinków do oddzielania kolejnych sekwencji znaków, a także nawiasów kwadratowych aby zaznaczyć krawędzie tablicy. Zamiast tego w kodzie przetwarzającym ciągi znaków wykorzystano gotową klasę \texttt{String}, co znacznie upraszcza implementację tablic oraz poprawia jakość, stabilność i~czystość kodu.
 
 \subsubsection{Klasy słów kluczowych}
 
@@ -420,7 +420,7 @@ void CFlags::Process(lexer::Lexer& lexer)
 }
 \end{lstlisting}
     
-Na szczególną uwagę zasługuje klasa \texttt{Keyword}, która jest implementacją stanu parsera odpowiadającego nieterminalowi o tej samej nazwie. Jej celem jest przejście do prawidłowego stanu słowa kluczowego w celu jego obsługi przez program, metoda \texttt{Process()} tej klasy jest niczym innym jak implementacją wzorca projektowego „Metoda wytwórcza \cite{factory-method} , wzór generujący. Metoda ta ma konstrukcję \texttt{switch-case} i nie różni się niczym innym.
+Na szczególną uwagę zasługuje klasa \texttt{Keyword}, która jest implementacją stanu parsera odpowiadającego nieterminalowi o tej samej nazwie. Jej celem jest przejście do prawidłowego stanu słowa kluczowego w celu jego obsługi przez program, metoda \texttt{Process()} tej klasy jest niczym innym jak implementacją wzorca projektowego „Metoda wytwórcza'' \cite{factory-method}, wzór generujący. Metoda ta ma konstrukcję \texttt{switch-case} i nie różni się niczym innym.
 
 \begin{lstlisting}[label=list:keywords,caption=Metoda Keyword::Process(),basicstyle=\footnotesize\ttfamily]
 void Keyword::Process(lexer::Lexer& lexer)
@@ -510,7 +510,7 @@ Jak widać z implementacji głównej metody klasy powyżej, pierwszym etapem jej
 
 \subsubsection{Klasa Statement}
 
-Ta klasa jest nieterminalną implementacją o tej samej nazwie. Ta klasa jest wyłącznie odpowiedzialna za sprawdzanie obecności wykrzyknika na początku każdego słowa kluczowego i przejście do stanu „Słowo kluczowe”.
+Ta klasa jest nieterminalną implementacją o tej samej nazwie. Ta klasa jest wyłącznie odpowiedzialna za sprawdzanie obecności wykrzyknika na początku każdego słowa kluczowego i~przejście do stanu „Słowo kluczowe”.
 
 \subsubsection{Klasa State}
 
@@ -558,7 +558,7 @@ void State::Match(tokens::Token* token, tokens::Punctuator::Type value)
     const auto ptr = dynamic_cast<tokens::Punctuator*>(token);
     if(!ptr || ptr->type != value)
     {
-        throw exceptions::UnexpectedTokenException(std::move(token->GetValue()));
+        throw exceptions::UnexpectedTokenException( std::move(token->GetValue()));
     }
 }
 \end{lstlisting}
@@ -571,7 +571,7 @@ Na przykład wiele zdefiniowanych języków programowania wymaga, aby indeks tab
 Ponieważ program BBS nie musi generować żadnego kodu (tj. nie jest kompilatorem), co oznacza, że nie musi generować drzewa składniowego, nie zaimplementowano etapu analizy semantycznej. Decyzja ta ilustruje także fakt, że początkowy wymóg nałożył duże ograniczenie na liczbę typów danych wewnętrznych sprawdzanych przez usługę BBS, a także typów, które nie wymagają odpowiedniej konwersji czy adresowania tablic. Podsumowując, analiza semantyczna nie stała się częścią programu BBS.
 
 \section{Synteza}
-Synteza jest jednym z kluczowych etapów procesu kompilacji, zaraz po analizie (leksemicznej, składniowej i semantycznej). Jego celem jest przekształcenie pośredniej reprezentacji aplikacji w docelową formę kodu, którą można uruchomić na wybranej platformie. Proces ten obejmuje generowanie, optymalizację i uzupełnianie kodu obiektowego. Cały proces przedstawia poniższy diagram:
+Synteza jest jednym z kluczowych etapów procesu kompilacji, zaraz po analizie (leksykalnej, składniowej i semantycznej). Jego celem jest przekształcenie pośredniej reprezentacji aplikacji w docelową formę kodu, którą można uruchomić na wybranej platformie. Proces ten obejmuje generowanie, optymalizację i uzupełnianie kodu obiektowego. Cały proces przedstawia poniższy diagram:
 
 \begin{figure}[h]
     \centering
@@ -581,9 +581,9 @@ Synteza jest jednym z kluczowych etapów procesu kompilacji, zaraz po analizie (
 
 Na początku syntezy kompilator pracuje z wewnętrzną reprezentacją kodu, na przykład:
 \begin{itemize}
-    \item Drzewo składniowe (AST -- Abstrakcyjne Drzewo Syntaktyczne),
-    \item Kod trójadresowy lub inny format kodu pośredniego,
-    \item Tablice symboli przechowujące informacje o zmiennych, funkcjach i ich właściwościach.
+    \item drzewo składniowe (AST -- Abstrakcyjne Drzewo Syntaktyczne),
+    \item kod trójadresowy lub inny format kodu pośredniego,
+    \item tablice symboli przechowujące informacje o zmiennych, funkcjach i ich właściwościach.
 \end{itemize}
 
 Jak wspomniano w poprzednich sekcjach, projekt BBS nie posiada kodu generującego drzewo składni w pełnym tego słowa znaczeniu (ani w ogóle żadnej pośredniej formy kodu). Wynika to z faktu, że w procesie syntezy BBS nie tłumaczy plików wejściowych bezpośrednio na kod maszynowy, lecz korzysta z gotowych rozwiązań (czyli gotowych kompilatorów, w większości przypadków jest to GNU GCC). I choć kompilacja plików wejściowych za pomocą BBS-a ma charakter pośredni, to i tak warto rozważyć ten proces na przykładzie gotowych rozwiązań, aby lepiej zrozumieć cel BBS-a i logikę jego działania.
@@ -593,32 +593,32 @@ Na wczesnym etapie syntezy generowany jest kod pośredni, będący abstrakcyjną
 
 Kod pośredni jest często optymalizowany w celu poprawy wydajności programu. Proces ten może obejmować:
 \begin{itemize}
-    \item Eliminacja martwego kodu
-    \item Optymalizacja pętli (rozmieszczenie pętli, niezmienny ruch kodu),
-    \item Zmniejszenie liczby stosowanych rejestrów.
+    \item eliminację martwego kodu,
+    \item optymalizację pętli (rozmieszczenie pętli, niezmienny ruch kodu),
+    \item zmniejszenie liczby stosowanych rejestrów.
 \end{itemize}
 
 \subsection{Generowanie kodu maszynowego}
 Na tym etapie kod pośredni jest konwertowany na kod maszynowy specyficzny dla wybranej architektury procesora. Generowanie kodu maszynowego obejmuje:
 
 \begin{itemize}
-    \item Przypisanie rejestrów procesora do zmiennych,
-    \item Tłumaczenie instrukcji na zestaw operacji dostępnych na docelowym sprzęcie,
-    \item Dodanie pewnych elementów, takich jak wektory przerwań lub wywołania systemowe.
+    \item przypisanie rejestrów procesora do zmiennych,
+    \item tłumaczenie instrukcji na zestaw operacji dostępnych na docelowym sprzęcie,
+    \item dodanie pewnych elementów, takich jak wektory przerwań lub wywołania systemowe.
 \end{itemize}
 
 \subsection{Łączenie i alokacja zasobów}
 Synteza obejmuje również proces łączenia (t.zw. „linking”), w którym połączone pomiędzy sobą zostają różne moduły oprogramowania, w tym biblioteki dynamiczne i statyczne, a także rozwiązano odniesienia do symboli pomiędzy różnymi plikami. W wyniku tego procesu z wielu plików obiektowych powstaje jeden plik wykonywalny w jednej z poniżej wymienionych postaci:
 
 \begin{itemize}
-    \item Plik wykonywalny (np. ELF, PE),
-    \item Kod odpowiedni do tłumaczenia (w przypadku tłumaczy),
-    \item Kod bajtowy maszyny (np. dla maszyn wirtualnych takich jak JVM lub CLR).
+    \item plik wykonywalny (np. ELF, PE),
+    \item kod odpowiedni do tłumaczenia (w przypadku tłumaczy),
+    \item kod bajtowy maszyny (np. dla maszyn wirtualnych takich jak JVM lub CLR).
 \end{itemize}
 
 \subsection{Opis procesu}
 
-Jeśli chodzi o sam projekt BBS, proces syntezy w nim przebiega następująco: podczas analizy listy leksemów przez parser natychmiast wypełniana jest wewnętrzna struktura Job (jak już wspomniano, drzewo nie jest budowane bezpośrednio, ale Parser wykonuje akcje w oparciu o etapy przeglądania takiego drzewa), które następnie wykorzystywane są przez obiekt Pipeline, który z kolei wykonuje zgodnie z wewnętrznym planem stworzonym przez obiekt Scheduler. Obiekt klasy Pipeline odpowiada za kompilację i dalsze linkowanie każdego pliku, który jest powiązany z tym obiektem Job, w tym celu wykorzystywane są wywołania do wybranego przez użytkownika kompilatora (domyślnie jest to GNU GCC), któremu przekazywane są parametry kompilacji wzięte z tego samego obiektu klasy Job. Po pomyślnych wywołaniach podany katalog powinien zawierać plik wykonywalny w formacie odpowiadającym docelowemu systemowi operacyjnemu i architekturze procesora (ELF dla systemów UNIX-podobnych, PE dla Windows), który będzie miał taką samą nazwę jak nazwa podanego projektu przez użytkownika za pomocą słowa kluczowego \texttt{!prj} w pliku konfiguracyjnym.
+Jeśli chodzi o sam projekt BBS, proces syntezy w nim przebiega następująco: podczas analizy listy tokenów przez parser natychmiast wypełniana jest wewnętrzna struktura Job (jak już wspomniano, drzewo nie jest budowane bezpośrednio, ale Parser wykonuje akcje w oparciu o~etapy przeglądania takiego drzewa), które następnie wykorzystywane są przez obiekt Pipeline, który z kolei wykonuje zgodnie z wewnętrznym planem stworzonym przez obiekt Scheduler. Obiekt klasy Pipeline odpowiada za kompilację i dalsze linkowanie każdego pliku, który jest powiązany z tym obiektem Job, w tym celu wykorzystywane są wywołania do wybranego przez użytkownika kompilatora (domyślnie jest to GNU GCC), któremu przekazywane są parametry kompilacji wzięte z tego samego obiektu klasy Job. Po pomyślnych wywołaniach podany katalog powinien zawierać plik wykonywalny w formacie odpowiadającym docelowemu systemowi operacyjnemu i architekturze procesora (ELF dla systemów UNIX-podobnych, PE dla Windows), który będzie miał taką samą nazwę jak nazwa podanego projektu przez użytkownika za pomocą słowa kluczowego \texttt{!prj} w pliku konfiguracyjnym.
 
 \subsubsection{Kompilacja}
 Jak wspomniano powyżej, BBS nie jest bezpośrednio odpowiedzialny za kompilację plików, skupiając się wyłącznie na zarządzaniu zależnościami pomiędzy plikami i projektami oraz skracając czas kompilacji, poprzez ignorowanie plików, które nie wymagają kompilacji (proces ten zostanie omówiony bardziej szczegółowo później).
@@ -691,7 +691,7 @@ GNUPlusPlus::GetDependencies(const std::filesystem::path& file) const
 }
 \end{lstlisting}
 
-Podane zestawienie pokazuje, jak obiekt klasy \texttt{Command} (co zostanie omówione później) wykonuje wcześniej przygotowane polecenie, którego celem jest uzyskanie listy zależności dla danego pliku. Proces ten przebiega następująco: najpierw tworzona jest lista parametrów, składająca się z pliku do analizy, listy folderów z nagłówkami oraz parametru kompilatora odpowiedzialnego za funkcję analizy zależności (w przypadku GNU GCC jest to \texttt{-MM} \cite{gcc} ). Następnie podejmowana jest próba wykonania polecenia, w przypadku niepowodzenia generowany jest wyjątek z informacją o przyczynie błędu i pliku, który spowodował ten błąd. Jeśli wykonanie polecenia powiedzie się, następnym krokiem będzie pobranie wyniku polecenia i podzielenie listy plików na poszczególne nazwy plików, aby ułatwić użycie funkcji \texttt{Split()} (nie będzie to omawiane w tym artykule, ponieważ jest to bardzo prosta funkcja).
+Podane zestawienie pokazuje, jak obiekt klasy \texttt{Command} (co zostanie omówione później) wykonuje wcześniej przygotowane polecenie, którego celem jest uzyskanie listy zależności dla danego pliku. Proces ten przebiega następująco: najpierw tworzona jest lista parametrów, składająca się z pliku do analizy, listy folderów z nagłówkami oraz parametru kompilatora odpowiedzialnego za funkcję analizy zależności (w przypadku GNU GCC jest to \texttt{-MM} \cite{gcc} ). Następnie podejmowana jest próba wykonania polecenia, w przypadku niepowodzenia generowany jest wyjątek z informacją o przyczynie błędu i pliku, który spowodował ten błąd. Jeśli wykonanie polecenia powiedzie się, następnym krokiem będzie pobranie wyniku polecenia i podzielenie listy plików na poszczególne nazwy plików, aby ułatwić użycie funkcji \texttt{Split()} (nie będzie to omawiane, ponieważ jest to bardzo prosta funkcja).
 
 \subsubsection{Klasa Job}
 
@@ -699,13 +699,13 @@ Jedną z klas podstawowych wymaganych do działania BBS jest klasa \texttt{Job}.
 
 Poniżej znajduje się lista danych, jakie można dodać do obiektu klasy \texttt{Job}:
 \begin{itemize}
-    \item Lista poleceń wykonywanych przed procesem budowy projektu
-    \item Lista poleceń wykonywanych po zakończeniu procesu budowy projektu
-    \item Parametry kompilatora
-    \item Lista plików projektu
-    \item Lista folderów, w których znajdują się tytuły
-    \item Nazwa projektu i jego lokalizacja
-    \item Lista zależności
+    \item lista poleceń wykonywanych przed procesem budowy projektu,
+    \item lista poleceń wykonywanych po zakończeniu procesu budowy projektu,
+    \item parametry kompilatora,
+    \item lista plików projektu,
+    \item lista folderów, w których znajdują się tytuły,
+    \item nazwa projektu i jego lokalizacja,
+    \item lista zależności.
 \end{itemize}
 
 Obiekt faktycznie jest właścicielem swoich danych, a aby uzyskać do nich dostęp, używane są stałe wskaźniki. Warto również zaznaczyć, że kopiowanie obiektu klasy \texttt{Job} jest zabronione (usunięto konstruktor i operator kopiowania). Odbywa się to w myśl założenia, że projektu nie należy kopiować, dane na jego temat powinny znajdować się w jednym miejscu dokładnie do momentu zakończenia budowy, po czym należy je usunąć ze względu na niepotrzebność.
@@ -716,9 +716,9 @@ Jak wspomniano powyżej, kompilator używany do uruchamiania BBS jest oddzielnym
 
 Język C++ pozwala na wykorzystanie specjalnego, ujednoliconego interfejsu do wykonywania poleceń systemowych w bardzo prosty i przejrzysty sposób. Takie rozwiązanie pozwala na abstrahowanie od różnic pomiędzy systemami docelowymi i skupienie się na realizacji ważniejszych komponentów programu. Dodatkowo zastosowanie wystandaryzowanego i przetestowanego kodu zwiększa niezawodność projektu, w którym jest on zastosowany, a także skraca czas jego realizacji.
 
-Na samym początku wdrożenia wybrałem tę metodę ze względu na zalety wymienione w poprzednim akapicie, jednak bardzo szybko widoczne stały się ograniczenia, jakie narzuca zastosowanie tego podejścia: po wykonaniu polecenia funkcja \texttt{std::system} jest w stanie zwrócić tylko kod wykonania polecenia. Jest to wystarczające dla większości zadań postawionych przed BBS-em, ale dla jednej z głównych funkcji projektu ta wada jest krytyczna: chodzi o optymalizację kompilacji. Funkcja ta opiera się na możliwości współczesnych kompilatorów, przy założeniu poprawnych parametrów, zwrócenia listy plików, od których zależy dany plik. Ta funkcjonalność wykracza poza proste powiadamianie o stanie polecenia, dlatego \texttt{std::system} jest przestarzały.
+Na samym początku wdrożenia wybrałem tę metodę ze względu na zalety wymienione w~poprzednim akapicie, jednak bardzo szybko widoczne stały się ograniczenia, jakie narzuca zastosowanie tego podejścia: po wykonaniu polecenia funkcja \texttt{std::system} jest w stanie zwrócić tylko kod wykonania polecenia. Jest to wystarczające dla większości zadań postawionych przed BBS-em, ale dla jednej z głównych funkcji projektu ta wada jest krytyczna: chodzi o optymalizację kompilacji. Funkcja ta opiera się na możliwości współczesnych kompilatorów, przy założeniu poprawnych parametrów, zwrócenia listy plików, od których zależy dany plik. Ta funkcjonalność wykracza poza proste powiadamianie o stanie polecenia, dlatego \texttt{std::system} jest przestarzały.
 
-Zamiast tego do realizacji tak ważnego procesu wybrano mechanizm potoków UNIX. Pozwala przekierować wyjście programu, a po jego zamknięciu uzyskać kod wykonawczy. Jednak to podejście ma wadę: nie jest przenośne, więc aby osiągnąć przenośność BBS na platformę Windows, należy oddzielić i uwzględnić implementacje klas hermetyzujących wykonywanie poleceń, w zależności od docelowego systemu operacyjnego. W tym celu stworzono wspólny interfejs Command, który jest implementowany przez klasy Command z dwóch różnych modułów: \texttt{nix} i \texttt{win} (obecnie nie zaimplementowane).
+Zamiast tego do realizacji tak ważnego procesu wybrano mechanizm potoków UNIX. Pozwala przekierować wyjście programu, a po jego zamknięciu uzyskać kod wykonawczy. Jednak to podejście ma wadę: nie jest przenośne, więc aby osiągnąć przenośność BBS na platformę Windows, należy oddzielić i uwzględnić implementacje klas hermetyzujących wykonywanie poleceń, w zależności od docelowego systemu operacyjnego. W tym celu stworzono wspólny interfejs \texttt{Command}, który jest implementowany przez klasy \texttt{Command} z dwóch różnych modułów: \texttt{nix} i \texttt{win} (obecnie nie zaimplementowane).
 
 Oto implementacja klasy \texttt{Command} z modułu \texttt{nix}, która opiera się na mechanizmie potoków UNIX:
 
@@ -759,7 +759,7 @@ Kod ten zawiera plik napisany specjalnie dla systemu docelowego, a także tworzy
 
 Oprócz bezpośredniego wykonywania poleceń, w projekcie BBS ważna jest maksymalna abstrakcja od zewnętrznych bibliotek lub programów. Jest to konieczne, aby wyeliminować ewentualne ryzyko związane z aktualizacją interfejsów lub poleceń, które może pojawić się w przyszłości. Dlatego interakcja z kompilatorami wspieranymi przez projekt BBS odbywa się poprzez klasy potomne interfejsu \texttt{Compiler}. Wszystkie są implementacjami wzorca projektowego zwanego „Adapter” \cite{adapter}.
 
-Główną zaletą szablonu „Adapter” jest jego prostota, a także możliwość hermetyzacji interakcji z interfejsami zewnętrznymi, dzięki czemu w przypadku ich zmiany projekt, który z nich korzysta, musi zostać zmieniony tylko w jednym miejscu. Takie podejście zwiększa bezpieczeństwo i niezawodność oprogramowania, a także skraca czas i koszty utrzymania produktu w przypadku zmiany zależności zewnętrznych.
+Główną zaletą szablonu „Adapter” jest jego prostota, a także możliwość hermetyzacji interakcji z interfejsami zewnętrznymi, dzięki czemu w przypadku ich zmiany projekt, który z~nich korzysta, musi zostać zmieniony tylko w jednym miejscu. Takie podejście zwiększa bezpieczeństwo i niezawodność oprogramowania, a także skraca czas i koszty utrzymania produktu w~przypadku zmiany zależności zewnętrznych.
 
 Każda klasa implementująca interfejs Compiler musi mieć następującą strukturę: konieczne są tylko dwie główne metody, które zapewniają abstrakcję procesu kompilacji i uzyskują listę zależności.
 
@@ -864,8 +864,7 @@ void Executor::Run()
 
 		// Pop the pipeline from the queue
 		pipelines_.pop();
-	}
-}
+	} }
 \end{lstlisting}
 
 \subsubsection{Klasa Application}
