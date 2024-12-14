@@ -1,0 +1,74 @@
+\chapter{Instrukcja Obsługi}
+
+Poniżej znajduje się instrukcja uruchomienia aplikacji BBS oraz opis formatu pliku konfiguracyjnego wykorzystywanego do definiowania procesu budowy.
+
+\section{Proces uruchomienia}
+
+Aby uruchomić aplikację BBS, należy wykonać następujące kroki:
+
+1. Przygotuj plik konfiguracyjny w formacie tekstowym, opisujący szczegóły projektu, takie jak nazwa projektu, pliki źródłowe, biblioteki zależne, flagi kompilatora itp.
+2. W terminalu przejdź do katalogu, w którym będzie się znajdował zbudowany projekt.
+3. Uruchom aplikację, podając jako argument ścieżkę do pliku konfiguracyjnego. Przykładowa komenda:
+   \begin{verbatim}
+   ./bbs ..
+   \end{verbatim}
+4. Aplikacja rozpocznie proces budowy projektu zgodnie z definicjami zawartymi w pliku konfiguracyjnym. W terminalu będą wyświetlane informacje o postępie.
+
+\section{Format pliku konfiguracyjnego}
+
+Plik konfiguracyjny w BBS jest oparty na prostym formacie tekstowym, w którym definiowane są wszystkie aspekty projektu. Poniżej znajduje się szczegółowy opis słów kluczowych używanych w tym pliku:
+
+\paragraph{\texttt{!let}} Pozwala na definiowanie zmiennych, które mogą być wykorzystywane w innych sekcjach pliku. Zmienna musi mieć unikalną nazwę oraz wartość w formie ciągu znaków.
+\begin{verbatim}
+!let project_name = "MyApp"
+\end{verbatim}
+
+\paragraph{\texttt{!prj}} Definiuje nazwę projektu. Może zawierać bezpośrednią wartość lub odwołanie do zmiennej.
+\begin{verbatim}
+!prj "MyApp"
+!prj $project_name
+\end{verbatim}
+
+\paragraph{\texttt{!files}} Określa listę plików źródłowych do skompilowania. Pliki są umieszczone w nawiasach kwadratowych, oddzielone przecinkami i ujęte w cudzysłowy.
+\begin{verbatim}
+!files [ "main.cpp", "utils.cpp", "app.cpp" ]
+\end{verbatim}
+
+\paragraph{\texttt{!deps}} Definiuje projekty zależne, które powinny zostać zbudowane przed głównym projektem. Muszą byc podane względna ścieżka do tych projektów.
+\begin{verbatim}
+!deps [ "dependency" ]
+\end{verbatim}
+
+\paragraph{\texttt{!cflags}} Określa flagi kompilatora, takie jak opcje optymalizacji, ostrzeżenia czy inne parametry.
+\begin{verbatim}
+!cflags "-O2 -Wall -lsomelib"
+\end{verbatim}
+
+\paragraph{\texttt{!pre}} Definiuje polecenia do wykonania przed rozpoczęciem procesu kompilacji, np. wyświetlenie komunikatu w terminalu.
+\begin{verbatim}
+!pre "echo 'Rozpoczynam budowanie projektu...'"
+\end{verbatim}
+
+\paragraph{\texttt{!post}} Definiuje polecenia wykonywane po zakończeniu procesu kompilacji, np. informowanie o sukcesie lub kopiowanie plików.
+\begin{verbatim}
+!post "echo 'Budowanie zakończone!'"
+\end{verbatim}
+
+\paragraph{\texttt{!inc}} Określa ścieżki do katalogów z plikami nagłówkowymi wymaganymi w procesie kompilacji.
+\begin{verbatim}
+!inc [ "include/", "external/includes/" ]
+\end{verbatim}
+
+Każde z tych słów kluczowych jest integralną częścią procesu budowy projektu w BBS, umożliwiając elastyczną kontrolę nad kompilacją i konfiguracją projektu. Przygotowując plik konfiguracyjny zgodnie z opisanymi wytycznymi, można w pełni wykorzystać możliwości tego narzędzia.
+
+\section{Działanie aplikacji}
+Po uruchomieniu aplikacja odczytuje plik konfiguracyjny i realizuje zdefiniowane w nim kroki. Proces ten obejmuje:
+
+\begin{itemize}
+    \item Sprawdzenie, czy wszystkie pliki źródłowe i katalogi istnieją.
+    \item Przygotowanie flag i parametrów kompilatora.
+    \item Kompilację plików źródłowych i ich linkowanie do postaci programu wykonywalnego.
+    \item Wykonanie poleceń określonych w sekcjach pre i post, jeśli zostały podane.
+\end{itemize}
+
+Jeśli podczas budowania projektu wystąpią błędy, takie jak brak plików źródłowych lub nieprawidłowa składnia w pliku konfiguracyjnym, aplikacja zgłasza je w formie komunikatów błędów w terminalu.
