@@ -420,7 +420,7 @@ void CFlags::Process(lexer::Lexer& lexer)
 }
 \end{lstlisting}
     
-Na szczególną uwagę zasługuje klasa \texttt{Keyword}, która jest implementacją stanu parsera odpowiadającego nieterminalowi o tej samej nazwie. Jej celem jest przejście do prawidłowego stanu słowa kluczowego w celu jego obsługi przez program, metoda \texttt{Process()} tej klasy jest niczym innym jak implementacją wzorca projektowego „Metoda wytwórcza'' \cite{factory-method}, wzór generujący. Metoda ta ma konstrukcję \texttt{switch-case} i nie różni się niczym innym.
+Na szczególną uwagę zasługuje klasa \texttt{Keyword}, która jest implementacją stanu parsera odpowiadającego nieterminalowi o tej samej nazwie. Jej celem jest przejście do prawidłowego stanu słowa kluczowego w celu jego obsługi przez program, metoda \texttt{Process()} tej klasy jest niczym innym jak implementacją wzorca projektowego „Metoda wytwórcza'' \cite{factory-method}, wzór generujący. Metoda ta ma konstrukcję \texttt{if-else} i nie wyróżnia się niczym ciekawym.
 
 \begin{lstlisting}[label=list:keywords,caption=Metoda Keyword::Process(),basicstyle=\footnotesize\ttfamily]
 void Keyword::Process(lexer::Lexer& lexer)
